@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: c71eb09b73b2bb44a827235bb640aec2
+labels:
+- sql
+- register
+- login
+- account
+- php
+- chat
+- lobby
+- advert
+- news
+- friends
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
