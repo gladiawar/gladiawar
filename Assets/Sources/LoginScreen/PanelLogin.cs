@@ -12,11 +12,13 @@ public class 				PanelLogin : MonoBehaviour
 	public enum 			ePanelLoginState
 	{
 		LOGIN,
-		REGISTER
+		REGISTER,
+		CHARA
 	}
 	
 	public GameObject		_panelLogin;
 	public GameObject		_panelRegister;
+	public GameObject		_panelChar;
 	
 	private ePanelLoginState _state = ePanelLoginState.LOGIN;
 	private static PanelLogin _instance = null;
@@ -44,16 +46,19 @@ public class 				PanelLogin : MonoBehaviour
 		switch (_state)
 		{
 		case ePanelLoginState.LOGIN:
-			activePanels(true, false); break;
+			activePanels(true, false, false); break;
 		case ePanelLoginState.REGISTER:
-			activePanels(false, true); break;
+			activePanels(false, true, false); break;
+		case ePanelLoginState.CHARA:
+			activePanels(false, false, true); break;
 		}
 	}
 	
-	private void			activePanels(bool login, bool register)
+	private void			activePanels(bool login, bool register, bool chara)
 	{
 		_panelLogin.SetActive(login);
 		_panelRegister.SetActive(register);
+		_panelChar.SetActive(chara);
 	}
 	
 }

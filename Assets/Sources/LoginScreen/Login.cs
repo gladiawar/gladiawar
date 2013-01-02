@@ -12,6 +12,7 @@ public class 				Login : MonoBehaviour
 #region editor_var
 	public Transform		_emailInput;
 	public Transform		_mdpInput;
+	public Transform		_panel;
 #endregion
 	
 #region private_functions
@@ -23,13 +24,7 @@ public class 				Login : MonoBehaviour
 	private void			OnLogin(SDNet.ReturnCode code, string res)
 	{
 		if (code == SDNet.ReturnCode.OK)
-		{
-			Debug.Log("Connect");
-		}
-		else
-		{
-			Debug.Log("unconnect");
-		}
+			_panel.GetComponent<PanelLogin>().State = PanelLogin.ePanelLoginState.CHARA;
 	}
 #endregion
 }
