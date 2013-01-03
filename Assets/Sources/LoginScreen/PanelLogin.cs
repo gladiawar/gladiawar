@@ -59,6 +59,8 @@ public class 				PanelLogin : MonoBehaviour
 		_panelLogin.SetActive(login);
 		_panelRegister.SetActive(register);
 		_panelChar.SetActive(chara);
+		if (chara)
+			_panelChar.GetComponent<DisplayPersoList>().loadCharacters();
 	}
 	
 }

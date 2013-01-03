@@ -334,7 +334,11 @@ public class SDNet : MonoBehaviour
 					{
 						string[] v = www.text.Split(new char[] { '|' });
 
-						session_cookie = v[0].Substring(1);		// session id (in case i could not get it from headers)				
+						session_cookie = v[0].Substring(1);		// session id (in case i could not get it from headers)
+						string sessionID = "";
+						for (int i = 10; i < session_cookie.Length; ++i)
+							sessionID += session_cookie[i];
+						RunTimeData.sessionID = sessionID;
 						GamePHP.Instance.name = v[1];			// extract the public name of player
 
 						// sample of grabbing various other info after login
