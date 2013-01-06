@@ -19,10 +19,10 @@ public class 				CreateCharacter : MonoBehaviour
 		set { _classChoose = value; }
 	}
 	
-	void					OnClik()
+	void					OnClick()
 	{
 		if (_inputName.GetComponent<UIInput>().text.Length > 2)
-			SDNet.Instance.NormalRequest(GamePHP.Instance.MainUrl + "listp/?PHPSESSID=" + RunTimeData.sessionID, OnCreate,
+			SDNet.Instance.NormalRequest(GamePHP.Instance.MainUrl + "createp/?PHPSESSID=" + RunTimeData.sessionID, OnCreate,
 											new Dictionary<string, string>() { { "name", _inputName.GetComponent<UIInput>().text },
 																				{ "class", ((uint)_classChoose).ToString() } });
 	}
@@ -30,11 +30,6 @@ public class 				CreateCharacter : MonoBehaviour
 	private void			OnCreate(SDNet.ReturnCode code, string res)
 	{
 		if (code == SDNet.ReturnCode.OK)
-		{
-		}
-		else
-		{
-			Debug.Log(res);
-		}
+			_panel.GetComponent<PanelLogin>().State = PanelLogin.ePanelLoginState.CHARA;
 	}
 }

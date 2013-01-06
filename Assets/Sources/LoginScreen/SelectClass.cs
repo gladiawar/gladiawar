@@ -16,7 +16,7 @@ public class 				SelectClass : MonoBehaviour
 		HEAVY
 	}
 	
-	public Transform		_otherButton, _otherButton2;
+	public Transform		_otherButton, _otherButton2, _buttonCreate;
 	public eClass			_class;
 	
 	void					Start()
@@ -30,5 +30,6 @@ public class 				SelectClass : MonoBehaviour
 		_otherButton.GetComponent<UIButton>().isEnabled = true;
 		_otherButton2.GetComponent<UIButton>().isEnabled = true;
 		transform.GetComponent<UIButton>().isEnabled = false;
+		_buttonCreate.GetComponent<CreateCharacter>().ClassChoosen = _class;
 	}
 }
