@@ -22,6 +22,7 @@ ehthumbs.db
 Thumbs.db
 ._*
 Temp
+*.exe
 
 Library
 Library/ScriptAssemblies/Assembly-CSharp-Editor.dll
