@@ -1,0 +1,7 @@
+# Currently : only for gcc
+
+# Object files
+*.o
+
+# Binary
+MasterServer
