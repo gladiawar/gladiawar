@@ -30,6 +30,8 @@ public class 				Register : MonoBehaviour
 	{
 		if (code == SDNet.ReturnCode.OK)
 			_panel.GetComponent<PanelLogin>().State = PanelLogin.ePanelLoginState.LOGIN;
+		else
+			ErrorMenu.Instance.setErrorMsg(res);
 	}
 	
 #endregion

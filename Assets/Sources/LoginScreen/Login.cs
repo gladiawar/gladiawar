@@ -25,6 +25,8 @@ public class 				Login : MonoBehaviour
 	{
 		if (code == SDNet.ReturnCode.OK)
 			_panel.GetComponent<PanelLogin>().State = PanelLogin.ePanelLoginState.CHARA;
+		else
+			ErrorMenu.Instance.setErrorMsg(res);
 	}
 #endregion
 }

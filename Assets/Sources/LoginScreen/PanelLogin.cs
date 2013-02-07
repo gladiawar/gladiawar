@@ -33,6 +33,7 @@ public class 				PanelLogin : MonoBehaviour
 		set
 		{
 			_state = value;
+			ErrorMenu.Instance.reset();
 			majPanel();
 		}
 	}
