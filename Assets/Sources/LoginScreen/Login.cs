@@ -25,8 +25,8 @@ public class 				Login : MonoBehaviour
 	{
 		if (code == SDNet.ReturnCode.OK)
 			_panel.GetComponent<PanelLogin>().State = PanelLogin.ePanelLoginState.CHARA;
-		else
-			ErrorMenu.Instance.setErrorMsg(res);
+		else if (res.Length == 39)
+			ErrorMenu.Instance.setErrorMsg("Email or password invalid");
 	}
 #endregion
 }

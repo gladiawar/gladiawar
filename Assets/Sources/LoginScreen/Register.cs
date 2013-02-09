@@ -24,6 +24,8 @@ public class 				Register : MonoBehaviour
 	{
 		if (_mdpInput.GetComponent<UIInput>().text.Equals(_mdp2Input.GetComponent<UIInput>().text))
 			StartCoroutine(SDNet.Instance.Register(OnRegister, _emailInput.GetComponent<UIInput>().text, _mdpInput.GetComponent<UIInput>().text, _emailInput.GetComponent<UIInput>().text.Substring(0, 5)));
+		else
+			ErrorMenu.Instance.setErrorMsg("Error: passwords input doesn't contain the same password");
 	}
 	
 	private void			OnRegister(SDNet.ReturnCode code, string res)
