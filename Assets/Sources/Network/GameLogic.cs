@@ -9,7 +9,7 @@ public class GameLogic : MonoBehaviour
 	public int maxPlayers;
 	public Transform lambdaPlayerPrefab;
 	private bool activeConnection = false;
-	private GUIStyle guiStyle;
+	
 	
 	// Use this for initialization
 	void Start ()
@@ -20,7 +20,8 @@ public class GameLogic : MonoBehaviour
 	void Update ()
 	{	
 	}
-	
+
+	private GUIStyle guiStyle;
 	void OnGUI ()
 	{
 		guiStyle = GUI.skin.label;
