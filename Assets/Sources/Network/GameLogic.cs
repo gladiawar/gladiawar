@@ -9,6 +9,7 @@ public class GameLogic : MonoBehaviour
 	public int maxPlayers;
 	public Transform lambdaPlayerPrefab;
 	private bool activeConnection = false;
+	private GUIStyle guiStyle;
 	
 	// Use this for initialization
 	void Start ()
@@ -22,24 +23,35 @@ public class GameLogic : MonoBehaviour
 	
 	void OnGUI ()
 	{
+		guiStyle = GUI.skin.label;
+		guiStyle.alignment = TextAnchor.MiddleCenter;
+		
+		GUILayout.BeginVertical(GUILayout.Width(200));
 		if (!activeConnection)
 		{
-			if (GUI.Button(new Rect (10, 10, 200, 30), "Create : " + port))
+			if (GUILayout.Button("Create : " + port, GUILayout.Height(34)))
 			{
 				if (Network.InitializeServer (maxPlayers, port, useNat) != NetworkConnectionError.NoError) 
 					Debug.LogError ("Unable to create server");
 			}
-			else if (GUI.Button(new Rect (10, 50, 200, 30), "Connect : " + ip + ";" + port))
+			if (GUILayout.Button("Connect to " + ip + ":" + port, GUILayout.Height(34)))
 			{
 				if (Network.Connect(ip, port) != NetworkConnectionError.NoError)
 					Debug.LogError ("Unable to connect to server");
 			}
+			GUILayout.BeginHorizontal(GUILayout.Height(34));
+			GUILayout.Label(" Adresse : ", guiStyle);
+			ip = GUILayout.TextField(ip, guiStyle);
+			GUILayout.EndHorizontal();
 		}
 		else
 		{
-			if (GUI.Button (new Rect (10, 10, 200, 30), "Disconnect"))
+			GUILayout.BeginVertical(GUILayout.Width(200));
+			if (GUILayout.Button ("Disconnect", GUILayout.Height(34)))
 				Network.Disconnect ();
+			GUILayout.EndVertical();
 		}
+		GUILayout.EndVertical();
 	}
 	
 	// Network callbacks

@@ -9,7 +9,7 @@ public class PlayerInstantiation : MonoBehaviour
 		if (networkView.isMine) {
 			name = "Local " + name;
 			GetComponent<CharacterController> ().enabled = true;
-			GetComponent<CharacterMotor> ().enabled = true;
+			GetComponent<CharacterMotor> ().canControl = true;
 			GetComponent<FPSInputController> ().enabled = true;
 			GetComponent<SimpleAttack>().enabled = true;
 			GetComponentInChildren<Camera> ().enabled = true;
