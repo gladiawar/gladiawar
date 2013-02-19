@@ -47,10 +47,10 @@ public class GameLogic : MonoBehaviour
 		}
 		else
 		{
-			GUILayout.BeginVertical(GUILayout.Width(200));
+			GUILayout.BeginHorizontal(GUILayout.Width(200));
 			if (GUILayout.Button ("Disconnect", GUILayout.Height(34)))
 				Network.Disconnect ();
-			GUILayout.EndVertical();
+			GUILayout.EndHorizontal();
 		}
 		GUILayout.EndVertical();
 	}
