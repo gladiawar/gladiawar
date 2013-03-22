@@ -25,13 +25,17 @@ public class MasterServerHandler : MonoBehaviour
 	private string	serverIp = "127.0.0.1";
 	private HostData[]	hostList;
 	
+	public GameObject	PanelServerList;
+	
 	// Use this for initialization
 	void	Start () 
-	{
+	{		
 		MasterServer.ipAddress = ipMasterServer;
 		MasterServer.port = 23466;
 		MasterServer.ClearHostList();
 		MasterServer.RequestHostList(gameName);
+		
+		PanelServerList.SetActive(false);
 	}
 	
 	private bool	IsConnected()
@@ -60,26 +64,44 @@ public class MasterServerHandler : MonoBehaviour
 		serverPasswd = pwd;
 	}
 	
+	void	ConnectToServer(string ip, int port)
+	{
+		Network.Connect(ip, port);
+		// Todo
+	}
+	
 	void	OnClickConnect()
 	{
+		ConnectToServer(serverIp, gamePort);
+	}
+	
+	private void SearchGames()
+	{
+		MasterServer.RequestHostList(gameName);
+		hostList = MasterServer.PollHostList();
 	}
 	
 	void	OnClickSearchForGame()
 	{
-		MasterServer.RequestHostList(gameName);
-		hostList = MasterServer.PollHostList();
+		PanelServerList.SetActive(true);
+		UITextList	printZone = PanelServerList.transform.Find("Label").GetComponent<UITextList>();
+		SearchGames();
 		
-		if (hostList.Length > 0)
+		printZone.Clear();
+		foreach (HostData hd in hostList)
 		{
-			foreach (HostData hd in hostList)
-			{
-				//TODO : afficher ça grâce à NGUI
-				Debug.Log("Game name : " + hd.gameName);
-			}
+			string	text;
+			
+			text = "[00FF00]" + hd.gameName + "[-] ";
+			text += hd.connectedPlayers + "/" + hd.playerLimit;
+			text += " [";
+			foreach (string c in hd.ip)
+				text += c;
+			text += "]";
+			
+			// Missing : Le bouton connect
+			printZone.Add(text);
 		}
-		else
-			//TODO : afficher ça grâce à NGUI
-			Debug.Log("No game");
 	}
 	
 	// Ne fonctionne pas correctement !
@@ -88,9 +110,16 @@ public class MasterServerHandler : MonoBehaviour
 		if (serverPasswd.Length > 0)
 			Network.incomingPassword = serverPasswd;
 		
-		Network.InitializeServer(maxPlayers, gamePort, useNAT);
-		MasterServer.RegisterHost(gameName, serverName);
-		Application.LoadLevel("Multi");
-		// De l'autre coté, gérer le bordel avec "OnLevelWasLoaded"
+		if (Network.InitializeServer(maxPlayers, gamePort, useNAT) == NetworkConnectionError.NoError)
+		{
+			MasterServer.RegisterHost(gameName, serverName);
+			Application.LoadLevel("Multi");
+			// De l'autre coté, gérer le bordel avec "OnLevelWasLoaded"
+		}
+		else
+		{
+			Debug.LogError("Impossible de creer le server");
+			// Gérer l'affichage des erreurs
+		}
 	}
 }
