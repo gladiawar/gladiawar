@@ -6,8 +6,7 @@ DefaultGroupName=Gladiawars
 Compression=lzma2
 SolidCompression=yes
 OutputDir=Inno Output
-UninstallDisplayName=Uninstall Gladiawars
-SetupIconFile=Logo.bmp
+;SetupIconFile=Logo.bmp
 
 [Files]
 Source: "Gladiawars.exe";     DestDir: "{app}"
