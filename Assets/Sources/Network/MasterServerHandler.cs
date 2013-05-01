@@ -21,7 +21,7 @@ public class MasterServerHandler : MonoBehaviour
 	public bool		useNAT = true;
 	
 	private string	serverName = "GWA_defaultName";
-	private string	serverPasswd = "GWA_defaultPasswd"; // ?
+	private string	serverPasswd = "";
 	private string	serverIp = "127.0.0.1";
 	private HostData[]	hostList;
 	
@@ -64,10 +64,17 @@ public class MasterServerHandler : MonoBehaviour
 		serverPasswd = pwd;
 	}
 	
+	// Todo
 	void	ConnectToServer(string ip, int port)
 	{
-		Network.Connect(ip, port);
-		// Todo
+		if (Network.Connect(ip, port) == NetworkConnectionError.NoError)
+		{
+			LoadLevel();
+		}
+		else
+		{
+			Debug.LogError("Error while Connecting to server : " + ip + "/" + gamePort);
+		}
 	}
 	
 	void	OnClickConnect()
@@ -113,7 +120,7 @@ public class MasterServerHandler : MonoBehaviour
 		if (Network.InitializeServer(maxPlayers, gamePort, useNAT) == NetworkConnectionError.NoError)
 		{
 			MasterServer.RegisterHost(gameName, serverName);
-			Application.LoadLevel("Multi");
+			LoadLevel();
 			// De l'autre coté, gérer le bordel avec "OnLevelWasLoaded"
 		}
 		else
@@ -121,5 +128,10 @@ public class MasterServerHandler : MonoBehaviour
 			Debug.LogError("Impossible de creer le server");
 			// Gérer l'affichage des erreurs
 		}
+	}
+	
+	private	void LoadLevel()
+	{
+		Application.LoadLevel("Multi");
 	}
 }

@@ -32,7 +32,7 @@ public class ShowPlayerLife : MonoBehaviour
 			DrawLifeForPlayer(pl, i);
 			i++;
 		}
-		GUI.EndGroup();		
+		GUI.EndGroup();
 	}
 	
 	void	DrawLifeForPlayer(PlayerStat pl, int number)
