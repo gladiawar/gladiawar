@@ -25,7 +25,9 @@ public class MasterServerHandler : MonoBehaviour
 	private string	serverIp = "127.0.0.1";
 	private HostData[]	hostList;
 	
-	public GameObject	PanelServerList;
+	// Pour gérer le second panel
+	public 	GameObject	PanelServerList;
+	public	GameObject	PanelServerList_reference;
 	
 	// Use this for initialization
 	void	Start () 
@@ -34,8 +36,8 @@ public class MasterServerHandler : MonoBehaviour
 		MasterServer.port = 23466;
 		MasterServer.ClearHostList();
 		MasterServer.RequestHostList(gameName);
-		
-		PanelServerList.SetActive(false);
+
+		//PanelServerList.SetActive(false);
 	}
 	
 	private bool	IsConnected()
@@ -70,6 +72,7 @@ public class MasterServerHandler : MonoBehaviour
 		if (Network.Connect(ip, port) == NetworkConnectionError.NoError)
 		{
 			LoadLevel();
+			// Ne marche pas
 		}
 		else
 		{
@@ -88,26 +91,50 @@ public class MasterServerHandler : MonoBehaviour
 		hostList = MasterServer.PollHostList();
 	}
 	
+	private UILabel GetNewUILabel(GameObject Parent)
+	{
+		Transform	refT = PanelServerList_reference.transform;
+		GameObject 	go = (GameObject)UILabel.Instantiate(	PanelServerList_reference, 
+															new Vector3(refT.position.x, refT.position.y, refT.position.z), 
+															new Quaternion(0, 0, 0, 0));
+		go.transform.parent = Parent.transform;
+		go.transform.localScale = refT.localScale;
+		go.SetActive(true);
+		return (go.GetComponent<UILabel>());
+	}
+	
+	private void DeleteChildren(string name)
+	{
+		Transform tf;
+		
+		while ((tf = PanelServerList.transform.FindChild(name)) != null)
+		{
+			tf.parent = null;
+			Destroy(tf.gameObject);
+		}
+	}
+	
 	void	OnClickSearchForGame()
 	{
 		PanelServerList.SetActive(true);
-		UITextList	printZone = PanelServerList.transform.Find("Label").GetComponent<UITextList>();
 		SearchGames();
-		
-		printZone.Clear();
+		DeleteChildren("LabelGame");
+
+		int nbServer = 0;
 		foreach (HostData hd in hostList)
 		{
-			string	text;
-			
-			text = "[00FF00]" + hd.gameName + "[-] ";
-			text += hd.connectedPlayers + "/" + hd.playerLimit;
-			text += " [";
-			foreach (string c in hd.ip)
-				text += c;
+			UILabel label = this.GetNewUILabel(PanelServerList);
+			label.transform.position -= new Vector3(0, (float)nbServer / 16f, 0);	// Allez savoir pourquoi 16 ....
+			label.name = "LabelGame";
+			string	text = "[00FF00]" + hd.gameName + "[-] " + hd.connectedPlayers + "/" + hd.playerLimit + " [";
+//			foreach (string c in hd.ip) // Plusieurs addresses (valides ?)
+//			{
+				text += hd.ip.GetValue(0);
+//			}
 			text += "]";
-			
-			// Missing : Le bouton connect
-			printZone.Add(text);
+			label.text = text;
+
+			nbServer++;
 		}
 	}
 	
