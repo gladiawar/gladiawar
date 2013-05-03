@@ -27,7 +27,7 @@ public class MasterServerHandler : MonoBehaviour
 	
 	// Pour gérer le second panel
 	public 	GameObject	PanelServerList;
-	public	GameObject	PanelServerList_reference;
+	public	GameObject	UIButton_reference;
 	
 	// Use this for initialization
 	void	Start () 
@@ -91,16 +91,16 @@ public class MasterServerHandler : MonoBehaviour
 		hostList = MasterServer.PollHostList();
 	}
 	
-	private UILabel GetNewUILabel(GameObject Parent)
+	private UILabel GetNewUIButtonLabel(GameObject Parent)
 	{
-		Transform	refT = PanelServerList_reference.transform;
-		GameObject 	go = (GameObject)UILabel.Instantiate(	PanelServerList_reference, 
+		Transform	refT = UIButton_reference.transform;
+		GameObject 	go = (GameObject)UILabel.Instantiate(	UIButton_reference, 
 															new Vector3(refT.position.x, refT.position.y, refT.position.z), 
 															new Quaternion(0, 0, 0, 0));
 		go.transform.parent = Parent.transform;
 		go.transform.localScale = refT.localScale;
 		go.SetActive(true);
-		return (go.GetComponent<UILabel>());
+		return (go.GetComponentInChildren<UILabel>());
 	}
 	
 	private void DeleteChildren(string name)
@@ -123,7 +123,7 @@ public class MasterServerHandler : MonoBehaviour
 		int nbServer = 0;
 		foreach (HostData hd in hostList)
 		{
-			UILabel label = this.GetNewUILabel(PanelServerList);
+			UILabel label = this.GetNewUIButtonLabel(PanelServerList);
 			label.transform.position -= new Vector3(0, (float)nbServer / 16f, 0);	// Allez savoir pourquoi 16 ....
 			label.name = "LabelGame";
 			string	text = "[00FF00]" + hd.gameName + "[-] " + hd.connectedPlayers + "/" + hd.playerLimit + " [";
