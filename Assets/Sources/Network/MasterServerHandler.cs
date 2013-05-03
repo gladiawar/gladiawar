@@ -69,8 +69,10 @@ public class MasterServerHandler : MonoBehaviour
 	// Todo
 	void	ConnectToServer(string ip, int port)
 	{
-		if (Network.Connect(ip, port) == NetworkConnectionError.NoError)
+		NetworkConnectionError	value = Network.Connect(ip, port);
+		if (value == NetworkConnectionError.NoError)
 		{
+			Debug.Log("Erreur : " + value.ToString());
 			LoadLevel();
 			// Ne marche pas
 		}

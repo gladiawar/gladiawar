@@ -12,7 +12,10 @@ public class GameLogic : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		Network.Instantiate (lambdaPlayerPrefab, new Vector3 (0, 1, 0), new Quaternion (0, 0, 0, 0), 0);
+		Object obj = Network.Instantiate (lambdaPlayerPrefab, new Vector3 (0, 1, 0), new Quaternion (0, 0, 0, 0), 0);
+		
+		if (obj == null)
+			this.transform.FindChild("DefaultCamera").gameObject.SetActive(true);
 	}
 	
 	// Update is called once per frame
