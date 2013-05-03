@@ -17,8 +17,6 @@ public class MasterServerHandler : MonoBehaviour
 		MasterServer.port = data.masterServerPort;
 		MasterServer.ClearHostList();
 		MasterServer.RequestHostList(data.gameType);
-
-		//PanelServerList.SetActive(false);
 	}
 	
 	private bool	IsConnected()
@@ -125,6 +123,6 @@ public class MasterServerHandler : MonoBehaviour
 	
 	private	void LoadLevel()
 	{
-		Application.LoadLevel("Multi");
+		Application.LoadLevel("Game");
 	}
 }
