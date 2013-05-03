@@ -3,39 +3,20 @@ using System.Collections;
 
 public class MasterServerHandler : MonoBehaviour 
 {
-	/*
-	 * Au cas ou l'on voudrait changer les paramètres de configuration 
-	 */
-	public string	ipMasterServer = "10.224.9.214";
-	public int		gamePort = 25000;
-	public int		maxPlayers = 32;
-	
-	/*
-	 * Type de la partie en fait : Ne liste que les parties de ce type. 
-	 */
-	public string	gameName = "GladiaWarArena";
-	
-	/*
-	 * Aura besoin d'un bouton plus tard, peut être. 
-	 */
-	public bool		useNAT = true;
-	
-	private string	serverName = "GWA_defaultName";
-	private string	serverPasswd = "";
-	private string	serverIp = "127.0.0.1";
 	private HostData[]	hostList;
 	
 	// Pour gérer le second panel
-	public 	GameObject	PanelServerList;
-	public	GameObject	UIButton_reference;
+	public	ListePartie_Data	data;
+	public 	GameObject			PanelServerList;
+	public	GameObject			UIButton_reference;
 	
 	// Use this for initialization
 	void	Start () 
 	{		
-		MasterServer.ipAddress = ipMasterServer;
-		MasterServer.port = 23466;
+		MasterServer.ipAddress = data.masterServerIp;
+		MasterServer.port = data.masterServerPort;
 		MasterServer.ClearHostList();
-		MasterServer.RequestHostList(gameName);
+		MasterServer.RequestHostList(data.gameType);
 
 		//PanelServerList.SetActive(false);
 	}
@@ -46,24 +27,6 @@ public class MasterServerHandler : MonoBehaviour
 			return (false);
 		else
 			return (true);
-	}
-	
-	/*
-	 * Fonctions liées à une interface
-	 */
-	void	OnSubmitIp(string ip)
-	{
-		serverIp = ip;
-	}
-	
-	void	OnSubmitName(string name)
-	{
-		serverName = name;
-	}
-	
-	void	OnSubmitPwd(string pwd)
-	{
-		serverPasswd = pwd;
 	}
 	
 	// Todo
@@ -78,18 +41,18 @@ public class MasterServerHandler : MonoBehaviour
 		}
 		else
 		{
-			Debug.LogError("Error while Connecting to server : " + ip + "/" + gamePort);
+			Debug.LogError("Error while Connecting to server : " + data.gameIp + "/" + data.gamePort);
 		}
 	}
 	
 	void	OnClickConnect()
 	{
-		ConnectToServer(serverIp, gamePort);
+		ConnectToServer(data.gameIp, data.gamePort);
 	}
 	
 	private void SearchGames()
 	{
-		MasterServer.RequestHostList(gameName);
+		MasterServer.RequestHostList(data.gameType);
 		hostList = MasterServer.PollHostList();
 	}
 	
@@ -127,12 +90,13 @@ public class MasterServerHandler : MonoBehaviour
 		{
 			UILabel label = this.GetNewUIButtonLabel(PanelServerList);
 			label.transform.position -= new Vector3(0, (float)nbServer / 16f, 0);	// Allez savoir pourquoi 16 ....
-			label.name = "LabelGame";
+			label.transform.parent.name = "LabelGame";
 			string	text = "[00FF00]" + hd.gameName + "[-] " + hd.connectedPlayers + "/" + hd.playerLimit + " [";
-//			foreach (string c in hd.ip) // Plusieurs addresses (valides ?)
-//			{
-				text += hd.ip.GetValue(0);
-//			}
+			// hd = string[]
+			
+			string ip = (string)(hd.ip.GetValue(0));
+			text += ip;
+			label.transform.parent.GetComponent<OnClickJoinGame>().gameIp = ip;
 			text += "]";
 			label.text = text;
 
@@ -143,12 +107,12 @@ public class MasterServerHandler : MonoBehaviour
 	// Ne fonctionne pas correctement !
 	void	OnClickStartServer()
 	{
-		if (serverPasswd.Length > 0)
-			Network.incomingPassword = serverPasswd;
+		if (data.gamePassword.Length > 0)
+			Network.incomingPassword = data.gamePassword;
 		
-		if (Network.InitializeServer(maxPlayers, gamePort, useNAT) == NetworkConnectionError.NoError)
+		if (Network.InitializeServer(data.gameMaxPlayers, data.gamePort, data.useNat) == NetworkConnectionError.NoError)
 		{
-			MasterServer.RegisterHost(gameName, serverName);
+			MasterServer.RegisterHost(data.gameType, data.gameName);
 			LoadLevel();
 			// De l'autre coté, gérer le bordel avec "OnLevelWasLoaded"
 		}
