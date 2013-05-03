@@ -8,12 +8,13 @@
 # IDE Solution Files #
 ######################
 *.pidb
-*.sln
 *.csproj
 *.unityproj
 *.suo
 *svn*
 obj
+gladiawar-csharp.sln
+gladiawar.sln
 
 # OS generated files #
 ######################
