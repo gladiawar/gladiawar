@@ -15,7 +15,7 @@ public class GamesManager : MonoBehaviour
 	// Pour cloner un Button (de référence) facilement
 	public	GameObject			UIButtonToClone;
 	
-	public	UITextList			ErrorChat;
+	public	UITextList			MessageBox;
 	
 	void	Start () 
 	{		
@@ -25,25 +25,35 @@ public class GamesManager : MonoBehaviour
 		MasterServer.RequestHostList(data.gameType);
 	}
 	
-	// TODO: Gérer la connection à la partie distante (Connection + Changement de level)
-	void	ConnectToServer(string ip, int port)
+	void	OnClickConnectGame()
 	{
-		NetworkConnectionError	value = Network.Connect(ip, port);
-		if (value == NetworkConnectionError.NoError)
+		// Connect retourne tout de suite (Généralement pas d'erreur), et
+		// envoie la réponse plus tard, sous forme de (Unity)messages.
+		NetworkConnectionError netError = Network.Connect(data.gameIp, data.gamePort, data.gamePassword);
+		
+		// TODO: Network accept des string[], changer ça puisque l'on peut en récuper dans hd.ip[] (voir doc)
+		if (netError != NetworkConnectionError.NoError)
 		{
-			Debug.Log("Erreur : " + value.ToString());
-			LoadLevel();
-			// Ne marche pas
+			LogError("Connection Error : " + netError.ToString());
 		}
 		else
 		{
-			Debug.LogError("Error while Connecting to server : " + data.gameIp + "/" + data.gamePort);
+			Log("Tentative de connection au server : " + data.gameIp + "/" + data.gamePort + " ...");
 		}
+
 	}
 	
-	void	OnClickConnect()
+	// Message
+	void 	OnFailedToConnect(NetworkConnectionError error)
 	{
-		ConnectToServer(data.gameIp, data.gamePort);
+		LogError("Impossible de se connecter au serveur " + data.gameIp + " ; " + error.ToString());
+	}
+	
+	// Message
+	// TODO: Le résultat est très drôle si on l'est pas sur la même map. Il faut corriger ça
+	void	OnConnectedToServer()
+	{
+		Log("Connection reussie.");
 	}
 	
 	private void SearchGames()
@@ -52,6 +62,7 @@ public class GamesManager : MonoBehaviour
 		hostList = MasterServer.PollHostList();
 	}
 	
+	// TODO: C'est utilise l'argument ?
 	private UILabel GetNewUIButtonLabel(GameObject Parent)
 	{
 		Transform	refT = UIButtonToClone.transform;
@@ -60,6 +71,7 @@ public class GamesManager : MonoBehaviour
 															new Quaternion(0, 0, 0, 0));
 		go.transform.parent = Parent.transform;
 		go.transform.localScale = refT.localScale;
+		go.name = "LabelGame";
 		go.SetActive(true);
 		return (go.GetComponentInChildren<UILabel>());
 	}
@@ -88,17 +100,22 @@ public class GamesManager : MonoBehaviour
 			// TODO: Changer le "depth" pour chaque nouveau label
 			UILabel label = this.GetNewUIButtonLabel(PanelServerList);
 			label.transform.parent.position -= new Vector3(0, (float)nbServer / 14f, 0);	// Allez savoir pourquoi 16 ....
-			label.transform.parent.name = "LabelGame";
 			string	text = "[00FF00]" + hd.gameName + "[-] " + hd.connectedPlayers + "/" + hd.playerLimit + " [";
 			// hd est un string[]
 			
 			string ip = (string)(hd.ip.GetValue(0));
-			text += ip;
+			text += ip + "]";
 			label.transform.parent.GetComponent<OnClickJoinGame>().gameIp = ip;
-			text += "]";
 			label.text = text;
-
 			nbServer++;
+		}
+		
+		if (nbServer == 0)
+		{
+			UILabel label = this.GetNewUIButtonLabel(PanelServerList);
+			label.transform.parent.GetComponent<OnClickJoinGame>().gameIp = "127.0.0.1";
+			label.text = "No one like you ...";
+			label.color = Color.cyan;
 		}
 	}
 	
@@ -109,13 +126,16 @@ public class GamesManager : MonoBehaviour
 		if (data.gamePassword.Length > 0)
 			Network.incomingPassword = data.gamePassword;
 		if (data.gameName.Length == 0)
+		{
+			LogWarning("Impossible de creer une partie sans nom.");
 			return;
+		}
 		
 		if (Network.InitializeServer(data.gameMaxPlayers, data.gamePort, data.useNat) == NetworkConnectionError.NoError)
 		{
 			MasterServer.RegisterHost(data.gameType, data.gameName);
 			LoadLevel();
-			// De l'autre coté, gérer le bordel avec "OnLevelWasLoaded"
+			// TODO: De l'autre coté, gérer le bordel avec "OnLevelWasLoaded"
 		}
 		else
 		{
@@ -127,17 +147,21 @@ public class GamesManager : MonoBehaviour
 	{
 		Application.LoadLevel("Game");
 	}
-	
-	// TODO: Changer le nom du Chat
+
 	private void LogError(string msg)
 	{
-		ErrorChat.Add("[FF3838]" + msg + "[-]");
+		MessageBox.Add("[FF3838]" + msg + "[-]"); // Rouge
 		Debug.LogError(msg);
 	}
 	
 	private void LogWarning(string msg)
 	{
-		ErrorChat.Add("[E17417]" + msg + "[-]");
+		MessageBox.Add("[E17417]" + msg + "[-]"); // Orange
 		Debug.Log(msg);
+	}
+	
+	private void Log(string msg)
+	{
+		MessageBox.Add("[44F058]" + msg + "[-]"); // Vert
 	}
 }
