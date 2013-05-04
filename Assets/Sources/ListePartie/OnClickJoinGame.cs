@@ -25,6 +25,6 @@ public class OnClickJoinGame : MonoBehaviour
 		
 		UILabel label = GameObject.Find("InputIP").GetComponentInChildren<UILabel>();
 		label.text = data.gameIp;
-		label.color = Color.red;
+		label.color = Color.cyan;
 	}
 }

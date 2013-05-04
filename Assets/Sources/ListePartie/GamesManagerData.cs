@@ -12,7 +12,7 @@ public class GamesManagerData : MonoBehaviour
 	public int		gameMaxPlayers = 32;
 	
 	// Le nom de la partie
-	public string	gameName = "Gladia tictac";
+	public string	gameName = "TicTacWars";
 	
 	// Mot de passe utilisée par la partie
 	public string	gamePassword = "";
@@ -21,7 +21,7 @@ public class GamesManagerData : MonoBehaviour
 	public bool		useNat = true;
 	
 	// L'adresse et le port du MasterServer (Celui qui liste les parties)
-	public string	masterServerIp = "10.224.9.214";
+	public string	masterServerIp = Hosts.MasterServerIp;
 	public int 		masterServerPort = 23466;
 
 	// Le type de partie (utilisée par le MasterServer)

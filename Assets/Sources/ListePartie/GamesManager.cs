@@ -12,8 +12,8 @@ public class GamesManager : MonoBehaviour
 	// Pour gérer le second panel
 	public 	GameObject			PanelServerList;
 	
-	// Pour le cloner facilement
-	private	GameObject			UIButton_reference;
+	// Pour cloner un Button (de référence) facilement
+	public	GameObject			UIButtonToClone;
 	
 	// Use this for initialization
 	void	Start () 
@@ -22,16 +22,6 @@ public class GamesManager : MonoBehaviour
 		MasterServer.port = data.masterServerPort;
 		MasterServer.ClearHostList();
 		MasterServer.RequestHostList(data.gameType);
-		
-		UIButton_reference = GameObject.Find("ButtonReference");
-	}
-	
-	private bool	IsConnected()
-	{
-		if (Network.peerType == NetworkPeerType.Disconnected)
-			return (false);
-		else
-			return (true);
 	}
 	
 	// TODO: Gérer la connection à la partie distante (Connection + Changement de level)
@@ -63,8 +53,8 @@ public class GamesManager : MonoBehaviour
 	
 	private UILabel GetNewUIButtonLabel(GameObject Parent)
 	{
-		Transform	refT = UIButton_reference.transform;
-		GameObject 	go = (GameObject)UILabel.Instantiate(	UIButton_reference, 
+		Transform	refT = UIButtonToClone.transform;
+		GameObject 	go = (GameObject)UILabel.Instantiate(	UIButtonToClone, 
 															new Vector3(refT.position.x, refT.position.y, refT.position.z), 
 															new Quaternion(0, 0, 0, 0));
 		go.transform.parent = Parent.transform;
@@ -73,7 +63,7 @@ public class GamesManager : MonoBehaviour
 		return (go.GetComponentInChildren<UILabel>());
 	}
 	
-	private void DeleteChildren(string name)
+	private void DeletePanelserverChildren(string name)
 	{
 		Transform tf;
 		
@@ -88,16 +78,17 @@ public class GamesManager : MonoBehaviour
 	{
 		PanelServerList.SetActive(true);
 		SearchGames();
-		DeleteChildren("LabelGame");
-
+		DeletePanelserverChildren("LabelGame");
+		PanelServerList.transform.FindChild("LabelLastUpdate").GetComponent<UILabel>().text = "Last update : " + (System.DateTime.Now);
+		
 		int nbServer = 0;
 		foreach (HostData hd in hostList)
 		{
 			UILabel label = this.GetNewUIButtonLabel(PanelServerList);
-			label.transform.position -= new Vector3(0, (float)nbServer / 16f, 0);	// Allez savoir pourquoi 16 ....
+			label.transform.parent.position -= new Vector3(0, (float)nbServer / 14f, 0);	// Allez savoir pourquoi 16 ....
 			label.transform.parent.name = "LabelGame";
 			string	text = "[00FF00]" + hd.gameName + "[-] " + hd.connectedPlayers + "/" + hd.playerLimit + " [";
-			// hd = string[]
+			// hd est un string[]
 			
 			string ip = (string)(hd.ip.GetValue(0));
 			text += ip;

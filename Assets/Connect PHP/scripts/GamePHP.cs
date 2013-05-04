@@ -17,15 +17,15 @@ public class GamePHP
 	public GamePHP[] a = new GamePHP[2];
 	
 	// main url of the game server (change this to what it should be on your setup, but keep the /url.php part)
-	public static string MasterUrl = "http://webservice.gladiawar.com/url.php";
-	//public static string MasterUrl = "http://localhost/sdgame_plain_php/url.php";
+	public static string MasterUrl = Hosts.ServicesAddr + "/url.php";
+	//public static string MasterUrl = "http://webservice.gladiawar.com/url.php";
 
 	#endregion
 	// ----------------------------------------------------------------------------------------------------------------
 	#region public
 
-	public string MainUrl = "http://webservice.gladiawar.com/main/";		//"/main/"	management script url - handle things like accounts and friends lists
-	public string GameUrl = "http://webservice.gladiawar.com/game/";		//"/game/"	game main handlers script url - handle game session
+	public string MainUrl = Hosts.ServicesAddr + "/main/";		//"/main/"	management script url - handle things like accounts and friends lists
+	public string GameUrl = Hosts.ServicesAddr + "/game/";		//"/game/"	game main handlers script url - handle game session
 
 	// Player Profile
 	public string nm = "";			// login name
