@@ -252,7 +252,7 @@ public class UIFontInspector : Editor
 
 						if (mUseShader && mView == View.Font)
 						{
-							// TODO: Remove this when Unity fixes the bug with DrawPreviewTexture not being affected by BeginGroup
+							// Remove this when Unity fixes the bug with DrawPreviewTexture not being affected by BeginGroup
 							Debug.LogWarning("There is a bug in Unity that prevents the texture from getting clipped properly.\n" +
 								"Until it's fixed by Unity, your texture may spill onto the rest of the Unity's GUI while using this mode.");
 						}

@@ -113,7 +113,7 @@ public class NGUIJson
 
 			if (spriteSize != null && sourceSize != null)
 			{
-				// TODO: Account for rotated sprites
+				// Account for rotated sprites
 				if (frameW > 0)
 				{
 					float spriteX = int.Parse(spriteSize["x"].ToString());
