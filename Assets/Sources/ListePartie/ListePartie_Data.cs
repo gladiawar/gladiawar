@@ -51,4 +51,9 @@ public class ListePartie_Data : MonoBehaviour
 	{
 		gamePassword = newGamePassword;
 	}
+	
+	public void PrintADebug()
+	{
+		Debug.Log("Print A Debug !");
+	}
 }

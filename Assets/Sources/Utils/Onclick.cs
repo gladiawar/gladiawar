@@ -4,7 +4,7 @@ using System.Collections;
 public class Onclick : MonoBehaviour 
 {
 	public GameObject 	target;
-	public string		functionName = "OnClick";
+	public string		functionName;
 	
 	void	OnClick()
 	{
