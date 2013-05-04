@@ -15,7 +15,8 @@ public class GamesManager : MonoBehaviour
 	// Pour cloner un Button (de référence) facilement
 	public	GameObject			UIButtonToClone;
 	
-	// Use this for initialization
+	public	UITextList			ErrorChat;
+	
 	void	Start () 
 	{		
 		MasterServer.ipAddress = data.masterServerIp;
@@ -84,6 +85,7 @@ public class GamesManager : MonoBehaviour
 		int nbServer = 0;
 		foreach (HostData hd in hostList)
 		{
+			// TODO: Changer le "depth" pour chaque nouveau label
 			UILabel label = this.GetNewUIButtonLabel(PanelServerList);
 			label.transform.parent.position -= new Vector3(0, (float)nbServer / 14f, 0);	// Allez savoir pourquoi 16 ....
 			label.transform.parent.name = "LabelGame";
@@ -106,6 +108,8 @@ public class GamesManager : MonoBehaviour
 	{
 		if (data.gamePassword.Length > 0)
 			Network.incomingPassword = data.gamePassword;
+		if (data.gameName.Length == 0)
+			return;
 		
 		if (Network.InitializeServer(data.gameMaxPlayers, data.gamePort, data.useNat) == NetworkConnectionError.NoError)
 		{
@@ -115,13 +119,25 @@ public class GamesManager : MonoBehaviour
 		}
 		else
 		{
-			Debug.LogError("Impossible de creer le server");
-			// Gérer l'affichage des erreurs
+			LogError("Impossible de creer une nouvelle partie.");
 		}
 	}
 	
 	private	void LoadLevel()
 	{
 		Application.LoadLevel("Game");
+	}
+	
+	// TODO: Changer le nom du Chat
+	private void LogError(string msg)
+	{
+		ErrorChat.Add("[FF3838]" + msg + "[-]");
+		Debug.LogError(msg);
+	}
+	
+	private void LogWarning(string msg)
+	{
+		ErrorChat.Add("[E17417]" + msg + "[-]");
+		Debug.Log(msg);
 	}
 }
