@@ -4,10 +4,10 @@ using System.Collections;
 public class GamesManager : MonoBehaviour 
 {
 	// Les données de cette scène
-	public	ListePartie_Data	data;
+	public	GamesManagerData	data;
 	
 	// Pour rafraichir facilement la liste des autres parties
-	private HostData[]	hostList;
+	private HostData[]			hostList;
 	
 	// Pour gérer le second panel
 	public 	GameObject			PanelServerList;

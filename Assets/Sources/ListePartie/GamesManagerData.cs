@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class ListePartie_Data : MonoBehaviour 
+public class GamesManagerData : MonoBehaviour 
 {
 	
 	// L'adresse du serveur distant et son port

@@ -3,10 +3,10 @@ using System.Collections;
 
 public class OnClickJoinGame : MonoBehaviour 
 {
-	public ListePartie_Data	data;
+	public GamesManagerData	data;
 	
-	public string	gameIp;
-	public int 	gamePort = 25000;
+	public string			gameIp;
+	public int 				gamePort = 25000;
 	
 	// Use this for initialization
 	void Start () 
