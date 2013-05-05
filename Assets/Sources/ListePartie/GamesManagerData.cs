@@ -21,8 +21,8 @@ public class GamesManagerData : MonoBehaviour
 	public bool		useNat = true;
 	
 	// L'adresse et le port du MasterServer (Celui qui liste les parties)
-	public string	masterServerIp = Hosts.MasterServerIp;
-	public int 		masterServerPort = 23466;
+	[HideInInspector] public string	masterServerIp;
+	[HideInInspector] public int 	masterServerPort;
 
 	// Le type de partie (utilisée par le MasterServer)
 	public string	gameType = "GladiaWarArena_Game";
@@ -30,6 +30,8 @@ public class GamesManagerData : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+		this.masterServerIp = Hosts.MasterServerIp;
+		this.masterServerPort = 23466;
 	}
 	
 	// Update is called once per frame

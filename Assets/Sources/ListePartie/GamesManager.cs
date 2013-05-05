@@ -6,16 +6,16 @@ public class GamesManager : MonoBehaviour
 	// Les données de cette scène
 	public	GamesManagerData	data;
 	
-	// Pour rafraichir facilement la liste des autres parties
-	private HostData[]			hostList;
-	
 	// Pour gérer le second panel
 	public 	GameObject			PanelServerList;
-	
+
 	// Pour cloner un Button (de référence) facilement
 	public	GameObject			UIButtonToClone;
 	
+	// Le chat du bas, pour afficher des messages facilement
 	public	UITextList			MessageBox;
+	
+	private string 				NextLevelName = "Game";
 	
 	void	Start () 
 	{		
@@ -38,44 +38,58 @@ public class GamesManager : MonoBehaviour
 		}
 		else
 		{
-			Log("Tentative de connection au server : " + data.gameIp + "/" + data.gamePort + " ...");
+			Log("Tentative de connection au server : " + data.gameIp + "/" + data.gamePort + " ...", "E17417");
 		}
 
 	}
 	
-	// Message
+	// Message from Network
 	void 	OnFailedToConnect(NetworkConnectionError error)
 	{
 		LogError("Impossible de se connecter au serveur " + data.gameIp + " ; " + error.ToString());
 	}
 	
-	// Message
+	// Message from MasterServer
+	void	OnMasterServerEvent(MasterServerEvent MSevent)
+	{
+		switch (MSevent)
+		{
+		case MasterServerEvent.HostListReceived:
+			this.RefreshGamesList();
+			break;
+			
+		case MasterServerEvent.RegistrationFailedGameName:
+			this.LogError(MSevent.ToString());
+			break;
+			
+		case MasterServerEvent.RegistrationFailedGameType:
+			this.LogError(MSevent.ToString());
+			break;
+			
+		case MasterServerEvent.RegistrationFailedNoServer:
+			this.LogError(MSevent.ToString());
+			break;
+			
+		default:
+			this.LogWarning(MSevent.ToString());
+			break;
+		}
+	}
+
+	// Message from MasterServer
+	void	OnFailedToConnectToMasterServer(NetworkConnectionError error)
+	{
+		LogError(error.ToString() + " : Le MasterServer ne repond pas. Listage des parties impossible.");
+	}
+	
+	// Message from Network
 	// TODO: Le résultat est très drôle si on l'est pas sur la même map. Il faut corriger ça
 	void	OnConnectedToServer()
 	{
 		Log("Connection reussie.");
 	}
 	
-	private void SearchGames()
-	{
-		MasterServer.RequestHostList(data.gameType);
-		hostList = MasterServer.PollHostList();
-	}
-	
-	// TODO: C'est utilise l'argument ?
-	private UILabel GetNewUIButtonLabel(GameObject Parent)
-	{
-		Transform	refT = UIButtonToClone.transform;
-		GameObject 	go = (GameObject)UILabel.Instantiate(	UIButtonToClone, 
-															new Vector3(refT.position.x, refT.position.y, refT.position.z), 
-															new Quaternion(0, 0, 0, 0));
-		go.transform.parent = Parent.transform;
-		go.transform.localScale = refT.localScale;
-		go.name = "LabelGame";
-		go.SetActive(true);
-		return (go.GetComponentInChildren<UILabel>());
-	}
-	
+	// Utilisé par RefreshGamesList
 	private void DeletePanelserverChildren(string name)
 	{
 		Transform tf;
@@ -87,18 +101,32 @@ public class GamesManager : MonoBehaviour
 		}
 	}
 	
-	void	OnClickSearchForGame()
+	// Utilisé par RefreshGamesList
+	private UILabel GetNewUIButtonLabel()
 	{
-		PanelServerList.SetActive(true);
-		SearchGames();
+		Transform	refT = UIButtonToClone.transform;
+		GameObject 	go = (GameObject)UILabel.Instantiate(	UIButtonToClone, 
+															new Vector3(refT.position.x, refT.position.y, refT.position.z), 
+															new Quaternion(0, 0, 0, 0));
+		go.transform.parent = PanelServerList.transform;
+		go.transform.localScale = refT.localScale;
+		go.name = "LabelGame";
+		go.SetActive(true);
+		return (go.GetComponentInChildren<UILabel>());
+	}
+	
+	// Appelé lors le MasterServer a renvoyer la liste d'hôte
+	private void RefreshGamesList()
+	{
 		DeletePanelserverChildren("LabelGame");
 		PanelServerList.transform.FindChild("LabelLastUpdate").GetComponent<UILabel>().text = "Last update : " + (System.DateTime.Now);
 		
 		int nbServer = 0;
+		HostData[] hostList = MasterServer.PollHostList();
 		foreach (HostData hd in hostList)
 		{
 			// TODO: Changer le "depth" pour chaque nouveau label
-			UILabel label = this.GetNewUIButtonLabel(PanelServerList);
+			UILabel label = this.GetNewUIButtonLabel();
 			label.transform.parent.position -= new Vector3(0, (float)nbServer / 14f, 0);	// Allez savoir pourquoi 16 ....
 			string	text = "[00FF00]" + hd.gameName + "[-] " + hd.connectedPlayers + "/" + hd.playerLimit + " [";
 			// hd est un string[]
@@ -112,15 +140,23 @@ public class GamesManager : MonoBehaviour
 		
 		if (nbServer == 0)
 		{
-			UILabel label = this.GetNewUIButtonLabel(PanelServerList);
+			UILabel label = this.GetNewUIButtonLabel();
 			label.transform.parent.GetComponent<OnClickJoinGame>().gameIp = "127.0.0.1";
 			label.text = "No one like you ...";
 			label.color = Color.cyan;
 		}
+		Log("Liste des parties mise a jour.");
 	}
 	
-	// TODO: Gérer la transition de level correctement
-	// Ne fonctionne pas correctement !
+	// Message : Bouton
+	void	OnClickSearchForGame()
+	{
+		MasterServer.ClearHostList();
+		MasterServer.RequestHostList(data.gameType);
+		Log("Recherche des parties existantes ...", "E17417");
+	}
+	
+	// Message : Bouton
 	void	OnClickStartServer()
 	{
 		if (data.gamePassword.Length > 0)
@@ -134,7 +170,7 @@ public class GamesManager : MonoBehaviour
 		if (Network.InitializeServer(data.gameMaxPlayers, data.gamePort, data.useNat) == NetworkConnectionError.NoError)
 		{
 			MasterServer.RegisterHost(data.gameType, data.gameName);
-			LoadLevel();
+			Application.LoadLevel(this.NextLevelName);
 			// TODO: De l'autre coté, gérer le bordel avec "OnLevelWasLoaded"
 		}
 		else
@@ -143,25 +179,29 @@ public class GamesManager : MonoBehaviour
 		}
 	}
 	
-	private	void LoadLevel()
-	{
-		Application.LoadLevel("Game");
-	}
-
+	// Affiche un message en rouge dans le chat du bas + Debug.logerreur
 	private void LogError(string msg)
 	{
 		MessageBox.Add("[FF3838]" + msg + "[-]"); // Rouge
 		Debug.LogError(msg);
 	}
 	
+	// Affiche un message en orange dans le chat du bas + Debut.log
 	private void LogWarning(string msg)
 	{
 		MessageBox.Add("[E17417]" + msg + "[-]"); // Orange
 		Debug.Log(msg);
 	}
 	
+	// Affiche un message en vert dans le chat du bas
 	private void Log(string msg)
 	{
 		MessageBox.Add("[44F058]" + msg + "[-]"); // Vert
+	}
+	
+	// Affiche un message de la couleur choisie dans le chat du bas
+	private void Log(string msg, string ColorText)
+	{
+		MessageBox.Add("[" + ColorText + "]" + msg + "[-]");
 	}
 }
