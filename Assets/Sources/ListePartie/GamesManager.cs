@@ -128,10 +128,13 @@ public class GamesManager : MonoBehaviour
 			// TODO: Changer le "depth" pour chaque nouveau label
 			UILabel label = this.GetNewUIButtonLabel();
 			label.transform.parent.position -= new Vector3(0, (float)nbServer / 14f, 0);	// Allez savoir pourquoi 16 ....
+			label.depth += nbServer;
 			string	text = "[00FF00]" + hd.gameName + "[-] " + hd.connectedPlayers + "/" + hd.playerLimit + " [";
 			// hd est un string[]
 			
+			//TODO: Récupérer les autres infos
 			string ip = (string)(hd.ip.GetValue(0));
+			
 			text += ip + "]";
 			label.transform.parent.GetComponent<OnClickJoinGame>().gameIp = ip;
 			label.text = text;
