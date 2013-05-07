@@ -5,6 +5,9 @@
 
 # Binary
 MasterServer
+MasterServer.exe
+MasterServer.log
+MasterServer.pid
 
 # VS files
 VisualStudio/Debug/

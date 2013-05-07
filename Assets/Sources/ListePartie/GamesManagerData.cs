@@ -5,7 +5,7 @@ public class GamesManagerData : MonoBehaviour
 {
 	
 	// L'adresse du serveur distant et son port
-	public string 	gameIp = "127.0.0.1";
+	public string[] gameIp = {"127.0.0.1"};
 	public int		gamePort = 25000;
 	
 	// Le nombre maximum de joueurs dans une partie
@@ -39,7 +39,7 @@ public class GamesManagerData : MonoBehaviour
 	{
 	}
 	
-	public void OnSubmitGameIp(string newGameIp)
+	public void OnSubmitGameIp(string[] newGameIp)
 	{
 		gameIp = newGameIp;
 	}

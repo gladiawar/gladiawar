@@ -30,15 +30,14 @@ public class GamesManager : MonoBehaviour
 		// Connect retourne tout de suite (Généralement pas d'erreur), et
 		// envoie la réponse plus tard, sous forme de (Unity)messages.
 		NetworkConnectionError netError = Network.Connect(data.gameIp, data.gamePort, data.gamePassword);
-		
-		// TODO: Network accept des string[], changer ça puisque l'on peut en récuper dans hd.ip[] (voir doc)
+
 		if (netError != NetworkConnectionError.NoError)
 		{
 			LogError("Connection Error : " + netError.ToString());
 		}
 		else
 		{
-			Log("Tentative de connection au server : " + data.gameIp + "/" + data.gamePort + " ...", "E17417");
+			Log("Tentative de connection au server : " + data.gameIp[0] + "/" + data.gamePort + " ...", "FFFF00");
 		}
 
 	}
@@ -125,26 +124,24 @@ public class GamesManager : MonoBehaviour
 		HostData[] hostList = MasterServer.PollHostList();
 		foreach (HostData hd in hostList)
 		{
-			// TODO: Changer le "depth" pour chaque nouveau label
 			UILabel label = this.GetNewUIButtonLabel();
-			label.transform.parent.position -= new Vector3(0, (float)nbServer / 14f, 0);	// Allez savoir pourquoi 16 ....
+			label.transform.parent.position -= new Vector3(0, (float)nbServer / 14f, 0);	// Allez savoir pourquoi y'a un facteur 400 ....
 			label.depth += nbServer;
 			string	text = "[00FF00]" + hd.gameName + "[-] " + hd.connectedPlayers + "/" + hd.playerLimit + " [";
-			// hd est un string[]
-			
 			//TODO: Récupérer les autres infos
-			string ip = (string)(hd.ip.GetValue(0));
-			
-			text += ip + "]";
-			label.transform.parent.GetComponent<OnClickJoinGame>().gameIp = ip;
+			//TODO: Vérifier si ça marche VRAIMENT
+			text += hd.ip[0] + "]";
+			label.transform.parent.GetComponent<OnClickJoinGame>().gameIp = hd.ip;
 			label.text = text;
 			nbServer++;
 		}
 		
 		if (nbServer == 0)
 		{
+			string[] defaultValue = {"127.0.0.1"};
+			
 			UILabel label = this.GetNewUIButtonLabel();
-			label.transform.parent.GetComponent<OnClickJoinGame>().gameIp = "127.0.0.1";
+			label.transform.parent.GetComponent<OnClickJoinGame>().gameIp = defaultValue;
 			label.text = "No one like you ...";
 			label.color = Color.cyan;
 		}
@@ -156,7 +153,7 @@ public class GamesManager : MonoBehaviour
 	{
 		MasterServer.ClearHostList();
 		MasterServer.RequestHostList(data.gameType);
-		Log("Recherche des parties existantes ...", "E17417");
+		Log("Recherche des parties existantes ...", "FFFF00");
 	}
 	
 	// Message : Bouton
@@ -174,7 +171,7 @@ public class GamesManager : MonoBehaviour
 		{
 			MasterServer.RegisterHost(data.gameType, data.gameName);
 			Application.LoadLevel(this.NextLevelName);
-			// TODO: De l'autre coté, gérer le bordel avec "OnLevelWasLoaded"
+			// TODO: Ne marche pas. Fix me !
 		}
 		else
 		{

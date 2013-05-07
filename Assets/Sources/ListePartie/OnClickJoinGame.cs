@@ -5,7 +5,7 @@ public class OnClickJoinGame : MonoBehaviour
 {
 	public GamesManagerData	data;
 	
-	public string			gameIp;
+	public string[]			gameIp;
 	public int 				gamePort = 25000;
 	
 	// Use this for initialization
@@ -24,7 +24,7 @@ public class OnClickJoinGame : MonoBehaviour
 		data.gamePort = this.gamePort;
 		
 		UILabel label = GameObject.Find("InputIP").GetComponentInChildren<UILabel>();
-		label.text = data.gameIp;
+		label.text = data.gameIp[0];
 		label.color = Color.cyan;
 	}
 }
