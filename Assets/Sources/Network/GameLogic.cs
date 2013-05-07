@@ -3,10 +3,6 @@ using System.Collections;
 
 public class GameLogic : MonoBehaviour
 {
-	public string ip;
-	public int port;
-	public bool useNat;
-	public int maxPlayers;
 	public Transform lambdaPlayerPrefab;
 	
 	// Use this for initialization

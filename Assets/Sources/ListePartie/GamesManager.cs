@@ -3,9 +3,6 @@ using System.Collections;
 
 public class GamesManager : MonoBehaviour 
 {
-	// Les données de cette scène
-	public	GamesManagerData	data;
-	
 	// Pour gérer le second panel
 	public 	GameObject			PanelServerList;
 
@@ -15,16 +12,22 @@ public class GamesManager : MonoBehaviour
 	// Le chat du bas, pour afficher des messages facilement
 	public	UITextList			MessageBox;
 	
-	private string 				NextLevelName = "Game";
+	// Les données de cette scène
+	private	GamesManagerData	data;
 	
+	// Le nom de la map d'après	
+	private string 				NextLevelName = "Game";
+		
 	void	Start () 
-	{		
+	{	
+		data = GetComponent<GamesManagerData>();
 		MasterServer.ipAddress = data.masterServerIp;
 		MasterServer.port = data.masterServerPort;
 		MasterServer.ClearHostList();
 		MasterServer.RequestHostList(data.gameType);
 	}
 	
+	// Bouton
 	void	OnClickConnectGame()
 	{
 		// Connect retourne tout de suite (Généralement pas d'erreur), et
