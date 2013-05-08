@@ -20,6 +20,7 @@ public class GameChat : MonoBehaviour
 	void OnSubmitChatText(string msg)
 	{
 		networkView.RPC("SubmitChatText", RPCMode.All, msg);
+		transform.parent.Find("ChatInput").GetComponent<UIInput>().text = "";
 	}
 	
 	[RPC]

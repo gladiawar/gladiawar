@@ -17,11 +17,18 @@ public class GamesManager : MonoBehaviour
 	
 	// Le nom de la map d'après	
 	private string 				NextLevelName = "Game";
-		
+	
+	// Un compteur interne pour savoir quelle adresse est utilisée
+	private int MasterServerIpCounter = 0;
+	
+	void	Awake ()
+	{
+		data = GetComponent<GamesManagerData>();
+	}
+	
 	void	Start () 
 	{	
-		data = GetComponent<GamesManagerData>();
-		MasterServer.ipAddress = data.masterServerIp;
+		MasterServer.ipAddress = data.masterServerIp[MasterServerIpCounter];
 		MasterServer.port = data.masterServerPort;
 		MasterServer.ClearHostList();
 		MasterServer.RequestHostList(data.gameType);
@@ -55,7 +62,7 @@ public class GamesManager : MonoBehaviour
 	// Message from Network
 	void 	OnFailedToConnect(NetworkConnectionError error)
 	{
-		LogError("Impossible de se connecter au serveur " + data.gameIp + " ; " + error.ToString());
+		LogError("Impossible de se connecter au serveur " + data.gameIp[0] + " ; " + error.ToString());
 	}
 	
 	// Message from MasterServer
@@ -65,6 +72,9 @@ public class GamesManager : MonoBehaviour
 		{
 		case MasterServerEvent.HostListReceived:
 			this.RefreshGamesList();
+			break;
+			
+		case MasterServerEvent.RegistrationSucceeded:
 			break;
 			
 		case MasterServerEvent.RegistrationFailedGameName:
@@ -88,7 +98,23 @@ public class GamesManager : MonoBehaviour
 	// Message from MasterServer
 	void	OnFailedToConnectToMasterServer(NetworkConnectionError error)
 	{
-		LogError(error.ToString() + " : Le MasterServer ne repond pas. Listage des parties impossible.");
+		LogError("Le MasterServer ne repond pas. Listage des parties impossible : " + error.ToString());
+		
+		/*
+		 * BUG: Masterserver n'est plus op après une erreur
+		if (MasterServerIpCounter > data.masterServerIp.Length)
+			LogError("Le MasterServer ne repond pas sur aucune adresse. Listage des parties impossible : " + error.ToString());
+		else
+		{
+			string newIP = data.masterServerIp[MasterServerIpCounter];
+			
+			LogWarning("Impossible de joindre le MasterServer sur " + MasterServer.ipAddress + " : Nouvelle tentative sur " + newIP);
+			MasterServer.ipAddress = newIP;
+			++MasterServerIpCounter;
+			MasterServer.ClearHostList();
+			MasterServer.RequestHostList(data.gameType);
+		}
+		*/
 	}
 	
 	// Utilisé par RefreshGamesList
@@ -128,6 +154,7 @@ public class GamesManager : MonoBehaviour
 		foreach (HostData hd in hostList)
 		{
 			UILabel label = this.GetNewUIButtonLabel();
+			//TODO: Fix this dark magic avec NGUITools (voir ReadyList.cs)
 			label.transform.parent.position -= new Vector3(0, (float)nbServer / 14f, 0);	// Allez savoir pourquoi y'a un facteur 400 ....
 			label.depth += nbServer;
 			string	text = "[00FF00]" + hd.gameName + "[-] " + hd.connectedPlayers + "/" + hd.playerLimit + " [";

@@ -14,13 +14,17 @@ public class 			DisplayPersoList : MonoBehaviour
 	
 	private Transform[] 	_slotPerso;	
 	public PlayerInfo[]		_players;
-
+	
+	private PlayerInfo		_playerinfo;
+	
 	void 				Start()
 	{
 		_slotPerso = new Transform[3];
 		_slotPerso[0] = transform.FindChild("1");
 		_slotPerso[1] = transform.FindChild("2");
 		_slotPerso[2] = transform.FindChild("3");
+		
+		_playerinfo = GameObject.Find("PlayerPrefs").GetComponent<PlayerInfo>();
 	}
 	
 	public void			loadCharacters()
@@ -68,16 +72,39 @@ public class 			DisplayPersoList : MonoBehaviour
 	
 	public void			OnClickSelectCharacterOne()
 	{
-		GameObject.Find("PlayerPrefs").GetComponent<PlayerInfo>().SetPlayerName(_players[0].GetPlayerName());
+		_playerinfo.SetPlayerName(_players[0].GetPlayerName());
+		if (_playerinfo.GetPlayerName().Length > 0)
+			_playerinfo.PlayerIsSet = true;
+		else
+			_playerinfo.PlayerIsSet = false;
 	}
 	
 	public void			OnClickSelectCharacterTwo()
 	{
-		GameObject.Find("PlayerPrefs").GetComponent<PlayerInfo>().SetPlayerName(_players[1].GetPlayerName());
+		_playerinfo.SetPlayerName(_players[1].GetPlayerName());
+		if (_playerinfo.GetPlayerName().Length > 0)
+			_playerinfo.PlayerIsSet = true;
+		else
+			_playerinfo.PlayerIsSet = false;
 	}
 	
 	public void			OnClickSelectCharacterThree()
 	{
-		GameObject.Find("PlayerPrefs").GetComponent<PlayerInfo>().SetPlayerName(_players[2].GetPlayerName());
+		_playerinfo.SetPlayerName(_players[2].GetPlayerName());
+		if (_playerinfo.GetPlayerName().Length > 0)
+			_playerinfo.PlayerIsSet = true;
+		else
+			_playerinfo.PlayerIsSet = false;
+	}
+	
+	public void			OnClickLoadLobby()
+	{
+		if (_playerinfo.PlayerIsSet)
+			Application.LoadLevel("ListePartie");
+		else
+		{
+			//TODO: Afficher l'erreur
+			Debug.LogError("Aucun joueur n'est selectionne");
+		}
 	}
 }

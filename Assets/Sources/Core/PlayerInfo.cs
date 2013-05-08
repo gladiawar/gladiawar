@@ -4,9 +4,10 @@ using System.Collections;
 public class PlayerInfo : MonoBehaviour 
 {
 	public bool					useDontDestroyOnLoad = false;
-
-	private string 				PlayerName;
-	private SelectClass.eClass	PlayerClass;
+	
+	public bool					PlayerIsSet = false;
+	public string 				PlayerName;
+	public SelectClass.eClass	PlayerClass;
 	
 	
 	// Use this for initialization
@@ -19,6 +20,14 @@ public class PlayerInfo : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+	}
+	
+	void	OnLevelWasLoaded()
+	{
+		GameObject go = GameObject.FindWithTag("EditorOnly");
+		
+		if (transform.gameObject != go)
+			DestroyObject(go);
 	}
 	
 	public void SetPlayerName(string newName)
