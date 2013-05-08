@@ -19,6 +19,12 @@ public class GameChat : MonoBehaviour
 	
 	void OnSubmitChatText(string msg)
 	{
+		networkView.RPC("SubmitChatText", RPCMode.All, msg);
+	}
+	
+	[RPC]
+	void SubmitChatText(string msg)
+	{
 		chatBox.Add(msg);
 	}
 }
