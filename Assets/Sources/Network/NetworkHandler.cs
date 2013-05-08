@@ -3,62 +3,39 @@ using System.Collections;
 
 public class NetworkHandler : MonoBehaviour 
 {
+	private string	LoaderLevel = "ListePartie";
+	
 	// Called before Start()
 	void Awake()
 	{
 		DontDestroyOnLoad(this);
-		//networkView.group = 1;
-	}
-	
-	// Use this for initialization
-	void Start () 
-	{
-	}
-	
-	// Update is called once per frame
-	void Update () 
-	{
-	}
-	
-	// Message Network
-	void OnPlayerConnected (NetworkPlayer player)
-	{
-		Debug.Log("OnPlayerConnected");
+		networkView.group = 1;
 	}
 	
 	// Message Network
 	void OnServerInitialized ()
 	{
-		Debug.Log("OnServerInitialized");
-	}
-	
-	// Message Network
-	void OnConnectedToServer ()
-	{
-		Debug.Log("OnConnectedToServer");
-	}
-	
-	// Message Network
-	void OnPlayerDisconnected (NetworkPlayer player)
-	{
-		Debug.Log("OnPlayerDisconnected");
+		Network.RemoveRPCsInGroup(0);
+		Network.RemoveRPCsInGroup(1);
+		networkView.RPC("NetworkLoadLevel", RPCMode.AllBuffered, Application.loadedLevel + 1);
 	}
 	
 	// Message Network
 	void OnDisconnectedFromServer (NetworkDisconnection mode)	
 	{
-		Debug.Log("OnDisconnectedFromServer");
+		Network.Disconnect();
 	}
 	
-	// Message Network
-	void OnFailedToConnect (NetworkConnectionError error)
+	[RPC]
+	public void	NetworkLoadLevel(int levelNum)
 	{
-		Debug.Log("OnFailedToConnect");
-	}
-	
-	// Message Network
-	void OnNetworkInstantiate (NetworkMessageInfo info)
-	{
-		Debug.Log("OnNetworkInstantiate");
+		Network.SetSendingEnabled(0, false);
+		Network.isMessageQueueRunning = false;
+		
+		//Network.SetLevelPrefix(levelNum);
+		Application.LoadLevel(levelNum);
+		
+		Network.isMessageQueueRunning = true;
+		Network.SetSendingEnabled(0, true);
 	}
 }

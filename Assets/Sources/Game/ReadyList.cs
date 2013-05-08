@@ -16,7 +16,7 @@ public class ReadyList : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		networkView.RPC("SetStatus", RPCMode.All, GameObject.Find("PlayerPrefs").GetComponent<PlayerInfo>().GetPlayerName(), false);
+		//networkView.RPC("SetStatus", RPCMode.All, GameObject.Find("PlayerPrefs").GetComponent<PlayerInfo>().GetPlayerName(), false);
 	}
 	
 	// Update is called once per frame

@@ -6,7 +6,6 @@ public class GameButtonReady : MonoBehaviour
 	public bool			Status = false;
 	public ReadyList	readylist;
 	private UILabel		label;
-	public	NetworkView	netview;
 	
 	void	Awake()
 	{
@@ -31,12 +30,12 @@ public class GameButtonReady : MonoBehaviour
 		
 		if (Status)
 		{
-			netview.RPC("SetStatus", RPCMode.All, GameObject.Find("PlayerPrefs").GetComponent<PlayerInfo>().GetPlayerName(), true);
+			//netview.RPC("SetStatus", RPCMode.All, GameObject.Find("PlayerPrefs").GetComponent<PlayerInfo>().GetPlayerName(), true);
 			label.text = "Ready";
 		}
 		else
 		{
-			netview.RPC("SetStatus", RPCMode.All, GameObject.Find("PlayerPrefs").GetComponent<PlayerInfo>().GetPlayerName(), false);
+			//netview.RPC("SetStatus", RPCMode.All, GameObject.Find("PlayerPrefs").GetComponent<PlayerInfo>().GetPlayerName(), false);
 			label.text = "Not Ready";
 		}
 	}

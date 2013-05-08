@@ -54,12 +54,6 @@ public class GamesManager : MonoBehaviour
 	}
 	
 	// Message from Network
-	void 	OnConnectedToServer()
-	{
-		Application.LoadLevel(this.NextLevelName);
-	}
-
-	// Message from Network
 	void 	OnFailedToConnect(NetworkConnectionError error)
 	{
 		LogError("Impossible de se connecter au serveur " + data.gameIp[0] + " ; " + error.ToString());
@@ -200,13 +194,20 @@ public class GamesManager : MonoBehaviour
 		if (Network.InitializeServer(data.gameMaxPlayers, data.gamePort, data.useNat) == NetworkConnectionError.NoError)
 		{
 			MasterServer.RegisterHost(data.gameType, data.gameName);
-			Application.LoadLevel(this.NextLevelName);
+			networkView.RPC("NetworkLoadNextLevel", RPCMode.AllBuffered);
 		}
 		else
 		{
 			LogError("Impossible de creer une nouvelle partie.");
 		}
 	}
+	
+	[RPC]
+	void	NetworkLoadNextLevel()
+	{
+		
+	}
+	
 	
 	// Affiche un message en rouge dans le chat du bas + Debug.logerreur
 	private void LogError(string msg)
