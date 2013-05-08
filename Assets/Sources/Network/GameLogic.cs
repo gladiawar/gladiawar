@@ -8,10 +8,6 @@ public class GameLogic : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		Object obj = Network.Instantiate (lambdaPlayerPrefab, new Vector3 (0, 1, 0), new Quaternion (0, 0, 0, 0), 0);
-		
-		if (obj == null)
-			this.transform.FindChild("DefaultCamera").gameObject.SetActive(true);
 	}
 	
 	// Update is called once per frame
@@ -22,7 +18,7 @@ public class GameLogic : MonoBehaviour
 	// Network callbacks
 	void OnPlayerConnected (NetworkPlayer player)
 	{
-		Debug.Log ("Server : Player connected");
+		Debug.Log ("Server : Player connected (" + player.ToString() + ")");
 	}
 
 	void OnServerInitialized ()
@@ -38,19 +34,18 @@ public class GameLogic : MonoBehaviour
 
 	void OnPlayerDisconnected (NetworkPlayer player)
 	{
-		Debug.Log ("Server : Player disconnected");	
+		Debug.Log ("Server : Player disconnected (" + player.ToString() + ")");	
 		Network.RemoveRPCs (player);
-		Network.DestroyPlayerObjects (player);
 	}
 
 	void OnDisconnectedFromServer (NetworkDisconnection info)
 	{
-		Debug.Log ("Client : Disconnected from server");
-		Application.LoadLevel(Application.loadedLevel);
+		Debug.Log ("Client : Disconnected from server (" + info.ToString() + ")");
+		Application.LoadLevel("ListePartie");
 	}
 
 	void OnFailedToConnect (NetworkConnectionError error)
 	{
-		Debug.Log ("Client : Failed connection to server");
+		Debug.Log ("Client : Failed connection to server (" + error.ToString() + ")");
 	}
 }

@@ -20,7 +20,7 @@ public class SimpleAttack : MonoBehaviour {
 				networkView.RPC("PlayerIsHitted", RPCMode.All, hitinfo.transform.networkView.viewID);
 			}
 		}
-		
+
 		if (Input.GetMouseButtonDown(0) && networkView.isMine)
 			if (!_animAttack.isPlaying)
 				_animAttack.Play();

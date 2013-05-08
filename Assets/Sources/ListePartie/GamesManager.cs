@@ -32,6 +32,7 @@ public class GamesManager : MonoBehaviour
 	{
 		// Connect retourne tout de suite (Généralement pas d'erreur), et
 		// envoie la réponse plus tard, sous forme de (Unity)messages.
+		Network.Disconnect();
 		NetworkConnectionError netError = Network.Connect(data.gameIp, data.gamePort, data.gamePassword);
 
 		if (netError != NetworkConnectionError.NoError)
@@ -45,6 +46,12 @@ public class GamesManager : MonoBehaviour
 
 	}
 	
+	// Message from Network
+	void 	OnConnectedToServer()
+	{
+		Application.LoadLevel(this.NextLevelName);
+	}
+
 	// Message from Network
 	void 	OnFailedToConnect(NetworkConnectionError error)
 	{
@@ -82,13 +89,6 @@ public class GamesManager : MonoBehaviour
 	void	OnFailedToConnectToMasterServer(NetworkConnectionError error)
 	{
 		LogError(error.ToString() + " : Le MasterServer ne repond pas. Listage des parties impossible.");
-	}
-	
-	// Message from Network
-	// TODO: Le résultat est très drôle si on l'est pas sur la même map. Il faut corriger ça
-	void	OnConnectedToServer()
-	{
-		Log("Connection reussie.");
 	}
 	
 	// Utilisé par RefreshGamesList
@@ -174,7 +174,6 @@ public class GamesManager : MonoBehaviour
 		{
 			MasterServer.RegisterHost(data.gameType, data.gameName);
 			Application.LoadLevel(this.NextLevelName);
-			// TODO: Ne marche pas. Fix me !
 		}
 		else
 		{
