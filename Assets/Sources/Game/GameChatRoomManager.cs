@@ -2,35 +2,56 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class ReadyList : MonoBehaviour 
+public class GameChatRoomManager : MonoBehaviour 
 {
 	private Dictionary<string, bool>	userReadyness;
 	public	UILabel						ModeleLabel;
-	int									labelNumber = 0;
+	public  UITextList					chatTextZone;
+	private PlayerInfo					playerInfo;
+	private int							labelNumber = 0;
 	
 	void Awake()
 	{
 		userReadyness = new Dictionary<string, bool>();
+		playerInfo = GameObject.Find("PlayerPrefs").GetComponent<PlayerInfo>();
+		networkView.group = 2;
 	}
 	
 	// Use this for initialization
 	void Start () 
 	{
-		//networkView.RPC("SetStatus", RPCMode.All, GameObject.Find("PlayerPrefs").GetComponent<PlayerInfo>().GetPlayerName(), false);
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
 	}
+
+	// Set status for a player
+	public void	SetStatus(string userName, bool status)
+	{
+		networkView.RPC("RPC_SetStatus", RPCMode.All, userName, status);
+	}
 	
 	[RPC]
-	public void	SetStatus(string userName, bool status)
+	private void	RPC_SetStatus(string userName, bool status)
 	{
 		userReadyness[userName] = status;
 		UpdatePanel();
 	}
-	
+
+	// Add text to the chat box
+	public void	OnSubmitChatText(string message)
+	{
+		networkView.RPC("RPC_OnSubmitChatText", RPCMode.All, playerInfo.GetPlayerName() + " : " + message);
+	}
+
+	[RPC]
+	private void	RPC_OnSubmitChatText(string message)
+	{
+		chatTextZone.Add(message);
+	}
+
 	private void UpdatePanel()
 	{
 		foreach (KeyValuePair<string, bool> pair in userReadyness)
@@ -71,4 +92,20 @@ public class ReadyList : MonoBehaviour
 			label = tf.GetComponent<UILabel>();
 		return (label);
 	}
+
+	private void	DeleteUILabelFromUsername(string userName)
+	{
+		// TODO: Supprimer le label + réorganiser les autres
+	}
+
+	// Messages from Network
+	void OnPlayerConnected(NetworkPlayer pl)
+	{
+		foreach (KeyValuePair<string, bool> pair in userReadyness)
+		{
+			SetStatus(pair.Key, pair.Value);
+		}
+	}
+	
+	// TODO: Faire OnDisconnectedFromServer
 }

@@ -22,6 +22,7 @@ public class PlayerInfo : MonoBehaviour
 	{
 	}
 	
+	// Vire les doublons (de l'éditeur), pour éviter de se taper l'écran de login
 	void	OnLevelWasLoaded()
 	{
 		GameObject go = GameObject.FindWithTag("EditorOnly");

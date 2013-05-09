@@ -12,6 +12,9 @@ public class GamesManager : MonoBehaviour
 	// Le chat du bas, pour afficher des messages facilement
 	public	UITextList			MessageBox;
 	
+	// Le label qui affiche le nom du personnage
+	public	UILabel				labelPlayerName;
+	
 	// Les données de cette scène
 	private	GamesManagerData	data;
 		
@@ -29,6 +32,10 @@ public class GamesManager : MonoBehaviour
 		MasterServer.port = data.masterServerPort;
 		MasterServer.ClearHostList();
 		MasterServer.RequestHostList(data.gameType);
+		
+		GameObject	playerinfo = GameObject.Find("PlayerPrefs");
+		if (playerinfo)
+			labelPlayerName.text += playerinfo.GetComponent<PlayerInfo>().GetPlayerName();
 	}
 	
 	// Bouton

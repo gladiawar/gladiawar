@@ -15,6 +15,12 @@ public class LevelChanger : MonoBehaviour {
 	{
 	
 	}
+
+	// Vire les doublons (de l'éditeur), pour éviter de se taper l'écran de login
+	void	OnLevelWasLoaded()
+	{
+		// TODO: Eviter les doublons
+	}
 	
 	public void	LoadLevel(string name)
 	{
@@ -32,6 +38,12 @@ public class LevelChanger : MonoBehaviour {
 		Application.LoadLevel(name);
 		Network.isMessageQueueRunning = true;
 		Network.SetSendingEnabled(0, true);
+	}
+	
+	void	OnDisconnectedFromServer(NetworkDisconnection info)
+	{
+		Debug.Log (info.ToString());
+		Application.LoadLevel("ListePartie");
 	}
 }
 
