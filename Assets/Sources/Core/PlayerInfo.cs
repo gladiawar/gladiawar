@@ -3,12 +3,24 @@ using System.Collections;
 
 public class PlayerInfo : MonoBehaviour 
 {
+	// Parce qu'on stock ça à l'arrache dans un script de l'écran de login
 	public bool					useDontDestroyOnLoad = false;
 	
+	// Parce qu'un script a besoin de savoir si playerinfo a été rempli
 	public bool					PlayerIsSet = false;
+	
+	// Une variable statique pour accèder directement à ce truc dès qu'il existe.
+	public static PlayerInfo	playerInfo = null;	
+	
 	public string 				PlayerName;
 	public SelectClass.eClass	PlayerClass;
 	
+	
+	void	Awake()
+	{
+		if (useDontDestroyOnLoad && PlayerInfo.playerInfo == null)
+			PlayerInfo.playerInfo = this;
+	}
 	
 	// Use this for initialization
 	void Start () 
@@ -25,10 +37,11 @@ public class PlayerInfo : MonoBehaviour
 	// Vire les doublons (de l'éditeur), pour éviter de se taper l'écran de login
 	void	OnLevelWasLoaded()
 	{
-		GameObject go = GameObject.FindWithTag("EditorOnly");
-		
-		if (transform.gameObject != go)
-			DestroyObject(go);
+		foreach (GameObject go in GameObject.FindGameObjectsWithTag("EditorOnly"))
+		{
+			if (go.name == "PlayerPrefs" && go != gameObject)
+				Destroy(go);
+		}
 	}
 	
 	public void SetPlayerName(string newName)

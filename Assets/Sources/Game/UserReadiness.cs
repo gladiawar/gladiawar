@@ -12,17 +12,13 @@ public class UserReadiness : MonoBehaviour
 	// Le script qui a une netview associé et qui balance les RPC
 	public GameChatRoomManager	gameChatRoomManager;
 	
-	// Les infos du joueur
-	private PlayerInfo		playerInfo;
-	
 	void	Awake()	
 	{
 	}
 	
 	void	Start()
 	{
-		playerInfo = GameObject.Find("PlayerPrefs").GetComponent<PlayerInfo>();
-		gameChatRoomManager.SetStatus(playerInfo.GetPlayerName(), Status);
+		gameChatRoomManager.SetStatus(PlayerInfo.playerInfo.GetPlayerName(), Status);
 	}
 	
 	// Update is called once per frame
@@ -42,6 +38,6 @@ public class UserReadiness : MonoBehaviour
 		{
 			buttonReadyLabel.text = "Not Ready";
 		}
-		gameChatRoomManager.SetStatus(playerInfo.GetPlayerName(), Status);
+		gameChatRoomManager.SetStatus(PlayerInfo.playerInfo.GetPlayerName(), Status);
 	}
 }

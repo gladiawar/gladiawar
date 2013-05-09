@@ -7,23 +7,16 @@ public class GameChatRoomManager : MonoBehaviour
 	private Dictionary<string, bool>	userReadyness;
 	public	UILabel						ModeleLabel;
 	public  UITextList					chatTextZone;
-	private PlayerInfo					playerInfo;
 	private int							labelNumber = 0;
 	
 	void Awake()
 	{
 		userReadyness = new Dictionary<string, bool>();
-		playerInfo = GameObject.Find("PlayerPrefs").GetComponent<PlayerInfo>();
 		networkView.group = 2;
 	}
 	
 	// Use this for initialization
 	void Start () 
-	{
-	}
-	
-	// Update is called once per frame
-	void Update () 
 	{
 	}
 
@@ -36,20 +29,23 @@ public class GameChatRoomManager : MonoBehaviour
 	[RPC]
 	private void	RPC_SetStatus(string userName, bool status)
 	{
-		userReadyness[userName] = status;
+		if (userReadyness.ContainsKey(userName) == false)
+			userReadyness.Add(userName, status);
+		else
+			userReadyness[userName] = status;
 		UpdatePanel();
 	}
 
 	// Add text to the chat box
 	public void	OnSubmitChatText(string message)
 	{
-		networkView.RPC("RPC_OnSubmitChatText", RPCMode.All, playerInfo.GetPlayerName() + " : " + message);
+		networkView.RPC("RPC_OnSubmitChatText", RPCMode.All, PlayerInfo.playerInfo.GetPlayerName(), message);
 	}
 
 	[RPC]
-	private void	RPC_OnSubmitChatText(string message)
+	private void	RPC_OnSubmitChatText(string author, string message)
 	{
-		chatTextZone.Add(message);
+		chatTextZone.Add("[00FF00]" + author + "[-] : " + message);
 	}
 
 	private void UpdatePanel()

@@ -32,10 +32,7 @@ public class GamesManager : MonoBehaviour
 		MasterServer.port = data.masterServerPort;
 		MasterServer.ClearHostList();
 		MasterServer.RequestHostList(data.gameType);
-		
-		GameObject	playerinfo = GameObject.Find("PlayerPrefs");
-		if (playerinfo)
-			labelPlayerName.text += playerinfo.GetComponent<PlayerInfo>().GetPlayerName();
+		labelPlayerName.text += PlayerInfo.playerInfo.GetPlayerName();
 	}
 	
 	// Bouton
@@ -176,7 +173,7 @@ public class GamesManager : MonoBehaviour
 			
 			UILabel label = this.GetNewUIButtonLabel();
 			label.transform.parent.GetComponent<OnClickJoinGame>().gameIp = defaultValue;
-			label.text = "No one like you ...";
+			label.text = "Aucune partie disponible.";
 			label.color = Color.cyan;
 		}
 		Log("Liste des parties mise a jour.");

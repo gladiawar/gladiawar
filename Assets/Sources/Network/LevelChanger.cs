@@ -1,25 +1,23 @@
 using UnityEngine;
 using System.Collections;
 
-public class LevelChanger : MonoBehaviour {
-
+public class LevelChanger : MonoBehaviour 
+{
 	// Use this for initialization
 	void Start () 
 	{
 		DontDestroyOnLoad(this);
 		networkView.group = 1;
 	}
-	
-	// Update is called once per frame
-	void Update () 
-	{
-	
-	}
 
 	// Vire les doublons (de l'éditeur), pour éviter de se taper l'écran de login
 	void	OnLevelWasLoaded()
 	{
-		// TODO: Eviter les doublons
+		foreach (GameObject go in GameObject.FindGameObjectsWithTag("LevelChanger"))
+		{
+			if (go != this.gameObject)
+				GameObject.Destroy(go);
+		}
 	}
 	
 	public void	LoadLevel(string name)
