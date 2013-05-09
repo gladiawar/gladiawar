@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+// TODO: Corriger le problème du Dictionary
 public class GameChatRoomManager : MonoBehaviour 
 {
 	private Dictionary<string, bool>	userReadyness;
@@ -12,7 +13,6 @@ public class GameChatRoomManager : MonoBehaviour
 	void Awake()
 	{
 		userReadyness = new Dictionary<string, bool>();
-		networkView.group = 2;
 	}
 	
 	// Use this for initialization
@@ -29,10 +29,7 @@ public class GameChatRoomManager : MonoBehaviour
 	[RPC]
 	private void	RPC_SetStatus(string userName, bool status)
 	{
-		if (userReadyness.ContainsKey(userName) == false)
-			userReadyness.Add(userName, status);
-		else
-			userReadyness[userName] = status;
+		userReadyness[userName] = status;
 		UpdatePanel();
 	}
 
@@ -45,7 +42,10 @@ public class GameChatRoomManager : MonoBehaviour
 	[RPC]
 	private void	RPC_OnSubmitChatText(string author, string message)
 	{
-		chatTextZone.Add("[00FF00]" + author + "[-] : " + message);
+		if (string.Compare(author, PlayerInfo.playerInfo.GetPlayerName()) == 0)
+			chatTextZone.Add("[00FFFF]" + author + "[-] : " + message);
+		else
+			chatTextZone.Add("[00FF00]" + author + "[-] : " + message);
 	}
 
 	private void UpdatePanel()
