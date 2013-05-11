@@ -39,7 +39,7 @@ public class PlayerInfo : MonoBehaviour
 	{
 		foreach (GameObject go in GameObject.FindGameObjectsWithTag("EditorOnly"))
 		{
-			if (go.name == "PlayerPrefs" && go != gameObject)
+			if (go.name == "PlayerPrefs" && go != playerInfo)
 				Destroy(go);
 		}
 	}

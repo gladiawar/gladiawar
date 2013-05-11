@@ -22,7 +22,7 @@ public class GamesManagerData : MonoBehaviour
 	
 	// L'adresse et le port du MasterServer (Celui qui liste les parties)
 	[HideInInspector] public string[]	masterServerIp;
-	[HideInInspector] public int 	masterServerPort;
+	[HideInInspector] public int 		masterServerPort;
 
 	// Le type de partie (utilisée par le MasterServer)
 	public string	gameType = "GladiaWarArena_Game";
@@ -30,9 +30,7 @@ public class GamesManagerData : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		this.masterServerIp = new string[2];
-		this.masterServerIp[0] = "10.224.9.214";
-		this.masterServerIp[1] = "163.5.84.214";
+		this.masterServerIp = Hosts.MasterServerIp;
 		this.masterServerPort = 23466;
 	}
 	

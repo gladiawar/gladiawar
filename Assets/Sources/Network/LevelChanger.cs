@@ -3,6 +3,14 @@ using System.Collections;
 
 public class LevelChanger : MonoBehaviour 
 {
+	public static LevelChanger	levelChanger = null;
+	
+	void	Awake()
+	{
+		if (LevelChanger.levelChanger == null)
+			LevelChanger.levelChanger = this;
+	}
+	
 	// Use this for initialization
 	void Start () 
 	{
@@ -15,7 +23,7 @@ public class LevelChanger : MonoBehaviour
 	{
 		foreach (GameObject go in GameObject.FindGameObjectsWithTag("LevelChanger"))
 		{
-			if (go != this.gameObject)
+			if (go != LevelChanger.levelChanger)
 				GameObject.Destroy(go);
 		}
 	}
@@ -36,6 +44,14 @@ public class LevelChanger : MonoBehaviour
 		Application.LoadLevel(name);
 		Network.isMessageQueueRunning = true;
 		Network.SetSendingEnabled(0, true);
+		
+		foreach (Object obj in FindObjectsOfType(typeof(GameObject)))
+		{
+			GameObject go;
+			
+			if ((go = (GameObject)(obj)) != null)
+				go.SendMessage("OnNetworkLoadedLevel", SendMessageOptions.DontRequireReceiver);
+		}
 	}
 	
 	void	OnDisconnectedFromServer(NetworkDisconnection info)
