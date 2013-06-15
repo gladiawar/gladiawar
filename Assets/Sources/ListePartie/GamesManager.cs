@@ -32,7 +32,7 @@ public class GamesManager : MonoBehaviour
 		MasterServer.port = data.masterServerPort;
 		MasterServer.ClearHostList();
 		MasterServer.RequestHostList(data.gameType);
-		labelPlayerName.text += PlayerInfo.playerInfo.GetPlayerName();
+//		labelPlayerName.text += PlayerInfo.playerInfo.GetPlayerName();
 	}
 	
 	// Bouton

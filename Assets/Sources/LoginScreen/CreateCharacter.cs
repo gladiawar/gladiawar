@@ -31,5 +31,7 @@ public class 				CreateCharacter : MonoBehaviour
 	{
 		if (code == SDNet.ReturnCode.OK)
 			_panel.GetComponent<PanelLogin>().State = PanelLogin.ePanelLoginState.CHARA;
+		else
+			Debug.Log(res);
 	}
 }

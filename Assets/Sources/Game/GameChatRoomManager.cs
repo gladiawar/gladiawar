@@ -36,13 +36,13 @@ public class GameChatRoomManager : MonoBehaviour
 	// Add text to the chat box
 	public void	OnSubmitChatText(string message)
 	{
-		networkView.RPC("RPC_OnSubmitChatText", RPCMode.All, PlayerInfo.playerInfo.GetPlayerName(), message);
+		networkView.RPC("RPC_OnSubmitChatText", RPCMode.All, RunTimeData.PlayerBase.PlayerName, message);
 	}
 
 	[RPC]
 	private void	RPC_OnSubmitChatText(string author, string message)
 	{
-		if (string.Compare(author, PlayerInfo.playerInfo.GetPlayerName()) == 0)
+		if (string.Compare(author, RunTimeData.PlayerBase.PlayerName) == 0)
 			chatTextZone.Add("[00FFFF]" + author + "[-] : " + message);
 		else
 			chatTextZone.Add("[00FF00]" + author + "[-] : " + message);

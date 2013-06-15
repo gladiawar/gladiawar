@@ -13,9 +13,7 @@ public class 			DisplayPersoList : MonoBehaviour
 	public GameObject		_panel;
 	
 	private Transform[] 	_slotPerso;	
-	public PlayerInfo[]		_players;
-	
-	private PlayerInfo		_playerinfo;
+	public PlayerInfoBaseBehaviour[]	_players;
 	
 	void 				Start()
 	{
@@ -24,7 +22,6 @@ public class 			DisplayPersoList : MonoBehaviour
 		_slotPerso[1] = transform.FindChild("2");
 		_slotPerso[2] = transform.FindChild("3");
 		
-		_playerinfo = GameObject.Find("PlayerPrefs").GetComponent<PlayerInfo>();
 	}
 	
 	public void			loadCharacters()
@@ -56,7 +53,8 @@ public class 			DisplayPersoList : MonoBehaviour
 		{
 			string[]	data = perso.Split(new char[] { '/' });
 			
-			_players[i].SetPlayerName(data[0]);
+			_players[i].PlayerName = data[0];
+			_players[i].PlayerClass = (SelectClass.eClass)int.Parse(data[1]);
 			++i;
 		}
 		
@@ -64,47 +62,46 @@ public class 			DisplayPersoList : MonoBehaviour
 	
 	private void 		displayCharacter()
 	{
-		for(int i = 0; i < 3; ++i)
-		{
-			_slotPerso[i].FindChild("Label").GetComponent<UILabel>().text = _players[i].GetPlayerName();
-		}
+		for(int i = 0; i < _players.Length; ++i)
+			if (_players[i].PlayerName.Length > 2)
+				_slotPerso[i].FindChild("Label").GetComponent<UILabel>().text = _players[i].PlayerName;
 	}
 	
 	public void			OnClickSelectCharacterOne()
 	{
-		_playerinfo.SetPlayerName(_players[0].GetPlayerName());
+		/*_playerinfo.SetPlayerName(_players[0].PlayerName);
 		if (_playerinfo.GetPlayerName().Length > 0)
 			_playerinfo.PlayerIsSet = true;
 		else
-			_playerinfo.PlayerIsSet = false;
+			_playerinfo.PlayerIsSet = false;*/
 	}
 	
 	public void			OnClickSelectCharacterTwo()
 	{
-		_playerinfo.SetPlayerName(_players[1].GetPlayerName());
+/*		_playerinfo.SetPlayerName(_players[1].GetPlayerName());
 		if (_playerinfo.GetPlayerName().Length > 0)
 			_playerinfo.PlayerIsSet = true;
 		else
-			_playerinfo.PlayerIsSet = false;
+			_playerinfo.PlayerIsSet = false;*/
 	}
 	
 	public void			OnClickSelectCharacterThree()
 	{
-		_playerinfo.SetPlayerName(_players[2].GetPlayerName());
+/*		_playerinfo.SetPlayerName(_players[2].GetPlayerName());
 		if (_playerinfo.GetPlayerName().Length > 0)
 			_playerinfo.PlayerIsSet = true;
 		else
-			_playerinfo.PlayerIsSet = false;
+			_playerinfo.PlayerIsSet = false;*/
 	}
 	
 	public void			OnClickLoadLobby()
 	{
-		if (_playerinfo.PlayerIsSet)
+/*		if (_playerinfo.PlayerIsSet)
 			Application.LoadLevel("ListePartie");
 		else
 		{
 			//TODO: Afficher l'erreur
 			Debug.LogError("Aucun joueur n'est selectionne");
-		}
+		}*/
 	}
 }

@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 
-// TODO: Renommer cette merde.
 public class UserReadiness : MonoBehaviour 
 {
 	public bool				Status = false;
@@ -18,7 +17,7 @@ public class UserReadiness : MonoBehaviour
 	
 	void	Start()
 	{
-		gameChatRoomManager.SetStatus(PlayerInfo.playerInfo.GetPlayerName(), Status);
+		gameChatRoomManager.SetStatus(RunTimeData.PlayerBase.PlayerName, Status);
 	}
 	
 	// Update is called once per frame
@@ -38,6 +37,6 @@ public class UserReadiness : MonoBehaviour
 		{
 			buttonReadyLabel.text = "Not Ready";
 		}
-		gameChatRoomManager.SetStatus(PlayerInfo.playerInfo.GetPlayerName(), Status);
+		gameChatRoomManager.SetStatus(RunTimeData.PlayerBase.PlayerName, Status);
 	}
 }
