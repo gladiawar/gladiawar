@@ -119,8 +119,7 @@ public var jumpPoseAnimation : AnimationClip;
 	if(!jumpPoseAnimation && canJump) {
 		_animation = null;
 		Debug.Log("No jump animation found and the character has canJump enabled. Turning off animations.");
-	}
-			
+	}	
 }
 
 
@@ -316,45 +315,6 @@ function Update() {
 	// Move the controller
 	var controller : CharacterController = GetComponent(CharacterController);
 	collisionFlags = controller.Move(movement);
-	
-	// ANIMATION sector
-	if(_animation) {
-		if(_characterState == CharacterState.Jumping) 
-		{
-			if(!jumpingReachedApex) {
-				_animation[jumpPoseAnimation.name].speed = jumpAnimationSpeed;
-				_animation[jumpPoseAnimation.name].wrapMode = WrapMode.ClampForever;
-				_animation.CrossFade(jumpPoseAnimation.name);
-			} else {
-				_animation[jumpPoseAnimation.name].speed = -landAnimationSpeed;
-				_animation[jumpPoseAnimation.name].wrapMode = WrapMode.ClampForever;
-				_animation.CrossFade(jumpPoseAnimation.name);				
-			}
-		} 
-		else 
-		{
-			if(controller.velocity.sqrMagnitude < 0.1) {
-				_animation.CrossFade(idleAnimation.name);
-			}
-			else 
-			{
-				if(_characterState == CharacterState.Running) {
-					_animation[runAnimation.name].speed = Mathf.Clamp(controller.velocity.magnitude, 0.0, runMaxAnimationSpeed);
-					_animation.CrossFade(runAnimation.name);	
-				}
-				else if(_characterState == CharacterState.Trotting) {
-					_animation[walkAnimation.name].speed = Mathf.Clamp(controller.velocity.magnitude, 0.0, trotMaxAnimationSpeed);
-					_animation.CrossFade(walkAnimation.name);	
-				}
-				else if(_characterState == CharacterState.Walking) {
-					_animation[walkAnimation.name].speed = Mathf.Clamp(controller.velocity.magnitude, 0.0, walkMaxAnimationSpeed);
-					_animation.CrossFade(walkAnimation.name);	
-				}
-				
-			}
-		}
-	}
-	// ANIMATION sector
 	
 	// Set rotation to the move direction
 	if (IsGrounded())
