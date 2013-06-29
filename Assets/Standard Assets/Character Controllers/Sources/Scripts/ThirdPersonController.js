@@ -23,7 +23,7 @@ enum CharacterState {
 	Jumping = 4,
 }
 
-private var _characterState : CharacterState;
+public var _characterState : CharacterState;
 
 // The speed when walking
 var walkSpeed = 2.0;
@@ -88,7 +88,7 @@ private var inAirVelocity = Vector3.zero;
 private var lastGroundedTime = 0.0;
 
 
-private var isControllable = true;
+public var isControllable = true;
 
 function Awake ()
 {

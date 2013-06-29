@@ -16,5 +16,6 @@ public class 				PlayerInfoBaseBehaviour : MonoBehaviour
 	{
 		RunTimeData.PlayerBase.PlayerName = PlayerName;
 		RunTimeData.PlayerBase.PlayerClass = PlayerClass;
+		Application.LoadLevel("Hub");
 	}
 }
