@@ -62,7 +62,6 @@ public class 				AnimationStateManager : MonoBehaviour
 		case eState.RUN:
 			MoveUpdateStatus(); break;
 		}
-		Debug.Log(_charCtrl.velocity.sqrMagnitude.ToString());
 	}
 	
 	private void			AttackUpdateCycle()
