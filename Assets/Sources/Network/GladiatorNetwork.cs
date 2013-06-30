@@ -15,6 +15,7 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 	Vector3					_playerPos;
 	Quaternion				_playerRot;
 	CharacterController		_charCtrl;
+	AnimationStateManager	_animationManager;
 	
 	void					Awake()
 	{
@@ -22,6 +23,7 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 		_ctrler = transform.GetComponent<ThirdPersonController>();
 		_attackEventManager = transform.GetComponent<AttackEventManager>();
 		_charCtrl = transform.GetComponent<CharacterController>();
+		_animationManager = transform.GetComponent<AnimationStateManager>();
 	}
 	
 	void 					Start()
@@ -35,6 +37,8 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 			((MonoBehaviour)_cam).enabled = false;
 			((MonoBehaviour)_ctrler).enabled = false;
 			((MonoBehaviour)_attackEventManager).enabled = false;
+			_charCtrl.enabled = false;
+			_animationManager.Remote = true;
 		}
 	}
 	
@@ -53,13 +57,13 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 		{
 			stream.SendNext(transform.position);
 			stream.SendNext(transform.rotation);
-			//stream.SendNext(_charCtrl.velocity);
+			stream.SendNext(_charCtrl.velocity);
 		}
 		else
 		{
 			_playerPos = (Vector3)stream.ReceiveNext();
 			_playerRot = (Quaternion)stream.ReceiveNext();
-			//_charCtrl.velocity = (Vector3)stream.ReceiveNext();
+			_animationManager.RemoteVelocity = (Vector3)stream.ReceiveNext();
 		}
 	}
 }

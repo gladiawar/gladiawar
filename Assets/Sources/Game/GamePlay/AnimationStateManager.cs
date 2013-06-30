@@ -17,6 +17,18 @@ public class 				AnimationStateManager : MonoBehaviour
 		ATTACK
 	}
 	
+	#region REMOTE
+	
+	private bool			_remote = false;
+	public bool				Remote
+	{ set { _remote = value; } }
+	
+	private Vector3			_velocity;
+	public Vector3			RemoteVelocity
+	{ set { _velocity = value; } }
+	
+	#endregion
+	
 	private Animation		_animation;
 	private CharacterController _charCtrl;
 	
@@ -50,6 +62,7 @@ public class 				AnimationStateManager : MonoBehaviour
 		case eState.RUN:
 			MoveUpdateStatus(); break;
 		}
+		Debug.Log(_charCtrl.velocity.sqrMagnitude.ToString());
 	}
 	
 	private void			AttackUpdateCycle()
@@ -60,15 +73,17 @@ public class 				AnimationStateManager : MonoBehaviour
 	
 	private void			IdleUpdateCycle()
 	{
-		if (_charCtrl.velocity.sqrMagnitude > 0.1)
-			_state = ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) ? eState.RUN : eState.WALK);
+		if ((_remote ? _velocity.sqrMagnitude : _charCtrl.velocity.sqrMagnitude) > 20f)
+			_state = eState.RUN;
+		if ((_remote ? _velocity.sqrMagnitude : _charCtrl.velocity.sqrMagnitude) > 0.1)
+			_state = eState.WALK;
 		else
 			_animation.CrossFade("idle");
 	}
 	
 	private void			MoveUpdateStatus()
 	{
-		if (_charCtrl.velocity.sqrMagnitude < 0.1)
+		if ((_remote ? _velocity.sqrMagnitude : _charCtrl.velocity.sqrMagnitude) < 0.1)
 			State = eState.IDLE;
 		else if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
 			State = eState.RUN;
