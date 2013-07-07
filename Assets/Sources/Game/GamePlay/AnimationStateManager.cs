@@ -91,6 +91,8 @@ public class 				AnimationStateManager : MonoBehaviour
 	
 	private void			majAnimation()
 	{
+		if (_animation == null)
+			return ;
 		switch (_state)
 		{
 		case eState.ATTACK:
