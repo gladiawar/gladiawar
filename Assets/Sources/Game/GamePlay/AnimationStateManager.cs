@@ -99,6 +99,8 @@ public class 				AnimationStateManager : MonoBehaviour
 			_animation.CrossFade("walk"); break;
 		case eState.RUN:
 			_animation.CrossFade("run fast"); break;
+		case eState.IDLE:
+			_animation.CrossFade("idle"); break;
 		}
 	}
 }

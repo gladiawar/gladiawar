@@ -39,6 +39,10 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 			((MonoBehaviour)_attackEventManager).enabled = false;
 			_charCtrl.enabled = false;
 			_animationManager.Remote = true;
+			CapsuleCollider cc = gameObject.AddComponent<CapsuleCollider>();
+			cc.radius = 0.4f;
+			cc.height = 1.4f;
+			cc.center = new Vector3(0, 0.6f, 0);
 		}
 	}
 	
@@ -57,7 +61,7 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 		{
 			stream.SendNext(transform.position);
 			stream.SendNext(transform.rotation);
-			stream.SendNext((uint)_animationManager.State);
+			stream.SendNext((int)_animationManager.State);
 		}
 		else
 		{
