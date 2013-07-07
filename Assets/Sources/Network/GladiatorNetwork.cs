@@ -57,13 +57,13 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 		{
 			stream.SendNext(transform.position);
 			stream.SendNext(transform.rotation);
-			stream.SendNext(_charCtrl.velocity);
+			stream.SendNext((uint)_animationManager.State);
 		}
 		else
 		{
 			_playerPos = (Vector3)stream.ReceiveNext();
 			_playerRot = (Quaternion)stream.ReceiveNext();
-			_animationManager.RemoteVelocity = (Vector3)stream.ReceiveNext();
+			_animationManager.State = (AnimationStateManager.eState)stream.ReceiveNext();
 		}
 	}
 }
