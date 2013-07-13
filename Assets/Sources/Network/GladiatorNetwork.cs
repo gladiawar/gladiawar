@@ -18,6 +18,20 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 	AnimationStateManager	_animationManager;
 	int						_playerTouched = -1;
 	
+	int						_life = 100;
+	public int				Life
+	{
+		get { return (_life); }
+		set
+		{
+			_life = value;
+			if (_life <= 0)
+			{
+				_life = 0;
+			}
+		}
+	}
+	
 	public static GladiatorNetwork _myGladiator;
 	
 	void					Awake()
@@ -95,6 +109,6 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 	
 	public void				ReceiveAttack()
 	{
-		Debug.Log("touched !");
+		Life -= 10;
 	}
 }
