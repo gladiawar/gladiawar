@@ -16,6 +16,9 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 	Quaternion				_playerRot;
 	CharacterController		_charCtrl;
 	AnimationStateManager	_animationManager;
+	int						_playerTouched = -1;
+	
+	public static GladiatorNetwork _myGladiator;
 	
 	void					Awake()
 	{
@@ -31,6 +34,7 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 		if (photonView.isMine)
 		{
 			_cam.cameraTransform = Camera.mainCamera.transform;
+			_myGladiator = this;
 		}
 		else
 		{
@@ -62,12 +66,35 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 			stream.SendNext(transform.position);
 			stream.SendNext(transform.rotation);
 			stream.SendNext((int)_animationManager.State);
+			stream.SendNext(_playerTouched);
+			_playerTouched = -1;
 		}
 		else
 		{
+			int				ptd;
+			
 			_playerPos = (Vector3)stream.ReceiveNext();
 			_playerRot = (Quaternion)stream.ReceiveNext();
 			_animationManager.State = (AnimationStateManager.eState)stream.ReceiveNext();
+			ptd = (int)stream.ReceiveNext();
+			if (ptd > -1)
+			{
+				PhotonView	pv = PhotonView.Find(ptd);
+				
+				if (pv.isMine)
+					GladiatorNetwork._myGladiator.ReceiveAttack();
+			}
 		}
+	}
+	
+	
+	public void				SendAttack(PhotonView other)
+	{
+		_playerTouched = other.viewID;
+	}
+	
+	public void				ReceiveAttack()
+	{
+		Debug.Log("touched !");
 	}
 }
