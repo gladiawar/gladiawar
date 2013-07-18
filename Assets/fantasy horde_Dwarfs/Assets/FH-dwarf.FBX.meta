@@ -314,10 +314,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: idle break
       takeName: 
       firstFrame: 120
@@ -336,10 +335,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: talk
       takeName: 
       firstFrame: 190
@@ -358,10 +356,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: salute
       takeName: 
       firstFrame: 290
@@ -380,10 +377,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: crouch
       takeName: 
       firstFrame: 340
@@ -402,10 +398,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: die1
       takeName: 
       firstFrame: 370
@@ -424,10 +419,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: die2
       takeName: 
       firstFrame: 450
@@ -446,10 +440,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: idle to fight idle
       takeName: 
       firstFrame: 490
@@ -468,10 +461,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: fight idle
       takeName: 
       firstFrame: 510
@@ -490,10 +482,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: fight idle break
       takeName: 
       firstFrame: 560
@@ -512,10 +503,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: hit
       takeName: 
       firstFrame: 600
@@ -534,10 +524,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: punch
       takeName: 
       firstFrame: 620
@@ -556,10 +545,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: attack1
       takeName: 
       firstFrame: 640
@@ -578,10 +566,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: attack2
       takeName: 
       firstFrame: 665
@@ -600,10 +587,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: attack3
       takeName: 
       firstFrame: 690
@@ -622,10 +608,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: special
       takeName: 
       firstFrame: 720
@@ -644,10 +629,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: block
       takeName: 
       firstFrame: 760
@@ -666,10 +650,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: jump
       takeName: 
       firstFrame: 800
@@ -688,10 +671,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: idle to working
       takeName: 
       firstFrame: 845
@@ -710,10 +692,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: 'working '
       takeName: 
       firstFrame: 860
@@ -732,10 +713,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: working to idle
       takeName: 
       firstFrame: 920
@@ -754,10 +734,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: sit
       takeName: 
       firstFrame: 960
@@ -776,10 +755,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: sit cheers
       takeName: 
       firstFrame: 1000
@@ -798,10 +776,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: shot
       takeName: 
       firstFrame: 1100
@@ -820,10 +797,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: fight idle to shot
       takeName: 
       firstFrame: 1100
@@ -842,10 +818,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: shot loop
       takeName: 
       firstFrame: 1115
@@ -864,10 +839,9 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     - name: shot to fight idle
       takeName: 
       firstFrame: 1135
@@ -886,20 +860,21 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      skeletonMaskElements: []
+      transformMask: []
     isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: .00999999978
-    meshCompression: 0
+    meshCompression: 3
     addColliders: 0
+    importBlendShapes: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
+    weldVertices: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88

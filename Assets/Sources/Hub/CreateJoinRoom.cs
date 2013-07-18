@@ -29,6 +29,6 @@ public class 				CreateJoinRoom : Photon.MonoBehaviour
 	
 	void 					OnJoinedRoom()
 	{
-		Application.LoadLevel("GamePlayDevScene1");
+		Application.LoadLevel("Map1");
 	}
 }

@@ -7,6 +7,7 @@
 
 using						UnityEngine;
 using						System.Collections;
+using						System.Collections.Generic;
 
 public class 				LogicInGame : MonoBehaviour
 {
@@ -28,11 +29,23 @@ public class 				LogicInGame : MonoBehaviour
 	
 	void					SpawnPlayer()
 	{
-		GameObject			myPlayer = PhotonNetwork.Instantiate("NormalPlayer", new Vector3(11, 0.65f, -25), Quaternion.Euler(new Vector3(0, 0, 0)), 0);
+		Spawn				spawn = GetMySpawn();
+		GameObject			myPlayer = PhotonNetwork.Instantiate("NormalPlayer", spawn.transform.position, spawn.transform.rotation, 0);
 		PhotonView			pv;
 		
 		myPlayer.name = RunTimeData.PlayerBase.PlayerName;
 		pv = myPlayer.GetComponent<PhotonView>();
 		pv.ownerId = PhotonNetwork.player.ID;
+		HUDInitializer.Instance.init(myPlayer.GetComponent<GladiatorNetwork>());
+	}
+	
+	Spawn					GetMySpawn()
+	{
+		List<Spawn>			spawnList = SpawnManager.Instance.SpawnList;
+		
+		foreach (Spawn spawn in spawnList)
+			if (spawn.master == PhotonNetwork.isMasterClient)
+				return (spawn);
+		return (null);
 	}
 }

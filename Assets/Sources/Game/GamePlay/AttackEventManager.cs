@@ -70,11 +70,11 @@ public class 				AttackEventManager : MonoBehaviour
 		switch (_animationPhase)
 		{
 		case 0:
-			direction = transform.TransformDirection(new Vector3(0.5f, 0, 0.5f)); break;
+			direction = transform.TransformDirection(new Vector3(0.35f, 0, 0.65f)); break;
 		case 1:
 			direction = transform.TransformDirection(Vector3.forward); break;
 		default:
-			direction = transform.TransformDirection(new Vector3(-0.5f, 0, 0.5f)); break;
+			direction = transform.TransformDirection(new Vector3(-0.35f, 0, 0.65f)); break;
 		}
 		if (Physics.Raycast(transform.position, direction, out rcData, 0.9f, _layerGladiator))
 		{
