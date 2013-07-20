@@ -14,7 +14,9 @@ public class 				AnimationStateManager : MonoBehaviour
 		IDLE,
 		WALK,
 		RUN,
-		ATTACK
+		ATTACK,
+		RECEIVEATTACK,
+		DIE
 	}
 	
 	#region REMOTE
@@ -27,6 +29,8 @@ public class 				AnimationStateManager : MonoBehaviour
 	
 	private Animation		_animation;
 	private CharacterController _charCtrl;
+	
+	public GameObject[]		_particle;
 	
 	private eState			_state;
 	public eState			State
@@ -55,7 +59,9 @@ public class 				AnimationStateManager : MonoBehaviour
 			case eState.IDLE:
 				IdleUpdateCycle(); break;
 			case eState.ATTACK:
-				AttackUpdateCycle(); break;
+				WaitForAnimationPlaying("attack1"); break;
+			case eState.RECEIVEATTACK:
+				WaitForAnimationPlaying("hit"); break;
 			case eState.WALK:
 			case eState.RUN:
 				MoveUpdateStatus(); break;
@@ -63,9 +69,9 @@ public class 				AnimationStateManager : MonoBehaviour
 		}
 	}
 	
-	private void			AttackUpdateCycle()
+	private void			WaitForAnimationPlaying(string animationName)
 	{
-		if (!_animation.IsPlaying("attack1"))
+		if (!_animation.IsPlaying(animationName))
 			_state = eState.IDLE;
 	}
 	
@@ -76,7 +82,7 @@ public class 				AnimationStateManager : MonoBehaviour
 		else if (_charCtrl.velocity.sqrMagnitude > 0.1f)
 			_state = eState.WALK;
 		else
-			_animation.CrossFade("idle");
+			_animation.CrossFade("fight idle");
 	}
 	
 	private void			MoveUpdateStatus()
@@ -102,7 +108,27 @@ public class 				AnimationStateManager : MonoBehaviour
 		case eState.RUN:
 			_animation.CrossFade("run fast"); break;
 		case eState.IDLE:
-			_animation.CrossFade("idle"); break;
+			_animation.CrossFade("fight idle"); break;
+		case eState.RECEIVEATTACK:
+			bloodGiclure();
+			_animation.CrossFade("hit"); break;
+		case eState.DIE:
+			bloodDie();
+			_animation.CrossFade("die1"); break;
 		}
+	}
+	
+	private void			bloodGiclure()
+	{
+		GameObject			giclure = CFX_SpawnSystem.GetNextObject(_particle[0], true);
+		
+		giclure.transform.position = transform.position + new Vector3(0, 0.6f, 0);
+	}
+	
+	private void			bloodDie()
+	{
+		GameObject			blood = CFX_SpawnSystem.GetNextObject(_particle[1], true);
+		
+		blood.transform.position = transform.position;
 	}
 }

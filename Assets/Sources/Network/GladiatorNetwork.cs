@@ -28,7 +28,10 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 			if (_life <= 0)
 			{
 				_life = 0;
+				_animationManager.State = AnimationStateManager.eState.DIE;
 			}
+			else
+				_animationManager.State = AnimationStateManager.eState.RECEIVEATTACK;
 		}
 	}
 	
@@ -86,10 +89,13 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 		else
 		{
 			int				ptd;
+			AnimationStateManager.eState state;
 			
 			_playerPos = (Vector3)stream.ReceiveNext();
 			_playerRot = (Quaternion)stream.ReceiveNext();
-			_animationManager.State = (AnimationStateManager.eState)stream.ReceiveNext();
+			state = (AnimationStateManager.eState)stream.ReceiveNext();
+			if (_animationManager.State != state)
+				_animationManager.State = state;
 			ptd = (int)stream.ReceiveNext();
 			if (ptd > -1)
 			{

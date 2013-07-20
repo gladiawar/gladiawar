@@ -39,6 +39,8 @@ public class 				AttackEventManager : MonoBehaviour
 	
 	void					LaunchAttack()
 	{
+		if (_gladiatorNetwork.Life == 0)
+			return ;
 		_animMngr.State = AnimationStateManager.eState.ATTACK;
 		_onAttack = true;
 		_haveTouched = false;
