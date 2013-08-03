@@ -67,8 +67,10 @@ public class 				GladiatorController : MonoBehaviour
 		case eCharState.WALKING:
 		case eCharState.RUNNING:
 			updateMovementFromForward(); break;
+		case eCharState.BACK:
+			if (Input.GetKeyUp(KeyCode.S)) _characterState = eCharState.IDLE; break;
 		}
-		if (_characterState == eCharState.WALKING || _characterState == eCharState.RUNNING)
+		if (_characterState == eCharState.WALKING || _characterState == eCharState.RUNNING || _characterState == eCharState.BACK)
 			moveForward(ref targetSpeed);
 		_moveSpeed = Mathf.Lerp(_moveSpeed, targetSpeed, _acceleration);
 		applyMovement();
@@ -90,6 +92,8 @@ public class 				GladiatorController : MonoBehaviour
 			if (Input.GetKeyDown(KeyCode.LeftShift))
 				_characterState = eCharState.RUNNING;
 		}
+		else if (Input.GetKeyDown(KeyCode.S))
+			_characterState = eCharState.BACK;
 	}
 	
 	void					updateMovementFromForward()
@@ -107,8 +111,10 @@ public class 				GladiatorController : MonoBehaviour
 	
 	void					moveForward(ref float targetSpeed)
 	{
-		targetSpeed = _walkSpeed;	
-		if (_characterState == eCharState.RUNNING)
+		targetSpeed = _walkSpeed;
+		if (_characterState == eCharState.BACK)
+			targetSpeed *= -1;
+		else if (_characterState == eCharState.RUNNING)
 			targetSpeed *= _factorRun;
 	}
 }

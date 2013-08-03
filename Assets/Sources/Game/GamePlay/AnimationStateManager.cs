@@ -14,6 +14,7 @@ public class 				AnimationStateManager : MonoBehaviour
 		IDLE,
 		WALK,
 		RUN,
+		BACK,
 		ATTACK,
 		RECEIVEATTACK,
 		DIE
@@ -64,6 +65,7 @@ public class 				AnimationStateManager : MonoBehaviour
 				WaitForAnimationPlaying("hit"); break;
 			case eState.WALK:
 			case eState.RUN:
+			case eState.BACK:
 				MoveUpdateStatus(); break;
 			}
 		}
@@ -81,13 +83,17 @@ public class 				AnimationStateManager : MonoBehaviour
 			_state = eState.RUN;
 		else if (_charCtrl.velocity.sqrMagnitude > 0.1f)
 			_state = eState.WALK;
+		else if (_charCtrl.velocity.sqrMagnitude < -0.1f)
+			_state = eState.BACK;
 		else
 			_animation.CrossFade("fight idle");
 	}
 	
 	private void			MoveUpdateStatus()
 	{
-		if (_charCtrl.velocity.sqrMagnitude < 0.1)
+		if (_charCtrl.velocity.sqrMagnitude < -0.1f)
+			State = eState.BACK;
+		else if (_charCtrl.velocity.sqrMagnitude < 0.1)
 			State = eState.IDLE;
 		else if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
 			State = eState.RUN;
@@ -104,6 +110,10 @@ public class 				AnimationStateManager : MonoBehaviour
 		case eState.ATTACK:
 			_animation.CrossFade("attack1"); break;
 		case eState.WALK:
+			animation["walk"].speed = 1.0f;
+			_animation.CrossFade("walk"); break;
+		case eState.BACK:
+			animation["walk"].speed = -1.0f;
 			_animation.CrossFade("walk"); break;
 		case eState.RUN:
 			_animation.CrossFade("run fast"); break;
