@@ -22,7 +22,10 @@ public static class 			RunTimeData
 		get
 		{
 			if (_playerBase == null)
+			{
 				_playerBase = new PlayerBase();
+				_playerBase.PlayerName = "testplayer" + Random.Range(0, 100).ToString();
+			}
 			return (_playerBase);
 		}
 	}

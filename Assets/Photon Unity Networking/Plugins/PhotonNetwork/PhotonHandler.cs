@@ -4,11 +4,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Threading;
 using ExitGames.Client.Photon;
 using UnityEngine;
-using System.Collections;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
+
 
 /// <summary>
 /// Internal Monobehaviour that allows Photon to run an Update loop.
@@ -132,17 +131,13 @@ internal class PhotonHandler : Photon.MonoBehaviour, IPhotonPeerListener
         {
             Hashtable setScene = new Hashtable();
             setScene[NetworkingPeer.CurrentSceneProperty] = Application.loadedLevelName;
-            PhotonNetwork.room.SetCustomProperties(setScene);
+            //PhotonNetwork.room.SetCustomProperties(setScene);
         }
     }
 
     public static void StartFallbackSendAckThread()
     {
-        sendThreadShouldRun = true;
-        Thread sendThread = new Thread(FallbackSendAckThread);
-        sendThread.Name = "FallbackSendAck";
-        sendThread.IsBackground = true;
-        sendThread.Start();
+        SupportClass.CallInBackground(FallbackSendAckThread);
     }
 
     public static void StopFallbackSendAckThread()
@@ -150,13 +145,15 @@ internal class PhotonHandler : Photon.MonoBehaviour, IPhotonPeerListener
         sendThreadShouldRun = false;
     }
 
-    public static void FallbackSendAckThread()
+    public static bool FallbackSendAckThread()
     {
-        while (sendThreadShouldRun && PhotonNetwork.networkingPeer != null)
+        if (sendThreadShouldRun && PhotonNetwork.networkingPeer != null)
         {
             PhotonNetwork.networkingPeer.SendAcksOnly();
-            Thread.Sleep((PhotonNetwork.isMessageQueueRunning) ? 500 : 50);
+            return true;
         }
+
+        return false;
     }
 
     #region Implementation of IPhotonPeerListener

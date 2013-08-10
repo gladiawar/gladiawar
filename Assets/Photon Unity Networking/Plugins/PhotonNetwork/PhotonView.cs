@@ -8,11 +8,13 @@
 // <author>developer@exitgames.com</author>
 // ----------------------------------------------------------------------------
 
+using UnityEngine;
+using System.Reflection;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-using UnityEngine;
-using System.Reflection;
+
 
 public enum ViewSynchronization { Off, ReliableDeltaCompressed, Unreliable }
 public enum OnSerializeTransform { OnlyPosition, OnlyRotation, OnlyScale, PositionAndRotation, All }
@@ -236,9 +238,12 @@ public class PhotonView : Photon.MonoBehaviour
 
     public void RPC(string methodName, PhotonTargets target, params object[] parameters)
     {
-		if(PhotonNetwork.networkingPeer.hasSwitchedMC && target == PhotonTargets.MasterClient){
+		if(PhotonNetwork.networkingPeer.hasSwitchedMC && target == PhotonTargets.MasterClient)
+        {
 			PhotonNetwork.RPC(this, methodName, PhotonNetwork.masterClient, parameters);
-		}else{
+		}
+        else
+        {
         	PhotonNetwork.RPC(this, methodName, target, parameters);
 		}
     }
