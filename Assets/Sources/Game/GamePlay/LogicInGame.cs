@@ -11,6 +11,8 @@ using						System.Collections.Generic;
 
 public class 				LogicInGame : MonoBehaviour
 {
+	public List<ALaunchEvent> _startEvent;
+	
 	private bool			_wait = true;
 	
 	void					Start()
