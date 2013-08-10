@@ -9,41 +9,57 @@ using						System.Collections;
 
 public class 				GladiatorController : MonoBehaviour
 {
-	public enum 			eCharState
-	{
-		IDLE,
-		WALKING,
-		RUNNING,
-		STRAFELEFT,
-		STRAFERIGHT,
-		BACK
-	}
-	
 	public float			_gravity;
 	public float			_walkSpeed;
 	public float			_factorRun;
 	public float			_acceleration;
 	public float			_sensibility;
 	
-	private eCharState		_characterState;
 	private AnimationStateManager _ASM;
 	private float			_verticalSpeed = 0.0f;
 	private CharacterController _charCtrl;
 	private float			_moveSpeed = 0.0f;
+	private Vector3			_vForward;
 	
 	void					Start()
 	{
 		_charCtrl = transform.GetComponent<CharacterController>();
 		_ASM = transform.GetComponent<AnimationStateManager>();
-		_characterState = eCharState.IDLE;
 		Screen.showCursor = false;
 	}
 	
-	void 					Update()
+	void					Update()
 	{
 		applyGravity();
 		changeRotation();
 		updateMovement();
+	}
+	
+	void					updateMovement()
+	{
+		float				targetSpeed = 0;
+		
+		if (Input.GetKey(Keyboard.Action_Forward) ^ Input.GetKey(Keyboard.Action_Back))
+		{
+			bool			back = Input.GetKey(Keyboard.Action_Back);
+			
+			if (Input.GetKey(Keyboard.Action_Left) && !Input.GetKey(Keyboard.Action_Right))
+				_vForward = new Vector3((back ? 0.5f : -0.5f), 0, 0.5f);
+			else if (!Input.GetKey(Keyboard.Action_Left) && Input.GetKey(Keyboard.Action_Right))
+				_vForward = new Vector3((back ? -0.5f : 0.5f), 0, 0.5f);
+			else
+				_vForward = Vector3.forward;
+			moveForward(ref targetSpeed, back, Input.GetKey(Keyboard.Action_Run));
+			if (back)
+				_ASM.State = AnimationStateManager.eState.BACK;
+		}
+		else if (Input.GetKey(Keyboard.Action_Left) ^ Input.GetKey(Keyboard.Action_Right))
+		{
+			_vForward = (Input.GetKey(Keyboard.Action_Left) ? Vector3.left : Vector3.right);
+			moveForward(ref targetSpeed);
+		}
+		_moveSpeed = Mathf.Lerp(_moveSpeed, targetSpeed, _acceleration);
+		applyMovement();
 	}
 	
 	void					applyGravity()
@@ -58,68 +74,20 @@ public class 				GladiatorController : MonoBehaviour
 		transform.Rotate(0, rotation, 0);
 	}
 	
-	void					updateMovement()
-	{
-		float				targetSpeed = 0;
-		
-		switch (_characterState)
-		{
-		case eCharState.IDLE:
-			updateMovementFromIdle(); break;
-		case eCharState.WALKING:
-		case eCharState.RUNNING:
-			updateMovementFromForward(); break;
-		case eCharState.BACK:
-			if (Input.GetKeyUp(Keyboard.Action_Back)) _characterState = eCharState.IDLE; break;
-		}
-		if (_characterState == eCharState.WALKING || _characterState == eCharState.RUNNING || _characterState == eCharState.BACK)
-			moveForward(ref targetSpeed);
-		_moveSpeed = Mathf.Lerp(_moveSpeed, targetSpeed, _acceleration);
-		applyMovement();
-	}
-	
 	void					applyMovement()
 	{
 		float			currentYRotation = transform.eulerAngles.y;
 		Quaternion		RotationY = Quaternion.Euler(0, currentYRotation, 0);
-			
-		_charCtrl.Move((RotationY * Vector3.forward * Time.deltaTime * _moveSpeed) + new Vector3(0, _verticalSpeed, 0));
+
+		_charCtrl.Move((RotationY * _vForward * Time.deltaTime * _moveSpeed) + new Vector3(0, _verticalSpeed, 0));
 	}
 	
-	void					updateMovementFromIdle()
-	{
-		if (Input.GetKeyDown(Keyboard.Action_Forward))
-		{
-			_characterState = eCharState.WALKING;
-			if (Input.GetKeyDown(Keyboard.Action_Run))
-				_characterState = eCharState.RUNNING;
-		}
-		else if (Input.GetKeyDown(Keyboard.Action_Back))
-		{
-			_characterState = eCharState.BACK;
-			_ASM.State = AnimationStateManager.eState.BACK;
-		}
-	}
-	
-	void					updateMovementFromForward()
-	{
-		if (_characterState == eCharState.RUNNING)
-		{
-			if (Input.GetKeyUp(Keyboard.Action_Run))
-				_characterState = eCharState.WALKING;
-		}
-		else if (Input.GetKeyDown(Keyboard.Action_Run))
-			_characterState = eCharState.RUNNING;
-		if (Input.GetKeyUp(Keyboard.Action_Forward))
-			_characterState = eCharState.IDLE;
-	}
-	
-	void					moveForward(ref float targetSpeed)
+	void					moveForward(ref float targetSpeed, bool back = false, bool running = false)
 	{
 		targetSpeed = _walkSpeed;
-		if (_characterState == eCharState.BACK)
+		if (back)
 			targetSpeed *= -1;
-		else if (_characterState == eCharState.RUNNING)
+		else if (running)
 			targetSpeed *= _factorRun;
 	}
 }
