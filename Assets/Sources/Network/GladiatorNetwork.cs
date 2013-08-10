@@ -9,8 +9,8 @@ using						System.Collections;
 
 public class 				GladiatorNetwork : Photon.MonoBehaviour
 {
-	ThirdPersonCamera		_cam;
-	ThirdPersonController	_ctrler;
+	GladiatorCamera			_cam;
+	GladiatorController		_ctrler;
 	AttackEventManager		_attackEventManager;
 	Vector3					_playerPos;
 	Quaternion				_playerRot;
@@ -39,8 +39,8 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 	
 	void					Awake()
 	{
-		_cam = transform.GetComponent<ThirdPersonCamera>();
-		_ctrler = transform.GetComponent<ThirdPersonController>();
+		_cam = transform.GetComponent<GladiatorCamera>();
+		_ctrler = transform.GetComponent<GladiatorController>();
 		_attackEventManager = transform.GetComponent<AttackEventManager>();
 		_charCtrl = transform.GetComponent<CharacterController>();
 		_animationManager = transform.GetComponent<AnimationStateManager>();
@@ -49,10 +49,7 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 	void 					Start()
 	{
 		if (photonView.isMine)
-		{
-			_cam.cameraTransform = Camera.mainCamera.transform;
 			_myGladiator = this;
-		}
 		else
 		{
 			((MonoBehaviour)_cam).enabled = false;
