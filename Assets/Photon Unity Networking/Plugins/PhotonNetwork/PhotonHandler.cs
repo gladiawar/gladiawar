@@ -5,6 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Threading;
 using ExitGames.Client.Photon;
 using UnityEngine;
 using System.Collections;
@@ -23,8 +24,10 @@ internal class PhotonHandler : Photon.MonoBehaviour, IPhotonPeerListener
     private int nextSendTickCount = 0;
 
     private int nextSendTickCountOnSerialize = 0;
+    
+    private static bool sendThreadShouldRun;
 
-    private void Awake()
+    protected void Awake()
     {
         if (SP != null && SP != this && SP.gameObject != null)
         {
@@ -36,9 +39,18 @@ internal class PhotonHandler : Photon.MonoBehaviour, IPhotonPeerListener
 
         this.updateInterval = 1000 / PhotonNetwork.sendRate;
         this.updateIntervalOnSerialize = 1000 / PhotonNetwork.sendRateOnSerialize;
+
+        PhotonHandler.StartFallbackSendAckThread();
     }
 
-    private void Update()
+    /// <summary>Called by Unity when the application is closed. Tries to disconnect.</summary>
+    protected void OnApplicationQuit()
+    {
+        PhotonNetwork.Disconnect();
+        PhotonHandler.StopFallbackSendAckThread();
+    }
+
+    protected void Update()
     {
         if (PhotonNetwork.networkingPeer == null)
         {
@@ -90,12 +102,6 @@ internal class PhotonHandler : Photon.MonoBehaviour, IPhotonPeerListener
         }
     }
 
-    /// <summary>Called by Unity when the application is closed. Tries to disconnect.</summary>
-    protected void OnApplicationQuit()
-    {
-        PhotonNetwork.Disconnect();
-    }
-
     /// <summary>Called by Unity after a new level was loaded.</summary>
     protected void OnLevelWasLoaded(int level)
     {
@@ -130,22 +136,26 @@ internal class PhotonHandler : Photon.MonoBehaviour, IPhotonPeerListener
         }
     }
 
-    public static void StartThread()
+    public static void StartFallbackSendAckThread()
     {
-        System.Threading.Thread sendThread = new System.Threading.Thread(new System.Threading.ThreadStart(MyThread));
+        sendThreadShouldRun = true;
+        Thread sendThread = new Thread(FallbackSendAckThread);
+        sendThread.Name = "FallbackSendAck";
+        sendThread.IsBackground = true;
         sendThread.Start();
     }
 
-    // keeps connection alive while loading
-    public static void MyThread()
+    public static void StopFallbackSendAckThread()
     {
-        while (PhotonNetwork.networkingPeer != null && PhotonNetwork.networkingPeer.IsSendingOnlyAcks)
-        {
-            while (PhotonNetwork.networkingPeer.SendAcksOnly())
-            {
-            }
+        sendThreadShouldRun = false;
+    }
 
-            System.Threading.Thread.Sleep(50);
+    public static void FallbackSendAckThread()
+    {
+        while (sendThreadShouldRun && PhotonNetwork.networkingPeer != null)
+        {
+            PhotonNetwork.networkingPeer.SendAcksOnly();
+            Thread.Sleep((PhotonNetwork.isMessageQueueRunning) ? 500 : 50);
         }
     }
 

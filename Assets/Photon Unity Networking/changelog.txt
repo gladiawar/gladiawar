@@ -1,3 +1,23 @@
+v1.22 ()
+Changed: AuthenticationValues can now have AuthPostData (needed for some communities which have huge session tokens). Use SetAuthPostData with either byte[] or string parameter.
+Added: CustomAuthenticationType enum includes Steam and Facebook now, enabling those as authentication services.
+
+
+v1.21 (10. July 2013)
+Added: Lite version of the PUN Guide by M2H
+Changed: Moved all demos to "PUN/Demos/" folder
+Changed: Destroy methods and operations for those. Cleanup of workflow. This might break your game on update from previous versions. Keep an eye on Destroy usage if it mis-behaves after an update.
+Removed: Support for Transform sending as custom type. It's technically impossible to create a Transform without a Unity game object, so we can't replicate them. Instead, send Position, Rotation and Scale where needed.
+Changed: DisconnectCause to more explicit names. TimeoutDisconnect is now: DisconnectByClientTimeout. DisconnectByServer is now: DisconnectByServerTimeout
+Added: Feature to override/set a Master Client manually. Default Master Client selection will trigger when a Master leaves and only this "default" selected Master Client can assign another one via SetMasterClient().
+Added: PunEvent.AssignMaster as internal event to override the current master client.
+Internal: Changed implementation of CheckMasterClient(). Should be a bit cleaner and leaner.
+Internal: Renamed PhotonNetworkMessages to PunEvent. This is usually only used by code in PUN's classes, not in your game.
+Fixed: When a game uses Connect with a server-address, this is set as MasterServer address and after playing a game, the client will return to that server. This fixes the case when you don't use ConnectUsingSettings().
+Internal: GameVersion and PunVersion are combined for the (internal) virtual-app version string, they are now separated by underscore: '_'.
+Added: PhotonNetwork.ResentReliableCommands. It can be an indicator for bad connections and as such is helpful during issue analysis.
+Updated: To Photon client lib v3.2.1.4, containing a few minor fixes.
+
 v1.20 (19 April 2013)
 Added: Features "Find Friends" and "Custom Authentication" plus (simple) demo.
 Added: PhotonNetwork.FindFriends(string[] friendsToFind) to be used with (external) friends lists. If all users set their names before connecting, they could be found using this method and it's possible to join their games/rooms.
@@ -18,13 +38,11 @@ Changed: The ServerSettings field is now public (to be able to read and show set
 Internal: ServerSettings file now has an enum CloudServerRegion. Used as names-list and in a few methods
 Added: PhotonNetwork.ConnectToBestCloudServer(gameVersion) to connect the region with best ping. The PingCloudRegions script automatically pings available regions once, then saves the results in the PlayerPrefs. Currently this is enabled by default.
 
-
 v1.19.3 (12. April 2013)
 Fixed: DemoSynchronization was missing a script on the CubeInterpo (game object)
 Fixed: OfflineMode for all overrides of CreateRoom() will now call both OnCreatedRoom() and OnJoinedRoom().
 Fixed: Inspector for PhotonViews now makes the Editor save every change in the component. Before, prefabs were overriding (linked) objects in the hierarchy/scene.
 Changed: PhotonViewInspector now shows if the (local) client is controlling a GameObject (via PhotonView).
-
 
 v1.19.1 (14. March 2013)
 Fixed: Calls to OnMasterClientSwitched are now re-enabled. They went missing in 1.18, it seems. If a proper player was master before, then OnMasterClientSwitched is called when a new master was picked.
@@ -44,7 +62,6 @@ Changed: Log entries for failed random matchmaking. It's perfectly ok that somet
 Changed: Instead of sending RPC names, PUN now compiles an index of RPC-methods and sends a shortcut (just a byte). RPC searching is done in-Editor. Currently a byte is used as shortcut, enabling 255 distinct RPC methods. PUN can be modified to use short or int as shortcuts (look up comments "LIMITS RPC COUNT").
 Changed: ServerSettings class is extended by the RPC-List. The PhotonServerSettings asset will be updated seamlessly if this new PUN version is imported. Copying the new class file over older ones will erease your settinsg and you might need to edit them again.
 Changed: RPC calls without parameters are now a little more compact, cause the key for parameters is skipped.
-
 
 v1.18.2 (18. February 2013)
 Updated: To a new Photon Client library (v3.2.0.1) which includes a fix for disconnects caused by network simulation.
