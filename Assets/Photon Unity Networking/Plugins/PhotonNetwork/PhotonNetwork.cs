@@ -3,17 +3,17 @@
 //   Part of: Photon Unity Networking
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using UnityEngine;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using ExitGames.Client.Photon;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 /// <summary>
 /// The main class to use the PhotonNetwork plugin.
@@ -23,7 +23,7 @@ using Debug = UnityEngine.Debug;
 public static class PhotonNetwork
 {
     /// <summary>Version number of PUN. Also used in GameVersion to separate client version from each other.</summary>
-    public const string versionPUN = "1.21";
+    public const string versionPUN = "1.22";
 
     /// <summary>
     /// This Monobehaviour allows Photon to run an Update loop.
@@ -803,7 +803,10 @@ public static class PhotonNetwork
         // Set up a MonoBehaviour to run Photon, and hide it
         GameObject photonGO = new GameObject();
         photonMono = (PhotonHandler)photonGO.AddComponent<PhotonHandler>();
+
+#if !(UNITY_WINRT || UNITY_WP8)
         photonGO.AddComponent<PingCloudRegions>();
+#endif
         photonGO.name = "PhotonMono";
         photonGO.hideFlags = HideFlags.HideInHierarchy;
 
@@ -840,18 +843,6 @@ public static class PhotonNetwork
     }
 
     // FUNCTIONS
-
-    [Obsolete("This method is obsolete; use ConnectUsingSettings with the gameVersion argument instead")]
-    public static void ConnectUsingSettings()
-    {
-        ConnectUsingSettings("1.0");
-    }
-
-    [Obsolete("This method is obsolete; use Connect with the gameVersion argument instead")]
-    public static void Connect(string serverAddress, int port, string uniqueGameID)
-    {
-        Connect(serverAddress, port, uniqueGameID, "1.0");
-    }
 
     /// <summary>
     /// Connect to the configured Photon server:
@@ -892,6 +883,7 @@ public static class PhotonNetwork
         }
     }
 
+#if !(UNITY_WINRT || UNITY_WP8)
     /// <summary>
     /// Connect to the PUN cloud server with the lowest ping.
     /// Will save the result of pinging all cloud servers in PlayerPrefs. Calling this the first time can take +-2 seconds.
@@ -951,6 +943,7 @@ public static class PhotonNetwork
     {
         PingCloudRegions.RefreshCloudServerRating();
     }
+#endif
 
     /// <summary>
     /// Connect to the Photon server by address, port, appID and game(client) version.

@@ -8,11 +8,12 @@
 // <author>developer@exitgames.com</author>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using ExitGames.Client.Photon;
 using ExitGames.Client.Photon.Lite;
+using System;
+using System.Collections.Generic;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
+
 
 /// <summary>
 /// Internally used by PUN, a LoadbalancingPeer provides the operations and enum 
@@ -261,44 +262,6 @@ internal class LoadbalancingPeer : PhotonPeer
 
         return this.OpCustom((byte)OperationCode.SetProperties, opParameters, broadcast, channelId);
     }
-
-    /// <summary>
-    /// Sends this app's appId and appVersion to identify this application server side.
-    /// This is an async request which triggers a OnOperationResponse() call.
-    /// </summary>
-    /// <remarks>
-    /// This operation makes use of encryption, if that is established before.
-    /// See: EstablishEncryption(). Check encryption with IsEncryptionAvailable.
-    /// This operation is allowed only once per connection (multiple calls will have ErrorCode != Ok).
-    /// </remarks>
-    /// <param name="appId">Your application's name or ID to authenticate. This is assigned by Photon Cloud (webpage).</param>
-    /// <param name="appVersion">The client's version (clients with differing client appVersions are separated and players don't meet).</param>
-    /// <returns>If the operation could be sent (has to be connected).</returns>
-    [Obsolete("Use the other overload now.")]
-    public virtual bool OpAuthenticate(string appId, string appVersion)
-    {
-        return OpAuthenticate(appId, appVersion, null, null);
-    }
-
-    /// <summary>
-    /// Sends this app's appId and appVersion to identify this application server side.
-    /// This is an async request which triggers a OnOperationResponse() call.
-    /// </summary>
-    /// <remarks>
-    /// This operation makes use of encryption, if that is established before.
-    /// See: EstablishEncryption(). Check encryption with IsEncryptionAvailable.
-    /// This operation is allowed only once per connection (multiple calls will have ErrorCode != Ok).
-    /// </remarks>
-    /// <param name="appId">Your application's name or ID to authenticate. This is assigned by Photon Cloud (webpage).</param>
-    /// <param name="appVersion">The client's version (clients with differing client appVersions are separated and players don't meet).</param>
-    /// <param name="userId"></param>
-    /// <returns>If the operation could be sent (has to be connected).</returns>
-    [Obsolete("Use the other overload now.")]
-    public virtual bool OpAuthenticate(string appId, string appVersion, string userId)
-    { 
-        return this.OpAuthenticate(appId, appVersion, userId, null);
-    }
-
 
     /// <summary>
     /// Sends this app's appId and appVersion to identify this application server side.

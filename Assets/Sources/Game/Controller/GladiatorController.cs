@@ -26,6 +26,7 @@ public class 				GladiatorController : MonoBehaviour
 	public float			_sensibility;
 	
 	private eCharState		_characterState;
+	private AnimationStateManager _ASM;
 	private float			_verticalSpeed = 0.0f;
 	private CharacterController _charCtrl;
 	private float			_moveSpeed = 0.0f;
@@ -33,6 +34,7 @@ public class 				GladiatorController : MonoBehaviour
 	void					Start()
 	{
 		_charCtrl = transform.GetComponent<CharacterController>();
+		_ASM = transform.GetComponent<AnimationStateManager>();
 		_characterState = eCharState.IDLE;
 		Screen.showCursor = false;
 	}
@@ -68,7 +70,7 @@ public class 				GladiatorController : MonoBehaviour
 		case eCharState.RUNNING:
 			updateMovementFromForward(); break;
 		case eCharState.BACK:
-			if (Input.GetKeyUp(KeyCode.S)) _characterState = eCharState.IDLE; break;
+			if (Input.GetKeyUp(Keyboard.Action_Back)) _characterState = eCharState.IDLE; break;
 		}
 		if (_characterState == eCharState.WALKING || _characterState == eCharState.RUNNING || _characterState == eCharState.BACK)
 			moveForward(ref targetSpeed);
@@ -86,26 +88,29 @@ public class 				GladiatorController : MonoBehaviour
 	
 	void					updateMovementFromIdle()
 	{
-		if (Input.GetKeyDown(KeyCode.W))
+		if (Input.GetKeyDown(Keyboard.Action_Forward))
 		{
 			_characterState = eCharState.WALKING;
-			if (Input.GetKeyDown(KeyCode.LeftShift))
+			if (Input.GetKeyDown(Keyboard.Action_Run))
 				_characterState = eCharState.RUNNING;
 		}
-		else if (Input.GetKeyDown(KeyCode.S))
+		else if (Input.GetKeyDown(Keyboard.Action_Back))
+		{
 			_characterState = eCharState.BACK;
+			_ASM.State = AnimationStateManager.eState.BACK;
+		}
 	}
 	
 	void					updateMovementFromForward()
 	{
 		if (_characterState == eCharState.RUNNING)
 		{
-			if (Input.GetKeyUp(KeyCode.LeftShift))
+			if (Input.GetKeyUp(Keyboard.Action_Run))
 				_characterState = eCharState.WALKING;
 		}
-		else if (Input.GetKeyDown(KeyCode.LeftShift))
+		else if (Input.GetKeyDown(Keyboard.Action_Run))
 			_characterState = eCharState.RUNNING;
-		if (Input.GetKeyUp(KeyCode.W))
+		if (Input.GetKeyUp(Keyboard.Action_Forward))
 			_characterState = eCharState.IDLE;
 	}
 	

@@ -82,19 +82,20 @@ public class 				AnimationStateManager : MonoBehaviour
 		if (_charCtrl.velocity.sqrMagnitude > 20f)
 			_state = eState.RUN;
 		else if (_charCtrl.velocity.sqrMagnitude > 0.1f)
-			_state = eState.WALK;
-		else if (_charCtrl.velocity.sqrMagnitude < -0.1f)
-			_state = eState.BACK;
+		{
+			if (_state != eState.BACK)
+				_state = eState.WALK;
+		}
 		else
 			_animation.CrossFade("fight idle");
 	}
 	
 	private void			MoveUpdateStatus()
 	{
-		if (_charCtrl.velocity.sqrMagnitude < -0.1f)
-			State = eState.BACK;
-		else if (_charCtrl.velocity.sqrMagnitude < 0.1)
+		if (_charCtrl.velocity.sqrMagnitude < 0.1)
 			State = eState.IDLE;
+		else if (_state == eState.BACK)
+			State = eState.BACK;
 		else if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
 			State = eState.RUN;
 		else

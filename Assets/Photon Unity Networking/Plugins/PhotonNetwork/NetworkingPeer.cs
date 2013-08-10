@@ -3,13 +3,15 @@
 //   Part of: Photon Unity Networking (PUN)
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using ExitGames.Client.Photon;
+using ExitGames.Client.Photon.Lite;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using ExitGames.Client.Photon;
-using ExitGames.Client.Photon.Lite;
 using UnityEngine;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 /// <summary>
 /// Implements Photon LoadBalancing used in PUN.
@@ -96,6 +98,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
     public PhotonPlayer mLocalActor { get; internal set; }
 
     public PhotonPlayer mMasterClient = null;
+
 	public bool hasSwitchedMC = false;
 
     public string mGameserver { get; internal set; }
@@ -1738,7 +1741,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 
             if (cachedRPCMethods == null)
             {
-                List<MethodInfo> entries = SupportClass.GetMethods(type, typeof(UnityEngine.RPC));
+                List<MethodInfo> entries = SupportClass.GetMethods(type, typeof(RPC));
 
                 this.monoRPCMethodsCache[type] = entries;
                 cachedRPCMethods = entries;
@@ -1766,7 +1769,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
                             object result = mInfo.Invoke((object)monob, inMethodParameters);
                             if (mInfo.ReturnType == typeof(IEnumerator))
                             {
-                                monob.StartCoroutine((IEnumerator)result);
+                                PhotonHandler.SP.StartCoroutine((IEnumerator)result);
                             }
                         }
                     }
@@ -1787,7 +1790,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
                                 object result = mInfo.Invoke((object)monob, deParamsWithInfo);
                                 if (mInfo.ReturnType == typeof(IEnumerator))
                                 {
-                                    monob.StartCoroutine((IEnumerator)result);
+                                    PhotonHandler.SP.StartCoroutine((IEnumerator)result);
                                 }
                             }
                         }
@@ -1798,7 +1801,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
                         object result = mInfo.Invoke((object)monob, new object[] { inMethodParameters });
                         if (mInfo.ReturnType == typeof(IEnumerator))
                         {
-                            monob.StartCoroutine((IEnumerator)result);
+                            PhotonHandler.SP.StartCoroutine((IEnumerator)result);
                         }
                     }
                 }
@@ -2082,7 +2085,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
                 object result = methodI.Invoke((object)mono, messageInfoParam);
                 if (methodI.ReturnType == typeof(System.Collections.IEnumerator))
                 {
-                    mono.StartCoroutine((IEnumerator)result);
+                    PhotonHandler.SP.StartCoroutine((IEnumerator)result);
                 }
             }
         }
