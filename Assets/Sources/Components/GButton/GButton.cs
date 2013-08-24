@@ -6,7 +6,7 @@ public class GButton : GladiawarBehaviour {
 	protected GButton_OnClick[] callbacks;
 	
 	void Start () {
-		this.callbacks = callbacks = this.transform.GetComponents<GButton_OnClick>();
+		this.callbacks = this.transform.GetComponents<GButton_OnClick>();
 	}
 	
 	public void OnClick() {
