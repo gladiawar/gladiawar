@@ -1,6 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GMenuContainer : GladiawarBehaviour {
+/**
+ * Interface for container of GMenu
+ * 
+ * @prefab GMenu
+ * @author Claude Ramseyer
+ */
+public class GMenuContainer : MonoBehaviour {
 	
 }

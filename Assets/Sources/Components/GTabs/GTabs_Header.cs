@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class GTabs_Header : GladiawarBehaviour {
+public class GTabs_Header : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {

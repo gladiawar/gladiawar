@@ -1,32 +1,41 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GMenu : GladiawarBehaviour {
+/**
+ * Basic class controller of GMenu
+ * 
+ * @prefab GMenu
+ * @author Claude Ramseyer
+ */
+public class GMenu : MonoBehaviour {
 	
-	//Delegate
-	public delegate void PreShow(GMenu menu);
-	public delegate void PostShow(GMenu menu);
-	public delegate void PreHide(GMenu menu);
-	public delegate void PostHide(GMenu menu);
-	public delegate void PostBackground(GMenu menu);
-	public delegate void PostForeground(GMenu menu);
+	//Delegate declaration
+	public delegate void PreShowHandler(GMenu menu);
+	public delegate void PostShowHandler(GMenu menu);
+	public delegate void PreHideHandler(GMenu menu);
+	public delegate void PostHideHandler(GMenu menu);
+	public delegate void PostBackgroundHandler(GMenu menu);
+	public delegate void PostForegroundHandler(GMenu menu);
 	
-	public PreShow preShow;
-	public PostShow postShow;
-	public PreHide preHide;
-	public PostHide postHide;
-	public PostBackground postBackground;
-	public PostForeground postForeground;
+	//Attributes
+	public PreShowHandler preShow;
+	public PostShowHandler postShow;
+	public PreHideHandler preHide;
+	public PostHideHandler postHide;
+	public PostBackgroundHandler postBackground;
+	public PostForegroundHandler postForeground;
 	
 	protected GameObject menu;
 	protected GMenuManager manager;
 	
+	//Properties
 	public bool Active {
 		get { return this.menu.activeInHierarchy; }
 	}
 	
-	//Call on Start of manager
+	//Functions
 	public virtual void init(GMenuManager manager) {
+		//Call on Start of manager
 		this.manager = manager;
 		this.menu = this.gameObject.GetComponentInChildren<GMenuContainer>().gameObject;
 		this.menu.SetActive(false);

@@ -4,9 +4,10 @@ using System.Collections.Generic;
 
 /**
  * 
+ * 
  * @author Claude Ramseyer
  */
-public class GTabs : GladiawarBehaviour {
+public class GTabs : MonoBehaviour {
 	
 	public List<GTabButton> items;
 	public GTabButton current;
