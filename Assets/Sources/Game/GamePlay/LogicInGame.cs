@@ -12,6 +12,7 @@ using						System.Collections.Generic;
 public class 				LogicInGame : Photon.MonoBehaviour
 {
 	public List<ALaunchEvent> _startEvent;
+	public GameObject		_endMessage;
 	
 	private bool			_wait = true;
 	
@@ -65,6 +66,10 @@ public class 				LogicInGame : Photon.MonoBehaviour
 			
 			if (count <= 1)
 				endGame = true;
+		}
+		if (endGame)
+		{
+			_endMessage.SetActive(true);
 		}
 	}
 	
