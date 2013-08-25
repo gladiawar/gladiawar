@@ -6,6 +6,7 @@
 
 using						UnityEngine;
 using						System.Collections;
+using						System.Collections.Generic;
 
 public class 				GladiatorNetwork : Photon.MonoBehaviour
 {
@@ -48,6 +49,7 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 	
 	void 					Start()
 	{
+		LogicInGame.Instance.PlayerList.Add(this);
 		if (photonView.isMine)
 			_myGladiator = this;
 		else
