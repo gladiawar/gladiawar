@@ -2,9 +2,9 @@
 using System.Collections;
 
 /**
+ * Controller for GInput
  * 
- * 
- * 
+ * @prefab GInput
  * @author Claude Ramseyer
  */
 public class GInput : MonoBehaviour {
@@ -43,6 +43,23 @@ public class GInput : MonoBehaviour {
 		}
 		set {
 			this.input.defaultText = value;
+		}
+	}
+	public UIInput.OnSubmit OnSubmit {
+		get {
+			return this.input.onSubmit;
+		}
+		set {
+			this.input.onSubmit = value;
+		}
+	}
+	
+	public UIInput.Validator Validator {
+		get {
+			return this.input.validator;
+		}
+		set {
+			this.input.validator = value;
 		}
 	}
 	
