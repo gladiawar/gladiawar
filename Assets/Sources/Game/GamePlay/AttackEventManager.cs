@@ -12,11 +12,17 @@ public class 				AttackEventManager : MonoBehaviour
 	public GladiatorNetwork	_gladiatorNetwork;
 	private AnimationStateManager _animMngr;
 	private bool			_onAttack = false;
+	private bool			_onDefense = false;
 	private float			_timeSinceAttackLaunch;
 	private int				_animationPhase;
 	private float[]			_animationPhaseTime;
 	private bool			_haveTouched;
 	private int				_layerGladiator;
+	
+	const int 				_attackCost = 20;
+	const int				_defenseCost = 50;
+	
+	float					_defenseEnergySpend = 0;
 	
 	void 					Start()
 	{
@@ -33,16 +39,22 @@ public class 				AttackEventManager : MonoBehaviour
 	{
 		if (_onAttack)
 			MajAttack();
+		else if (_onDefense)
+			MajDefense();
 		else if (Input.GetMouseButtonDown(0))
 			LaunchAttack();
+		else if (Input.GetMouseButtonDown(1))
+			LaunchDefense();
 	}
 	
 	void					LaunchAttack()
 	{
-		if (_gladiatorNetwork.Life == 0)
+		if (_gladiatorNetwork.Life == 0 || _gladiatorNetwork.Energy < _attackCost)
 			return ;
+		_gladiatorNetwork.Energy -= _attackCost;
 		_animMngr.State = AnimationStateManager.eState.ATTACK;
 		_onAttack = true;
+		_onDefense = false;
 		_haveTouched = false;
 		_timeSinceAttackLaunch = 0;
 		_animationPhase = 0;
@@ -85,6 +97,29 @@ public class 				AttackEventManager : MonoBehaviour
 				_gladiatorNetwork.SendAttack(rcData.collider.gameObject.transform.GetComponent<PhotonView>());
 				_haveTouched = true;
 			}	
+		}
+	}
+	
+	void					LaunchDefense()
+	{
+		if (_gladiatorNetwork.Energy > 25 && !_onAttack)
+		{
+			_onDefense = true;
+		}
+	}
+	
+	void					MajDefense()
+	{
+		if (Input.GetMouseButtonUp(1))
+			_onDefense = false;
+		else
+		{
+			int				intEnergySpend;
+			
+			_defenseEnergySpend += Time.deltaTime * _defenseCost;
+			intEnergySpend = (int)_defenseEnergySpend;
+			_gladiatorNetwork.Energy -= intEnergySpend;
+			_defenseEnergySpend -= intEnergySpend;
 		}
 	}
 }

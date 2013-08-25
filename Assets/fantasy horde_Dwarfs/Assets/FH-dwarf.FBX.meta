@@ -241,7 +241,7 @@ ModelImporter:
     4300066: dwarf_skn_body
     4300068: dwarf_crossbow
     4300070: dwarf_rifle
-    7400000: Take 001
+    7400000: gblock
     7400002: idle
     7400004: idle break
     7400006: talk
@@ -846,6 +846,27 @@ ModelImporter:
       takeName: 
       firstFrame: 1135
       lastFrame: 1160
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      transformMask: []
+    - name: gblock
+      takeName: Take 001
+      firstFrame: 760
+      lastFrame: 768
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

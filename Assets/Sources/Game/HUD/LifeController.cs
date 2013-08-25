@@ -9,21 +9,20 @@ using						System.Collections;
 
 public class 				LifeController : MonoBehaviour
 {
-	private int				life = -1;
-	private float			xBaseBound;
-	private UISprite		sprite;
+	private int				_life = -1;
+	private float			_xBaseBound;
 	
 	void					Awake()
 	{
-		xBaseBound = transform.localScale.x;
+		_xBaseBound = transform.localScale.x;
 	}
 	
 	void					Update()
 	{
-		if (life != GladiatorNetwork._myGladiator.Life)
+		if (_life != GladiatorNetwork._myGladiator.Life)
 		{
-			transform.localScale = new Vector3(xBaseBound * ((float)GladiatorNetwork._myGladiator.Life / 100f), transform.localScale.y, transform.localScale.z);
-			life = GladiatorNetwork._myGladiator.Life;
+			transform.localScale = new Vector3(_xBaseBound * ((float)GladiatorNetwork._myGladiator.Life / 100f), transform.localScale.y, transform.localScale.z);
+			_life = GladiatorNetwork._myGladiator.Life;
 		}
 	}
 }

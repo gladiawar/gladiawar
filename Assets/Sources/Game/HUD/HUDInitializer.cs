@@ -11,7 +11,6 @@ using						System.Collections.Generic;
 public class 				HUDInitializer : MonoBehaviour
 {
 	public UILabel			_name;
-	public LifeController	lifeController;
 	public List<GameObject> _hud;
 	
 	private static HUDInitializer _instance;
