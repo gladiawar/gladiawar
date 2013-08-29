@@ -27,10 +27,21 @@ public class 				LogicInGame : Photon.MonoBehaviour
 		set { _playerList = value; }
 	}
 	
+	private enum GameState
+	{
+		AWAITING,
+		PENDING,
+		RUNNING,
+		ENDED
+	};
+	
+	private GameState _gameState;
+	
 	void					Awake()
 	{
 		_instance = this;
 		_playerList = new List<GladiatorNetwork>();
+		_gameState = GameState.AWAITING;
 	}
 	
 	void					Start()
@@ -41,11 +52,6 @@ public class 				LogicInGame : Photon.MonoBehaviour
 	
 	void					Update()
 	{
-		if (_wait && PhotonNetwork.room.playerCount > 1)
-		{
-			Invoke("SpawnPlayer", 3.0f);
-			_wait = false;
-		}
 		
 //			foreach (ALaunchEvent le in _startEvent)
 //			{
@@ -55,21 +61,36 @@ public class 				LogicInGame : Photon.MonoBehaviour
 //			}	
 
 		//FFA impl. Game's ending when 1 player left.
-		bool endGame = false;
 		
-		// Checking if all players have been instantiated
-		if (PhotonNetwork.room.playerCount == _playerList.Count)
+		//Checking if all players have been instantiated
+		switch(_gameState)
 		{
-			int count = 0;
-			foreach (GladiatorNetwork gn in _playerList)
-				count = (gn.Life > 0) ? count + 1 : count;
-			
-			if (count <= 1)
-				endGame = true;
-		}
-		if (endGame)
-		{
+		case GameState.AWAITING:
+			if (_wait && PhotonNetwork.room.playerCount > 1)
+			{
+				Invoke("SpawnPlayer", 3.0f);
+				_wait = false;
+				_gameState = GameState.RUNNING;
+			}
+			break;
+		case GameState.PENDING:
+			break;
+		case GameState.RUNNING:
+			if (PhotonNetwork.room.playerCount == _playerList.Count)
+			{
+				int count = 0;
+				foreach (GladiatorNetwork gn in _playerList)
+					count = (gn.Life > 0) ? count + 1 : count;
+				
+				if (count <= 1)
+					_gameState = GameState.ENDED;
+			}
+			break;
+		case GameState.ENDED:
 			_endMessage.SetActive(true);
+			break;
+		default:
+			break;
 		}
 	}
 	
