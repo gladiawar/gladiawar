@@ -14,8 +14,6 @@ public class 				LogicInGame : Photon.MonoBehaviour
 	public List<ALaunchEvent> _startEvent;
 	public GameObject		_endMessage;
 	
-	private bool			_wait = true;
-	
 	private static LogicInGame _instance;
 	public static LogicInGame Instance
 	{ get { return (_instance); } }
@@ -66,10 +64,9 @@ public class 				LogicInGame : Photon.MonoBehaviour
 		switch(_gameState)
 		{
 		case GameState.AWAITING:
-			if (_wait && PhotonNetwork.room.playerCount > 1)
+			if (PhotonNetwork.room.playerCount > 1)
 			{
 				Invoke("SpawnPlayer", 3.0f);
-				_wait = false;
 				_gameState = GameState.RUNNING;
 			}
 			break;
@@ -88,6 +85,7 @@ public class 				LogicInGame : Photon.MonoBehaviour
 			break;
 		case GameState.ENDED:
 			_endMessage.SetActive(true);
+			Debug.Log ("END");
 			break;
 		default:
 			break;
