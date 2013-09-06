@@ -29,7 +29,7 @@ public class UIGrid : MonoBehaviour
 	public bool sorted = false;
 	public bool hideInactive = true;
 	public GameObject scoreboardLinePrefab;
-	private Dictionary<GameObject, GladiatorNetwork> scoreboardEntries = new Dictionary<GameObject, int>();
+	private Dictionary<GameObject, GladiatorNetwork> scoreboardEntries = new Dictionary<GameObject, GladiatorNetwork>();
 	bool mStarted = false;
 
 	void Start ()
@@ -64,9 +64,9 @@ public class UIGrid : MonoBehaviour
 
 		foreach(var entry in scoreboardEntries)
 		{
-			((UILabel)entry.Key.transform.FindChild("Name")).text = entry.Value.name;
-			((UILabel)entry.Key.transform.FindChild("Kill")).text = entry.Value.Kill;
-			((UILabel)entry.Key.transform.FindChild("Death")).text = entry.Value.Death;
+			entry.Key.transform.FindChild("Name").GetComponent<UILabel>().text = entry.Value.name;
+			entry.Key.transform.FindChild("Kill").GetComponent<UILabel>().text = entry.Value.Kill.ToString();
+			entry.Key.transform.FindChild("Death").GetComponent<UILabel>().text = entry.Value.Death.ToString();
 		}
 		
 		if (repositionNow) {

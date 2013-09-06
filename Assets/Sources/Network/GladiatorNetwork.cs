@@ -119,6 +119,8 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 			stream.SendNext(_playerTouched);
 			_playerTouched = -1;
 			stream.SendNext(_life);
+			stream.SendNext(_kill);
+			stream.SendNext(_death);
 		}
 		else
 		{
@@ -139,6 +141,8 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 					GladiatorNetwork._myGladiator.ReceiveAttack();
 			}
 			_life = (int)stream.ReceiveNext();
+			_kill = (int)stream.ReceiveNext();
+			_death = (int)stream.ReceiveNext();
 		}
 	}
 	
