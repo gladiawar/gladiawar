@@ -1,18 +1,15 @@
 using UnityEngine;
 using System.Collections;
 
-public class GButton_Button : GladiawarBehaviour {
+/**
+ * Intern class
+ * 
+ * @prefab GButton
+ * @author Claude Ramseyer
+ */
+public class GButton_Button : MonoBehaviour {
 	
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-	
+	//NGui event
 	void OnClick() {
 		this.transform.parent.GetComponent<GButton>().OnClick();
 	}

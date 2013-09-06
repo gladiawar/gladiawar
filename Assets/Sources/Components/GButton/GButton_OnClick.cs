@@ -1,8 +1,15 @@
 using UnityEngine;
 using System.Collections;
 
-public abstract class GButton_OnClick : GladiawarBehaviour {
+/**
+ * Interface for callback OnClick button
+ * 
+ * @prefab GButton
+ * @author Claude Ramseyer
+ */
+public abstract class GButton_OnClick : MonoBehaviour {
 	
+	//Abstract functions
 	public abstract void OnClick(GButton caller);
 	
 }
