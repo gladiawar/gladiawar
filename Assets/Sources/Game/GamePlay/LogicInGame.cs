@@ -37,7 +37,8 @@ public class 				LogicInGame : Photon.MonoBehaviour
 	};
 	
 	private GameState _gameState;
-
+	
+	
 //  Deprecated
 //	private IEnumerator CountDown ()
 //	{
@@ -57,7 +58,7 @@ public class 				LogicInGame : Photon.MonoBehaviour
 	private void CountDownTimer ()
 	{
 		if (_countdownCounter <= 0) {
-			_timerMessage.gameObject.SetActive(false);
+			_timerMessage.gameObject.SetActive (false);
 			_gameState = GameState.RUNNING;
 			this.CancelInvoke ("CountDownTimer");
 		} else {
@@ -71,13 +72,13 @@ public class 				LogicInGame : Photon.MonoBehaviour
 		_instance = this;
 		_playerList = new List<GladiatorNetwork> ();
 		_gameState = GameState.AWAITING;
-		_timerMessage.gameObject.SetActive(false);
+		_timerMessage.gameObject.SetActive (false);
 	}
 	
 	void					Start ()
 	{
 		PhotonNetwork.sendRate = 90;
-		_timerMessage.gameObject.SetActive(false);
+		_timerMessage.gameObject.SetActive (false);
 	}
 	
 	void					Update ()
@@ -92,14 +93,13 @@ public class 				LogicInGame : Photon.MonoBehaviour
 
 		//FFA impl. Game's ending when 1 player left.
 		
-		//Checking if all players have been instantiated
 		switch (_gameState) {
 		case GameState.AWAITING:
 			if (PhotonNetwork.room.playerCount > 1) {
 //				Invoke("SpawnPlayer", 3.0f);
 				SpawnPlayer ();
 				
-				_timerMessage.gameObject.SetActive(true);
+				_timerMessage.gameObject.SetActive (true);
 				StartCountDown ();
 				_gameState = GameState.COUNTDOWN;
 			}
@@ -119,7 +119,7 @@ public class 				LogicInGame : Photon.MonoBehaviour
 			}
 			break;
 		case GameState.ENDED:
-			_endMessage.SetActive(true);
+			_endMessage.SetActive (true);
 			break;
 		default:
 			break;

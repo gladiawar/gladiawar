@@ -2,7 +2,6 @@
 //            NGUI: Next-Gen UI kit
 // Copyright © 2011-2013 Tasharen Entertainment
 //----------------------------------------------
-
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -28,25 +27,35 @@ public class UIGrid : MonoBehaviour
 	public bool repositionNow = false;
 	public bool sorted = false;
 	public bool hideInactive = true;
-
+	public GameObject scoreboardLinePrefab;
 	bool mStarted = false;
 
 	void Start ()
 	{
 		mStarted = true;
-		Reposition();
+		Reposition ();
+		
+//		for (int i = 0; i < 5; i++) {
+//			GameObject obj = (GameObject)Instantiate (scoreboardLinePrefab);
+//			obj.transform.parent = this.transform;
+//			obj.transform.localScale = new Vector3(1f,1f,1f);
+//			obj.transform.localPosition = new Vector3(0f,0f,0f);
+//		}
+//		repositionNow = true;
 	}
 
 	void Update ()
 	{
-		if (repositionNow)
-		{
+		if (repositionNow) {
 			repositionNow = false;
-			Reposition();
+			Reposition ();
 		}
 	}
 
-	static public int SortByName (Transform a, Transform b) { return string.Compare(a.name, b.name); }
+	static public int SortByName (Transform a, Transform b)
+	{
+		return string.Compare (a.name, b.name);
+	}
 
 	/// <summary>
 	/// Recalculate the position of all elements within the grid, sorting them alphabetically if necessary.
@@ -54,8 +63,7 @@ public class UIGrid : MonoBehaviour
 
 	public void Reposition ()
 	{
-		if (!mStarted)
-		{
+		if (!mStarted) {
 			repositionNow = true;
 			return;
 		}
@@ -65,57 +73,53 @@ public class UIGrid : MonoBehaviour
 		int x = 0;
 		int y = 0;
 
-		if (sorted)
-		{
-			List<Transform> list = new List<Transform>();
+		if (sorted) {
+			List<Transform> list = new List<Transform> ();
 
-			for (int i = 0; i < myTrans.childCount; ++i)
-			{
-				Transform t = myTrans.GetChild(i);
-				if (t && (!hideInactive || NGUITools.GetActive(t.gameObject))) list.Add(t);
+			for (int i = 0; i < myTrans.childCount; ++i) {
+				Transform t = myTrans.GetChild (i);
+				if (t && (!hideInactive || NGUITools.GetActive (t.gameObject)))
+					list.Add (t);
 			}
-			list.Sort(SortByName);
+			list.Sort (SortByName);
 
-			for (int i = 0, imax = list.Count; i < imax; ++i)
-			{
-				Transform t = list[i];
+			for (int i = 0, imax = list.Count; i < imax; ++i) {
+				Transform t = list [i];
 
-				if (!NGUITools.GetActive(t.gameObject) && hideInactive) continue;
+				if (!NGUITools.GetActive (t.gameObject) && hideInactive)
+					continue;
 
 				float depth = t.localPosition.z;
 				t.localPosition = (arrangement == Arrangement.Horizontal) ?
-					new Vector3(cellWidth * x, -cellHeight * y, depth) :
-					new Vector3(cellWidth * y, -cellHeight * x, depth);
+					new Vector3 (cellWidth * x, -cellHeight * y, depth) :
+					new Vector3 (cellWidth * y, -cellHeight * x, depth);
 
-				if (++x >= maxPerLine && maxPerLine > 0)
-				{
+				if (++x >= maxPerLine && maxPerLine > 0) {
+					x = 0;
+					++y;
+				}
+			}
+		} else {
+			for (int i = 0; i < myTrans.childCount; ++i) {
+				Transform t = myTrans.GetChild (i);
+
+				if (!NGUITools.GetActive (t.gameObject) && hideInactive)
+					continue;
+
+				float depth = t.localPosition.z;
+				t.localPosition = (arrangement == Arrangement.Horizontal) ?
+					new Vector3 (cellWidth * x, -cellHeight * y, depth) :
+					new Vector3 (cellWidth * y, -cellHeight * x, depth);
+
+				if (++x >= maxPerLine && maxPerLine > 0) {
 					x = 0;
 					++y;
 				}
 			}
 		}
-		else
-		{
-			for (int i = 0; i < myTrans.childCount; ++i)
-			{
-				Transform t = myTrans.GetChild(i);
 
-				if (!NGUITools.GetActive(t.gameObject) && hideInactive) continue;
-
-				float depth = t.localPosition.z;
-				t.localPosition = (arrangement == Arrangement.Horizontal) ?
-					new Vector3(cellWidth * x, -cellHeight * y, depth) :
-					new Vector3(cellWidth * y, -cellHeight * x, depth);
-
-				if (++x >= maxPerLine && maxPerLine > 0)
-				{
-					x = 0;
-					++y;
-				}
-			}
-		}
-
-		UIDraggablePanel drag = NGUITools.FindInParents<UIDraggablePanel>(gameObject);
-		if (drag != null) drag.UpdateScrollbars(true);
+		UIDraggablePanel drag = NGUITools.FindInParents<UIDraggablePanel> (gameObject);
+		if (drag != null)
+			drag.UpdateScrollbars (true);
 	}
 }
