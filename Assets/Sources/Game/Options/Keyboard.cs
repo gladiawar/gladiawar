@@ -23,6 +23,7 @@ public static class Keyboard {
 	public static KeyCode Action_Action = KeyCode.F;
 	
 	public static void loadConfiguration() {
+		
 		//TODO	
 	}
 	

@@ -25,7 +25,16 @@ public class GConfigInputs : MonoBehaviour {
 			this.inputs = new List<GInput>();
 			
 			//Add inputs
-			
+			for (int i = 0; i < 5; i++) {
+				var go = (GameObject) Instantiate(this.model);
+				var input = go.GetComponent<GInput>();
+				go.transform.parent = this.grid.transform;
+				go.transform.localScale = new Vector3(1f, 1f, 1f);
+				go.transform.localPosition = new Vector3(0, 0, 0);
+				go.SetActive(true);
+				
+				this.inputs.Add(input);
+			}
 			
 			//Reorganise
 			grid.repositionNow = true;
