@@ -8,14 +8,13 @@ using System.Collections.Generic;
  * @author Claude Ramseyer
  */
 public static class GladiawarBehaviour {
-	
+
 	public static void getCurrentPlayer(this MonoBehaviour obj) {
-		//TODO Implementation
+		return GladiatorNetwork._myGladiator;
 	}
 	
-	public static IList getPlayers(this MonoBehaviour obj) {
-		//TODO Implementation
-		return new List<int>();
+	public static List<GladiatorNetwork> getPlayers(this MonoBehaviour obj) {
+		return LogicInGame.Instance.PlayerList;
 	}
 	
 }
