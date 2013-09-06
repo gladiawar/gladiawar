@@ -3,6 +3,7 @@
 // Copyright © 2011-2013 Tasharen Entertainment
 //----------------------------------------------
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 /// <summary>
@@ -28,6 +29,7 @@ public class UIGrid : MonoBehaviour
 	public bool sorted = false;
 	public bool hideInactive = true;
 	public GameObject scoreboardLinePrefab;
+	private Dictionary<GameObject, GladiatorNetwork> scoreboardEntries = new Dictionary<GameObject, int>();
 	bool mStarted = false;
 
 	void Start ()
@@ -46,6 +48,27 @@ public class UIGrid : MonoBehaviour
 
 	void Update ()
 	{
+		foreach (var gn in this.getPlayers()) {
+			if (!scoreboardEntries.ContainsValue(gn))
+			{
+				GameObject obj = (GameObject)Instantiate (scoreboardLinePrefab);
+				obj.transform.parent = this.transform;
+				obj.transform.localScale = new Vector3(1f,1f,1f);
+				obj.transform.localPosition = new Vector3(0f,0f,0f);
+				
+				scoreboardEntries.Add(obj,gn);
+				
+				repositionNow = true;
+			}
+		}
+
+		foreach(var entry in scoreboardEntries)
+		{
+			((UILabel)entry.Key.transform.FindChild("Name")).text = entry.Value.name;
+			((UILabel)entry.Key.transform.FindChild("Kill")).text = entry.Value.Kill;
+			((UILabel)entry.Key.transform.FindChild("Death")).text = entry.Value.Death;
+		}
+		
 		if (repositionNow) {
 			repositionNow = false;
 			Reposition ();

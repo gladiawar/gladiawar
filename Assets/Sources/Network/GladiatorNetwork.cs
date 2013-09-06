@@ -35,6 +35,19 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 				_animationManager.State = AnimationStateManager.eState.RECEIVEATTACK;
 		}
 	}
+	int						_kill = 0;
+	public int				Kill
+	{
+		get { return _kill; }
+		set { _life = value; }
+	}
+	
+	int						_death = 0;
+	public int				Death
+	{
+		get { return _death; }
+		set { _death = value; }
+	}
 	
 	float					_timeForRegen = 0.1f;
 	float					_elapsedTimeSinceRegen = 0;
