@@ -6,6 +6,7 @@
 
 using						UnityEngine;
 using						System.Collections;
+using						System.Collections.Generic;
 
 public class 				GladiatorNetwork : Photon.MonoBehaviour
 {
@@ -35,6 +36,20 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 		}
 	}
 	
+	float					_timeForRegen = 0.1f;
+	float					_elapsedTimeSinceRegen = 0;
+	float					_runningEnergySpend = 0;
+	int						_energy = 100;
+	public int				Energy
+	{
+		get { return (_energy); }
+		set
+		{
+			if ((_energy = value) > 100)
+				_energy = 100;
+		}
+	}
+	
 	public static GladiatorNetwork _myGladiator;
 	
 	void					Awake()
@@ -48,6 +63,7 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 	
 	void 					Start()
 	{
+		LogicInGame.Instance.PlayerList.Add(this);
 		if (photonView.isMine)
 			_myGladiator = this;
 		else
@@ -71,6 +87,13 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 			transform.position = Vector3.Lerp(transform.position, _playerPos, Time.deltaTime * 5);
 			transform.rotation = Quaternion.Lerp(transform.rotation, _playerRot, Time.deltaTime * 5);
 		}
+		else if ((_elapsedTimeSinceRegen += Time.deltaTime) > _timeForRegen)
+		{
+			int			nb = (int)(_elapsedTimeSinceRegen / _timeForRegen);
+				
+			Energy += nb;
+			_elapsedTimeSinceRegen -= (_timeForRegen * nb);
+		}
 	}
 	
 	void 					OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -82,6 +105,7 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 			stream.SendNext((int)_animationManager.State);
 			stream.SendNext(_playerTouched);
 			_playerTouched = -1;
+			stream.SendNext(_life);
 		}
 		else
 		{
@@ -101,6 +125,7 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 				if (pv.isMine)
 					GladiatorNetwork._myGladiator.ReceiveAttack();
 			}
+			_life = (int)stream.ReceiveNext();
 		}
 	}
 	
@@ -113,5 +138,21 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 	public void				ReceiveAttack()
 	{
 		Life -= 10;
+	}
+	
+	public bool				isRunning(float energyRequire)
+	{
+		int					spendInt;
+		
+		if (_energy < 10)
+		{
+			_animationManager.State = AnimationStateManager.eState.WALK;
+			return (false);
+		}
+		_runningEnergySpend += energyRequire;
+		spendInt = (int)_runningEnergySpend;
+		_energy -= spendInt;
+		_runningEnergySpend -= (float)spendInt;
+		return (true);
 	}
 }

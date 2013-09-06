@@ -15,6 +15,8 @@ public class 				GladiatorController : MonoBehaviour
 	public float			_acceleration;
 	public float			_sensibility;
 	
+	const float				_runningCost = 8f;
+	
 	private AnimationStateManager _ASM;
 	private float			_verticalSpeed = 0.0f;
 	private CharacterController _charCtrl;
@@ -87,7 +89,9 @@ public class 				GladiatorController : MonoBehaviour
 		targetSpeed = _walkSpeed;
 		if (back)
 			targetSpeed *= -1;
-		else if (running)
+		else if (running && GladiatorNetwork._myGladiator.isRunning(Time.deltaTime * _runningCost))
+		{
 			targetSpeed *= _factorRun;
+		}
 	}
 }
