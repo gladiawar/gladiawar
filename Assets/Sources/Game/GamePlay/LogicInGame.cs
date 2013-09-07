@@ -83,6 +83,7 @@ public class 				LogicInGame : Photon.MonoBehaviour
 	
 	void					Update ()
 	{
+		Debug.Log (_gameState);
 		
 //			foreach (ALaunchEvent le in _startEvent)
 //			{
