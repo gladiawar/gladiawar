@@ -83,8 +83,6 @@ public class 				LogicInGame : Photon.MonoBehaviour
 	
 	void					Update ()
 	{
-		Debug.Log (_gameState);
-		
 //			foreach (ALaunchEvent le in _startEvent)
 //			{
 //				le.launchCountDown();
@@ -99,13 +97,16 @@ public class 				LogicInGame : Photon.MonoBehaviour
 			if (PhotonNetwork.room.playerCount > 1) {
 //				Invoke("SpawnPlayer", 3.0f);
 				SpawnPlayer ();
-				
+				_gameState = GameState.PENDING;				
+			}
+			break;
+		case GameState.PENDING:
+			if (PhotonNetwork.room.playerCount == GameObject.FindGameObjectsWithTag("Player").Length)
+			{
 				_timerMessage.gameObject.SetActive (true);
 				StartCountDown ();
 				_gameState = GameState.COUNTDOWN;
 			}
-			break;
-		case GameState.PENDING:
 			break;
 		case GameState.COUNTDOWN:
 			break;
