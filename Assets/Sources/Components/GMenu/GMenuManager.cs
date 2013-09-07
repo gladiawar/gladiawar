@@ -45,7 +45,6 @@ public class GMenuManager : MonoBehaviour {
 	
 	public void Update() {
 		if (Input.GetKeyDown(Keyboard.Escape)) {
-			Debug.Log("ESCAPE : " + this.GetType().Name);
 			GMenu current = this.Current;
 			if (current == null) {
 				if (this.DefaultMenu != null) {

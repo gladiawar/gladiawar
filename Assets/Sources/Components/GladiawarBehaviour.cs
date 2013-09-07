@@ -9,7 +9,7 @@ using System.Collections.Generic;
  */
 public static class GladiawarBehaviour {
 
-	public static void getCurrentPlayer(this MonoBehaviour obj) {
+	public static GladiatorNetwork getCurrentPlayer(this MonoBehaviour obj) {
 		return GladiatorNetwork._myGladiator;
 	}
 	

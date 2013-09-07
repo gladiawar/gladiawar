@@ -22,6 +22,11 @@ public static class Keyboard {
 	
 	public static KeyCode Action_Action = KeyCode.F;
 	
+	public static bool changeKey(KeyCode old, KeyCode key) {
+		Debug.Log("Key Changed " + old.ToString() + " => " + key.ToString());
+		return true;
+	}
+	
 	public static void loadConfiguration() {
 		
 		//TODO	

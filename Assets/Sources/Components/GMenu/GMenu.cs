@@ -42,7 +42,6 @@ public class GMenu : MonoBehaviour {
 	}
 
 	public void show() {
-		Debug.Log("SHOW : " + this.GetType().Name);
 		if (!this.menu.activeInHierarchy) {
 			if (this.preShow != null) {
 				this.preShow(this);
@@ -62,7 +61,6 @@ public class GMenu : MonoBehaviour {
 	}
 	
 	public void hide() {
-		Debug.Log("HIDE : " + this.GetType().Name);
 		if (this.menu.activeInHierarchy) {
 			if (this.preHide != null) {
 				this.preHide(this);
@@ -77,7 +75,6 @@ public class GMenu : MonoBehaviour {
 	}
 	
 	public void background() {
-		Debug.Log("BACK : " + this.GetType().Name);
 		this.menu.SetActive(false);
 		
 		if (this.postBackground != null) {
@@ -86,7 +83,6 @@ public class GMenu : MonoBehaviour {
 	}
 	
 	public void foreground() {
-		Debug.Log("HIDE : " + this.GetType().Name);
 		this.menu.SetActive(true);
 		
 		if (this.postForeground != null) {
