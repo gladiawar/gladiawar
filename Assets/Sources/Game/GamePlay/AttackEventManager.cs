@@ -105,13 +105,17 @@ public class 				AttackEventManager : MonoBehaviour
 		if (_gladiatorNetwork.Energy > 25 && !_onAttack)
 		{
 			_onDefense = true;
+			_animMngr.State = AnimationStateManager.eState.DEFENSE;
 		}
 	}
 	
 	void					MajDefense()
 	{
-		if (Input.GetMouseButtonUp(1))
+		if (Input.GetMouseButtonUp(1) || _gladiatorNetwork.Energy < 5)
+		{
 			_onDefense = false;
+			_animMngr.State = AnimationStateManager.eState.IDLE;
+		}
 		else
 		{
 			int				intEnergySpend;

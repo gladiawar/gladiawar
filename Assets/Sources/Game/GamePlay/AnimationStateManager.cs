@@ -17,6 +17,7 @@ public class 				AnimationStateManager : MonoBehaviour
 		BACK,
 		ATTACK,
 		RECEIVEATTACK,
+		DEFENSE,
 		DIE
 	}
 	
@@ -122,10 +123,12 @@ public class 				AnimationStateManager : MonoBehaviour
 			_animation.CrossFade("fight idle"); break;
 		case eState.RECEIVEATTACK:
 			bloodGiclure();
-			_animation.CrossFade("hit"); break;
+			_animation.CrossFade("hit"); break; 
 		case eState.DIE:
 			bloodDie();
 			_animation.CrossFade("die1"); break;
+		case eState.DEFENSE:
+			_animation.Play("gblock"); break;
 		}
 	}
 	

@@ -46,6 +46,8 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 		{
 			if ((_energy = value) > 100)
 				_energy = 100;
+			else if (_energy < 0)
+				_energy = 0;
 		}
 	}
 	
@@ -133,7 +135,10 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 	
 	public void				ReceiveAttack()
 	{
-		Life -= 10;
+		if (_animationManager.State == AnimationStateManager.eState.DEFENSE)
+			Life -= 2;
+		else
+			Life -= 10;
 	}
 	
 	public bool				isRunning(float energyRequire)
