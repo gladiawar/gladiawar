@@ -96,7 +96,7 @@ public class 				AttackEventManager : MonoBehaviour
 		{
 			if (rcData.collider.gameObject != this.gameObject)
 			{
-				_gladiatorNetwork.SendAttack(rcData.collider.gameObject.transform.GetComponent<PhotonView>());
+				_gladiatorNetwork.SendAttack(rcData.collider.gameObject.transform.GetComponent<GladiatorNetwork>());
 				_haveTouched = true;
 			}	
 		}

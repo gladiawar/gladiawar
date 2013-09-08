@@ -105,9 +105,6 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 			stream.SendNext(transform.position);
 			stream.SendNext(transform.rotation);
 			stream.SendNext((int)_animationManager.State);
-			stream.SendNext(_playerTouched);
-			_playerTouched = -1;
-			stream.SendNext(_life);
 		}
 		else
 		{
@@ -119,24 +116,15 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 			state = (AnimationStateManager.eState)stream.ReceiveNext();
 			if (_animationManager.State != state)
 				_animationManager.State = state;
-			ptd = (int)stream.ReceiveNext();
-			if (ptd > -1)
-			{
-				PhotonView	pv = PhotonView.Find(ptd);
-				
-				if (pv.isMine)
-					GladiatorNetwork._myGladiator.ReceiveAttack();
-			}
-			_life = (int)stream.ReceiveNext();
 		}
 	}
 	
-	
-	public void				SendAttack(PhotonView other)
+	public void				SendAttack(GladiatorNetwork other)
 	{
-		_playerTouched = other.viewID;
+		other.photonView.RPC("ReceiveAttack", PhotonTargets.All, null);
 	}
 	
+	[RPC]
 	public void				ReceiveAttack()
 	{
 		if (_animationManager.State == AnimationStateManager.eState.DEFENSE)
