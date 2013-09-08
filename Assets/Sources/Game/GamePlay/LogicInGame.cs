@@ -31,8 +31,7 @@ public class 				LogicInGame : Photon.MonoBehaviour
 	
 	public void StartCountDown ()
 	{
-		if (_countdownCounter > 0 || this.IsInvoking ("CountDownTimer"))
-			return;
+		_timerMessage.gameObject.SetActive(true);
 		_countdownCounter = _countdownValue;
 		this.InvokeRepeating ("CountDownTimer", 0f, 1f);
 	}
