@@ -78,19 +78,19 @@ public static class Keyboard {
 	public static void saveConfiguration() {
 		Dictionary<string, int> config = new Dictionary<string, int>();
 		
-		config["escape"] = Keyboard.Escape;
-		config["forward"] = Keyboard.Action_Forward;
-		config["back"] = Keyboard.Action_Back;
-		config["left"] = Keyboard.Action_Left;
-		config["right"] = Keyboard.Action_Right;
-		config["run"] = Keyboard.Action_Run;
-		config["jump"] = Keyboard.Action_Jump;
-		config["strick"] = Keyboard.Action_Strick;
-		config["block"] = Keyboard.Action_Block;
-		config["switchw1"] = Keyboard.Action_SwitchWeapon_1;
-		config["switchw2"] = Keyboard.Action_SwitchWeapon_2;
-		config["switchw3"] = Keyboard.Action_SwitchWeapon_3;
-		config["action"] = Keyboard.Action_Action;
+		config["escape"] = (int) Keyboard.Escape;
+		config["forward"] = (int) Keyboard.Action_Forward;
+		config["back"] = (int) Keyboard.Action_Back;
+		config["left"] = (int) Keyboard.Action_Left;
+		config["right"] = (int) Keyboard.Action_Right;
+		config["run"] = (int) Keyboard.Action_Run;
+		config["jump"] = (int) Keyboard.Action_Jump;
+		config["strick"] = (int) Keyboard.Action_Strick;
+		config["block"] = (int) Keyboard.Action_Block;
+		config["switchw1"] = (int) Keyboard.Action_SwitchWeapon_1;
+		config["switchw2"] = (int) Keyboard.Action_SwitchWeapon_2;
+		config["switchw3"] = (int) Keyboard.Action_SwitchWeapon_3;
+		config["action"] = (int) Keyboard.Action_Action;
 		
 		ES2.Save(config, "keyboard");
 	}
