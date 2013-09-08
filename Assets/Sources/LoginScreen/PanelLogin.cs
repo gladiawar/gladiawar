@@ -42,6 +42,7 @@ public class 				PanelLogin : MonoBehaviour
 	{
 		majPanel();
 		_instance = this;
+		Keyboard.loadConfiguration();
 	}
 	
 	private void			majPanel()

@@ -44,15 +44,21 @@ public class GMenuManager : MonoBehaviour {
 	}
 	
 	public void Update() {
-		if (Input.GetKeyDown(Keyboard.Escape)) {
+		if (Input.GetKeyDown(Keyboard.Escape))
+		{
 			GMenu current = this.Current;
-			if (current == null) {
-				if (this.DefaultMenu != null) {
+			if (current == null)
+			{
+				if (this.DefaultMenu != null)
+				{
+					RunTimeData.InIGMenu = true;
 					this.DefaultMenu.show();
 				}
 			}
-			else {
+			else
+			{
 				current.hide();
+				
 			}
 		}
 	}
@@ -79,6 +85,8 @@ public class GMenuManager : MonoBehaviour {
 		if (newCurrent != null && newCurrent != oldCurrent) {
 			newCurrent.foreground();
 		}
+		else if (newCurrent == null)
+			RunTimeData.InIGMenu = false; //CLAUDE todo
 	}
 
 }
