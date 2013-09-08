@@ -29,4 +29,15 @@ public static class 			RunTimeData
 			return (_playerBase);
 		}
 	}
+	
+	private static bool			_inIGMenu = false;
+	public static bool			InIGMenu
+	{
+		get { return (_inIGMenu); }
+		set
+		{
+			_inIGMenu = value;
+			Screen.showCursor = _inIGMenu;
+		}
+	}
 }

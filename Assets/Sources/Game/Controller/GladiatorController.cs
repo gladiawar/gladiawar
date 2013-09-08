@@ -35,7 +35,8 @@ public class 				GladiatorController : MonoBehaviour
 		if (GladiatorNetwork._myGladiator.Life < 1)
 			return ;
 		applyGravity();
-		changeRotation();
+		if (!RunTimeData.InIGMenu)
+			changeRotation();
 		updateMovement();
 	}
 	
