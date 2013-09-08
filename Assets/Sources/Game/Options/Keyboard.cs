@@ -24,6 +24,32 @@ public static class Keyboard {
 	
 	public static bool changeKey(KeyCode old, KeyCode key) {
 		Debug.Log("Key Changed " + old.ToString() + " => " + key.ToString());
+		
+		if (old == Keyboard.Action_Forward) {
+			Keyboard.Action_Forward = key;	
+		}
+		else if (old == Keyboard.Action_Back) {
+			Keyboard.Action_Back = key;
+		}
+		else if (old == Keyboard.Action_Left) {
+			Keyboard.Action_Left = key;
+		}
+		else if (old == Keyboard.Action_Right) {
+			Keyboard.Action_Right = key;
+		}
+		else if (old == Keyboard.Action_Run) {
+			Keyboard.Action_Run = key;
+		}
+		else if (old == Keyboard.Action_Jump) {
+			Keyboard.Action_Jump = key;
+		}
+		else if (old == Keyboard.Action_Action) {
+			Keyboard.Action_Action = key;
+		}
+		else {
+			return false;
+		}
+		
 		return true;
 	}
 	

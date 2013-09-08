@@ -9,7 +9,8 @@ using System.Collections;
 public class GUserInputSetter : MonoBehaviour {
 	
 	public UILabel text;
-	public UILabel key;
+	public UILabel keyText;
+	public KeyCode key;
 	
 	public GUserInputSetterHandler Handler { get; set; }
 	public string Text {
@@ -17,8 +18,8 @@ public class GUserInputSetter : MonoBehaviour {
 		set { this.text.text = value; }
 	}
 	public KeyCode Key {
-		get { return KeyCode.None; }
-		set { this.key.text = value.ToString(); }
+		get { return this.key; }
+		set { this.key = value; this.keyText.text = value.ToString(); }
 	}
 	
 	public void OnClick() {
