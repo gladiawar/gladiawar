@@ -1,6 +1,20 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class GladiawarBehaviour : MonoBehaviour {
+/**
+ * This class provide extensions methods to MonoBehaviour
+ * 
+ * @author Claude Ramseyer
+ */
+public static class GladiawarBehaviour {
+
+	public static GladiatorNetwork getCurrentPlayer(this MonoBehaviour obj) {
+		return GladiatorNetwork._myGladiator;
+	}
+	
+	public static List<GladiatorNetwork> getPlayers(this MonoBehaviour obj) {
+		return LogicInGame.Instance.PlayerList;
+	}
 	
 }

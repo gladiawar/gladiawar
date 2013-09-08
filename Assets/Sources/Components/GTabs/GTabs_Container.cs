@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class GTabs_Container : GladiawarBehaviour {
+public class GTabs_Container : MonoBehaviour {
 	
 	protected GTabs_Content content;
 	
