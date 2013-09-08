@@ -6,6 +6,7 @@
 
 using						UnityEngine;
 using						System.Collections;
+using						System.Collections.Generic;
 
 public class 				GladiatorNetwork : Photon.MonoBehaviour
 {
@@ -64,6 +65,7 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 	
 	void 					Start()
 	{
+		LogicInGame.Instance.PlayerList.Add(this);
 		if (photonView.isMine)
 			_myGladiator = this;
 		else
@@ -105,6 +107,7 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 			stream.SendNext((int)_animationManager.State);
 			stream.SendNext(_playerTouched);
 			_playerTouched = -1;
+			stream.SendNext(_life);
 		}
 		else
 		{
@@ -124,6 +127,7 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 				if (pv.isMine)
 					GladiatorNetwork._myGladiator.ReceiveAttack();
 			}
+			_life = (int)stream.ReceiveNext();
 		}
 	}
 	
