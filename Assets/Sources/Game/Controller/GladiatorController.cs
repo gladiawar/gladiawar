@@ -32,6 +32,8 @@ public class 				GladiatorController : MonoBehaviour
 	
 	void					Update()
 	{
+		if (GladiatorNetwork._myGladiator.Life < 1)
+			return ;
 		applyGravity();
 		changeRotation();
 		updateMovement();

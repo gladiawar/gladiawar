@@ -37,6 +37,8 @@ public class 				AttackEventManager : MonoBehaviour
 	
 	void 					Update()
 	{
+		if (GladiatorNetwork._myGladiator.Life < 1)
+			return ;
 		if (_onAttack)
 			MajAttack();
 		else if (_onDefense)
