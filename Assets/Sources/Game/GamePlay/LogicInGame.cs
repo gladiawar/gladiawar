@@ -25,44 +25,27 @@ public class 				LogicInGame : Photon.MonoBehaviour
 	
 	public GameObject    _endMessage;
 	public UILabel    _timerMessage;
-	public float      _countdownValue = 10f;
-	private float      _countdownCounter = 0f;
-		
-	private enum GameState
+	public int      _countdownValue = 5;
+	private int      _countdownCounter = 0;
+	private bool	_masterInstantiated = false;
+	
+	public void StartCountDown ()
 	{
-		AWAITING,
-		COUNTDOWN,
-		PENDING,
-		RUNNING,
-		ENDED
-	};
-	
-	private GameState _gameState;
-	
-	
-//  Deprecated
-//	private IEnumerator CountDown ()
-//	{
-//		yield return new WaitForSeconds(_countdownValue);
-//		_gameState = GameState.RUNNING;
-//	}
-	
-	private void StartCountDown ()
-	{
-		if (_countdownCounter > 0 || this.IsInvoking ("CountDownTimer")) {
+		if (_countdownCounter > 0 || this.IsInvoking ("CountDownTimer"))
 			return;
-		}
 		_countdownCounter = _countdownValue;
 		this.InvokeRepeating ("CountDownTimer", 0f, 1f);
 	}
 
 	private void CountDownTimer ()
 	{
-		if (_countdownCounter <= 0) {
+		if (_countdownCounter <= 0)
+		{
 			_timerMessage.gameObject.SetActive (false);
-			_gameState = GameState.RUNNING;
 			this.CancelInvoke ("CountDownTimer");
-		} else {
+		}
+		else
+		{
 			_countdownCounter--;
 			_timerMessage.text = "Warmup : " + _countdownCounter + " second(s) left.";
 		}
@@ -72,57 +55,24 @@ public class 				LogicInGame : Photon.MonoBehaviour
 	{
 		_instance = this;
 		_playerList = new List<GladiatorNetwork> ();
-		_gameState = GameState.AWAITING;
 		_timerMessage.gameObject.SetActive (false);
 	}
 	
 	void					Update ()
 	{
-//			foreach (ALaunchEvent le in _startEvent)
-//			{
-//				le.launchCountDown();
-//				le.allPlayerInstantiated();
-//				le.launchGame();
-//			}	
-
-		//FFA impl. Game's ending when 1 player left.
-		
-		switch (_gameState) {
-		case GameState.AWAITING:
-			if (PhotonNetwork.room.playerCount > 1) {
-//				Invoke("SpawnPlayer", 3.0f);
-				SpawnPlayer ();
-				_gameState = GameState.PENDING;				
-			}
-			break;
-		case GameState.PENDING:
-			if (PhotonNetwork.room.playerCount == GameObject.FindGameObjectsWithTag ("Player").Length) {
-				_timerMessage.gameObject.SetActive (true);
-				StartCountDown ();
-				_gameState = GameState.COUNTDOWN;
-			}
-			break;
-		case GameState.COUNTDOWN:
-			break;
-		case GameState.RUNNING:
-			if (PhotonNetwork.room.playerCount == _playerList.Count) {
-				int count = 0;
-				foreach (GladiatorNetwork gn in _playerList)
-					count = (gn.Life > 0) ? count + 1 : count;
-				
-				if (count <= 1)
-					_gameState = GameState.ENDED;
-			}
-			break;
-		case GameState.ENDED:
-			_endMessage.SetActive (true);
-			break;
-		default:
-			break;
+		if (!_masterInstantiated && PhotonNetwork.isMasterClient && PhotonNetwork.room.playerCount > 1)
+		{
+			_masterInstantiated = true;
+			Invoke("InstantiateMasterServer", 4.0f);
 		}
 	}
 	
-	void					SpawnPlayer ()
+	void					InstantiateMasterServer()
+	{
+		PhotonNetwork.Instantiate("MasterServer", transform.position, transform.rotation, 0);
+	}
+	
+	public void				SpawnPlayer ()
 	{
 		Spawn spawn = GetMySpawn ();
 		GameObject myPlayer = PhotonNetwork.Instantiate ("NormalPlayer", spawn.transform.position, spawn.transform.rotation, 0);
