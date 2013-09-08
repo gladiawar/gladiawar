@@ -41,7 +41,8 @@ public class 				GladiatorController : MonoBehaviour
 	{
 		float				targetSpeed = 0;
 		
-		if (Input.GetKey(Keyboard.Action_Forward) ^ Input.GetKey(Keyboard.Action_Back))
+		if ((Input.GetKey(Keyboard.Action_Forward) ^ Input.GetKey(Keyboard.Action_Back)) &&
+			_ASM.State != AnimationStateManager.eState.DEFENSE && _ASM.State != AnimationStateManager.eState.ATTACK)
 		{
 			bool			back = Input.GetKey(Keyboard.Action_Back);
 			
