@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+/**
+ * Handler for change user input
+ * 
+ * @prefab GUserInputSetter
+ */
 public class GUserInputSetterHandler : MonoBehaviour {
 	
 	public GuserInputSetterBox box;

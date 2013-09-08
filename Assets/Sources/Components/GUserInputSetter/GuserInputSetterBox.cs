@@ -2,6 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/**
+ * Basic class controller of GUserInputSetterBox
+ * 
+ * @prefab GUserInputSetterBox
+ */
 public class GuserInputSetterBox : MonoBehaviour {
 	
 	protected GUserInputSetterHandler handler;
