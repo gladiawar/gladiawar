@@ -91,6 +91,11 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 			cc.radius = 0.4f;
 			cc.height = 1.4f;
 			cc.center = new Vector3(0, 0.6f, 0);
+			GameObject		HUDText = NGUITools.AddChild(LogicInGame.Instance._HUDText.gameObject, LogicInGame.Instance._FollowerPrefab);
+			
+			HUDText.GetComponent<UIFollowTarget>().target = transform.FindChild("TextPosition");
+			HUDText.GetComponent<UIFollowTarget>().uiCamera = LogicInGame.Instance._UICamera;
+			HUDText.transform.GetChild(0).GetComponent<UILabel>().text = "test";
 		}
 	}
 	

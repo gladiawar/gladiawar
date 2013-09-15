@@ -23,6 +23,9 @@ public class 				LogicInGame : Photon.MonoBehaviour
 		set { _playerList = value; }
 	}
 	
+	public Camera			_UICamera;
+	public UIAnchor			_HUDText;
+	public GameObject		_FollowerPrefab;
 	public UILabel    		_igMessage;
 	public int      		_countdownValue = 5;
 	private int      		_countdownCounter = 0;
