@@ -31,9 +31,9 @@ public class 				LogicInGame : Photon.MonoBehaviour
 	
 	public void StartCountDown ()
 	{
-		_timerMessage.gameObject.SetActive(true);
+		/*_timerMessage.gameObject.SetActive(true);
 		_countdownCounter = _countdownValue;
-		this.InvokeRepeating ("CountDownTimer", 0f, 1f);
+		this.InvokeRepeating ("CountDownTimer", 0f, 1f);*/
 	}
 
 	private void CountDownTimer ()
@@ -91,5 +91,9 @@ public class 				LogicInGame : Photon.MonoBehaviour
 			if (spawn.master == PhotonNetwork.isMasterClient)
 				return (spawn);
 		return (null);
+	}
+	
+	void					OnDestroy()
+	{
 	}
 }
