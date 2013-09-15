@@ -70,7 +70,7 @@ public class 				GladiatorController : MonoBehaviour
 	
 	void					applyGravity()
 	{
-		_verticalSpeed -= _gravity * Time.deltaTime;
+		_verticalSpeed = _gravity * Time.deltaTime;
 	}
 	
 	void					changeRotation()
@@ -86,6 +86,7 @@ public class 				GladiatorController : MonoBehaviour
 		Quaternion		RotationY = Quaternion.Euler(0, currentYRotation, 0);
 
 		_charCtrl.Move((RotationY * _vForward * Time.deltaTime * _moveSpeed) + new Vector3(0, _verticalSpeed, 0));
+		Debug.Log((RotationY * _vForward * Time.deltaTime * _moveSpeed) + new Vector3(0, _verticalSpeed, 0).ToString());
 	}
 	
 	void					moveForward(ref float targetSpeed, bool back = false, bool running = false)
