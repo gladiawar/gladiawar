@@ -6,11 +6,13 @@
 
 using						UnityEngine;
 using						System.Collections;
+using						System.Collections.Generic;
 
 public class 				MasterServerData : Photon.MonoBehaviour
 {
 	bool					_gameStart = true;
 	bool					_inCountDown = false;
+	bool					_gameEnded = false;
 	float					_countDownTime = 0;
 	
 	void					Update()
@@ -24,6 +26,8 @@ public class 				MasterServerData : Photon.MonoBehaviour
 				if ((_countDownTime += Time.deltaTime) >= 5f)
 					LaunchGame();
 			}
+			else if (!_gameEnded)
+				checkEndGame();
 		}
 	}
 	
@@ -33,6 +37,21 @@ public class 				MasterServerData : Photon.MonoBehaviour
 		{
 			_inCountDown = true;
 			photonView.RPC("LaunchCountDown", PhotonTargets.All, null);
+		}
+	}
+	
+	void					checkEndGame()
+	{
+		List<GladiatorNetwork> list = LogicInGame.Instance.PlayerList;
+		int					alive = 0;
+		
+		foreach (GladiatorNetwork glad in list)
+			if (glad.Life > 0)
+				++alive;
+		if (alive == 1)
+		{
+			_gameEnded = true;
+			photonView.RPC("EndGame", PhotonTargets.All, null);
 		}
 	}
 	
@@ -48,5 +67,16 @@ public class 				MasterServerData : Photon.MonoBehaviour
 	void					LaunchGame()
 	{
 		_inCountDown = false;
+	}
+	
+	[RPC]
+	void					EndGame()
+	{
+		LogicInGame.Instance.EndGame();
+	}
+	
+	void					OnDestroy()
+	{
+		PhotonNetwork.LeaveRoom();
 	}
 }

@@ -17,7 +17,6 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 	Quaternion				_playerRot;
 	CharacterController		_charCtrl;
 	AnimationStateManager	_animationManager;
-	int						_playerTouched = -1;
 	
 	int						_life = 100;
 	public int				Life
@@ -122,7 +121,6 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 		}
 		else
 		{
-			int				ptd;
 			AnimationStateManager.eState state;
 			
 			_playerPos = (Vector3)stream.ReceiveNext();
@@ -162,5 +160,11 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 		_energy -= spendInt;
 		_runningEnergySpend -= (float)spendInt;
 		return (true);
+	}
+	
+	void					OnDestroy()
+	{
+		/*if (photonView.isMine)
+			PhotonNetwork.Destroy(gameObject);*/
 	}
 }

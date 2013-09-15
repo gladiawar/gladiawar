@@ -23,38 +23,35 @@ public class 				LogicInGame : Photon.MonoBehaviour
 		set { _playerList = value; }
 	}
 	
-	public GameObject    _endMessage;
-	public UILabel    _timerMessage;
+	public UILabel    _igMessage;
 	public int      _countdownValue = 5;
 	private int      _countdownCounter = 0;
 	private bool	_masterInstantiated = false;
 	
 	public void StartCountDown ()
 	{
-		/*_timerMessage.gameObject.SetActive(true);
 		_countdownCounter = _countdownValue;
-		this.InvokeRepeating ("CountDownTimer", 0f, 1f);*/
+		this.InvokeRepeating ("CountDownTimer", 0f, 1f);
 	}
 
 	private void CountDownTimer ()
 	{
 		if (_countdownCounter <= 0)
 		{
-			_timerMessage.gameObject.SetActive (false);
+			_igMessage.text = "";
 			this.CancelInvoke ("CountDownTimer");
 		}
 		else
 		{
 			_countdownCounter--;
-			_timerMessage.text = "Warmup : " + _countdownCounter + " second(s) left.";
+			_igMessage.text = _countdownCounter.ToString();
 		}
 	}
 	
 	void					Start ()
 	{
 		_instance = this;
-		_playerList = new List<GladiatorNetwork> ();
-		_timerMessage.gameObject.SetActive (false);
+		_playerList = new List<GladiatorNetwork>();
 	}
 	
 	void					Update ()
@@ -93,7 +90,14 @@ public class 				LogicInGame : Photon.MonoBehaviour
 		return (null);
 	}
 	
-	void					OnDestroy()
+	public void				EndGame()
 	{
+		_igMessage.text = "Game terminated";
+		Invoke("finishingGame", 3f);
+	}
+	
+	private void			finishingGame()
+	{
+		Application.LoadLevel("Hub");
 	}
 }
