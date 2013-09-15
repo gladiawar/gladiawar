@@ -31,13 +31,10 @@ public class 				MasterServerData : Photon.MonoBehaviour
 		}
 	}
 	
-	void					inGameStart()
+	public void				inGameStart()
 	{
-		if (PhotonNetwork.room.playerCount > 1)
-		{
-			_inCountDown = true;
-			photonView.RPC("LaunchCountDown", PhotonTargets.All, null);
-		}
+		_inCountDown = true;
+		photonView.RPC("LaunchCountDown", PhotonTargets.All, null);
 	}
 	
 	void					checkEndGame()

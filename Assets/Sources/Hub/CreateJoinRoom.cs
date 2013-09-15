@@ -13,6 +13,8 @@ public class 				CreateJoinRoom : Photon.MonoBehaviour
 	public bool				_create;
 	public bool				_random;
 	
+	private	bool			_created = false;
+	
 	void 					OnClick()
 	{
 		if (_random)
@@ -22,13 +24,23 @@ public class 				CreateJoinRoom : Photon.MonoBehaviour
 		else
 		{
 			if (_create)
-				PhotonNetwork.CreateRoom(_gameName.text, true, true, 6);
-			PhotonNetwork.JoinRoom(_gameName.text);
+			{
+				if (_created)
+					CreateChecker();
+				else
+				{
+					PhotonNetwork.CreateRoom(_gameName.text, true, true, 6);
+					_created = true;
+					PhotonNetwork.JoinRoom(_gameName.text);
+				}
+			}
+			else
+				PhotonNetwork.JoinRoom(_gameName.text);
 		}
 	}
 	
-	void 					OnJoinedRoom()
+	void					CreateChecker()
 	{
-		Application.LoadLevel("Map1");
+		PhotonNetwork.Instantiate("ReadyChecker", Vector3.zero, Quaternion.Euler(Vector3.zero), 0);
 	}
 }

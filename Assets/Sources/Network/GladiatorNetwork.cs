@@ -141,7 +141,10 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 	public void				ReceiveAttack()
 	{
 		if (_animationManager.State == AnimationStateManager.eState.DEFENSE)
+		{
 			Life -= 2;
+			Energy -= 20;
+		}
 		else
 			Life -= 10;
 	}

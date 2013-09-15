@@ -23,10 +23,23 @@ public class 				LogicInGame : Photon.MonoBehaviour
 		set { _playerList = value; }
 	}
 	
-	public UILabel    _igMessage;
-	public int      _countdownValue = 5;
-	private int      _countdownCounter = 0;
-	private bool	_masterInstantiated = false;
+	public UILabel    		_igMessage;
+	public int      		_countdownValue = 5;
+	private int      		_countdownCounter = 0;
+	
+	private int				_teamNumber;
+	public int				TeamNumber
+	{
+		get { return (_teamNumber); }
+		set { _teamNumber = value; }
+	}
+	
+	private int				_teamSlot;
+	public int				TeamSlot
+	{
+		get { return (_teamSlot); }
+		set { _teamSlot = value; }
+	}
 	
 	public void StartCountDown ()
 	{
@@ -54,23 +67,24 @@ public class 				LogicInGame : Photon.MonoBehaviour
 		_playerList = new List<GladiatorNetwork>();
 	}
 	
-	void					Update ()
-	{
-		if (!_masterInstantiated && PhotonNetwork.isMasterClient && PhotonNetwork.room.playerCount > 1)
-		{
-			_masterInstantiated = true;
-			Invoke("InstantiateMasterServer", 4.0f);
-		}
-	}
-	
-	void					InstantiateMasterServer()
+	public void				InstantiateMasterServer()
 	{
 		PhotonNetwork.Instantiate("MasterServer", transform.position, transform.rotation, 0);
 	}
 	
 	public void				SpawnPlayer ()
 	{
-		Spawn spawn = GetMySpawn ();
+		Spawn 				spawn = GetMySpawn ();
+		Vector3				spawnPos = spawn.transform.position;
+		
+		switch (_teamSlot)
+		{
+		case 0:
+			spawnPos += new Vector3(3, 0, 0); break;
+		case 2:
+			spawnPos += new Vector3(-3, 0, 0); break;
+		}
+		
 		GameObject myPlayer = PhotonNetwork.Instantiate ("NormalPlayer", spawn.transform.position, spawn.transform.rotation, 0);
 		PhotonView pv;
 		
@@ -85,8 +99,18 @@ public class 				LogicInGame : Photon.MonoBehaviour
 		List<Spawn> spawnList = SpawnManager.Instance.SpawnList;
 		
 		foreach (Spawn spawn in spawnList)
-			if (spawn.master == PhotonNetwork.isMasterClient)
-				return (spawn);
+		{
+			if (LogicInGame.Instance.TeamNumber == 0)
+			{
+				if (spawn.master)
+					return (spawn);
+			}
+			else
+			{
+				if (!spawn.master)
+					return (spawn);
+			}
+		}
 		return (null);
 	}
 	
@@ -98,6 +122,7 @@ public class 				LogicInGame : Photon.MonoBehaviour
 	
 	private void			finishingGame()
 	{
+		Screen.showCursor = true; 
 		Application.LoadLevel("Hub");
 	}
 }

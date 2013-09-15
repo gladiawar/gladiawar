@@ -19,8 +19,8 @@ public class 				AttackEventManager : MonoBehaviour
 	private bool			_haveTouched;
 	private int				_layerGladiator;
 	
-	const int 				_attackCost = 20;
-	const int				_defenseCost = 50;
+	const int 				_attackCost = 15;
+	const int				_defenseCost = 15;
 	
 	float					_defenseEnergySpend = 0;
 	
