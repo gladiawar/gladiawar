@@ -90,13 +90,20 @@ public class 				LogicInGame : Photon.MonoBehaviour
 			spawnPos += new Vector3(-6, 0, 0); break;
 		}
 		
-		GameObject myPlayer = PhotonNetwork.Instantiate ("NormalPlayer", spawn.transform.position, spawn.transform.rotation, 0);
+		string[]			instantiateData = new string[2];
+		instantiateData[0] = _teamNumber.ToString();
+		instantiateData[1] = RunTimeData.PlayerBase.PlayerName;
+		
+		object[] objs = new object[1];
+		objs[0] = instantiateData;
+		
+		GameObject myPlayer = PhotonNetwork.Instantiate ("NormalPlayer", spawn.transform.position, spawn.transform.rotation, 0, objs);
 		PhotonView pv;
 		
 		myPlayer.name = RunTimeData.PlayerBase.PlayerName;
 		pv = myPlayer.GetComponent<PhotonView> ();
 		pv.ownerId = PhotonNetwork.player.ID;
-		HUDInitializer.Instance.init (myPlayer.GetComponent<GladiatorNetwork> ());
+		HUDInitializer.Instance.init(myPlayer.GetComponent<GladiatorNetwork>());
 	}
 	
 	Spawn					GetMySpawn()

@@ -10,7 +10,7 @@ using						System.Collections.Generic;
 
 public class 				RoomLogic : Photon.MonoBehaviour
 {
-	const float				_pingTime = 2f;
+	const float				_pingTime = 0.75f;
 	float					_elapsedTime = 0;
 	
 	private bool			_didClientRequest = false;

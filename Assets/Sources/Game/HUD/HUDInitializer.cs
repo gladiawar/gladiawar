@@ -30,5 +30,6 @@ public class 				HUDInitializer : MonoBehaviour
 		foreach (GameObject go in _hud)
 			go.SetActive(true);
 		_name.text = RunTimeData.PlayerBase.PlayerName;
+		_name.color = (RunTimeData.PlayerTeam == 0 ? Color.blue : Color.red);
 	}
 }

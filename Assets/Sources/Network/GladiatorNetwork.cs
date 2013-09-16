@@ -18,6 +18,8 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 	CharacterController		_charCtrl;
 	AnimationStateManager	_animationManager;
 	
+	int						_teamNb;
+	
 	int						_life = 100;
 	public int				Life
 	{
@@ -91,11 +93,6 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 			cc.radius = 0.4f;
 			cc.height = 1.4f;
 			cc.center = new Vector3(0, 0.6f, 0);
-			GameObject		HUDText = NGUITools.AddChild(LogicInGame.Instance._HUDText.gameObject, LogicInGame.Instance._FollowerPrefab);
-			
-			HUDText.GetComponent<UIFollowTarget>().target = transform.FindChild("TextPosition");
-			HUDText.GetComponent<UIFollowTarget>().uiCamera = LogicInGame.Instance._UICamera;
-			HUDText.transform.GetChild(0).GetComponent<UILabel>().text = "test";
 		}
 	}
 	
@@ -170,9 +167,23 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 		return (true);
 	}
 	
+	void 					OnPhotonInstantiate(PhotonMessageInfo info)
+	{
+		if (!photonView.isMine)
+		{
+			GameObject		HUDText = NGUITools.AddChild(LogicInGame.Instance._HUDText.gameObject, LogicInGame.Instance._FollowerPrefab);
+			object[]		objs = photonView.instantiationData;
+			string[]		idata = (string[])objs[0];
+			
+			_teamNb = int.Parse(idata[0]);
+			HUDText.GetComponent<UIFollowTarget>().target = transform.FindChild("TextPosition");
+			HUDText.GetComponent<UIFollowTarget>().uiCamera = LogicInGame.Instance._UICamera;
+			HUDText.transform.GetChild(0).GetComponent<UILabel>().text = idata[1];
+			HUDText.transform.GetChild(0).GetComponent<UILabel>().color = (_teamNb == 0 ? Color.blue : Color.red);
+		}
+	}
+	
 	void					OnDestroy()
 	{
-		/*if (photonView.isMine)
-			PhotonNetwork.Destroy(gameObject);*/
 	}
 }
