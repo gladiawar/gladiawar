@@ -134,7 +134,7 @@ public class 				RoomLogic : Photon.MonoBehaviour
 			int				pteam = int.Parse(playerData[1]);
 			int				pslot = int.Parse(playerData[2]);
 			
-			if (_didClientRequest && playerData[0] == RunTimeData.PlayerBase.PlayerName)
+			if (!_didClientRequest && playerData[0] == RunTimeData.PlayerBase.PlayerName)
 			{
 				_didClientRequest = true;
 				RunTimeData.PlayerTeam = pteam;

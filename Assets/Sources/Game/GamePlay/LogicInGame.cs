@@ -85,9 +85,9 @@ public class 				LogicInGame : Photon.MonoBehaviour
 		switch (_teamSlot)
 		{
 		case 0:
-			spawnPos += new Vector3(3, 0, 0); break;
+			spawnPos += new Vector3(6, 0, 0); break;
 		case 2:
-			spawnPos += new Vector3(-3, 0, 0); break;
+			spawnPos += new Vector3(-6, 0, 0); break;
 		}
 		
 		GameObject myPlayer = PhotonNetwork.Instantiate ("NormalPlayer", spawn.transform.position, spawn.transform.rotation, 0);
@@ -103,9 +103,10 @@ public class 				LogicInGame : Photon.MonoBehaviour
 	{
 		List<Spawn> spawnList = SpawnManager.Instance.SpawnList;
 		
+		Debug.Log(_teamNumber.ToString());
 		foreach (Spawn spawn in spawnList)
 		{
-			if (LogicInGame.Instance.TeamNumber == 0)
+			if (_teamNumber == 0)
 			{
 				if (spawn.master)
 					return (spawn);
