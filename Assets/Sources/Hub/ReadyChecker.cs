@@ -48,60 +48,10 @@ public class 				ReadyChecker : Photon.MonoBehaviour
 		{
 			_playerReady.Add(playerName);
 			if (_playerReady.Count == _playerNumber - 1)
-			{	
-				LaunchTeamInfo();
-				LogicInGame.Instance.InstantiateMasterServer();
-			}
-		}
-	}
-	
-	void					LaunchTeamInfo()
-	{
-		string				info = "";
-		int					playerNumber = _playerReady.Count;
-		int					teamNumber;
-		int					count = 1;
-		
-		foreach (string player in _playerReady)
-		{
-			if (count > 1)
-				info += "/";
-			info += player + ";";
-			teamNumber = ((count < (playerNumber / 2)) ? 0 : 1);
-			info += teamNumber.ToString();
-			info += ";";
-			info += (count - (teamNumber * (playerNumber / 2))).ToString();
-			++count;
-		}
-		photonView.RPC("destroyChecker", PhotonTargets.All, info);
-	}
-			
-	[RPC]
-	void					destroyChecker(string teamInfo)
-	{
-		if (photonView.isMine)
-		{
-			LogicInGame.Instance.TeamNumber = 0;
-			LogicInGame.Instance.TeamSlot = 0;
-		}
-		else
-		{
-			char[]			separator = { '/' };
-			char[]			separator2 = { ';' };
-			string[]		players = teamInfo.Split(separator);
-			
-			for (int i = 0; i < players.Length; ++i)
 			{
-				string[]	data = players[i].Split(separator2);
-				
-				if (data[0] == RunTimeData.PlayerBase.PlayerName)
-				{
-					LogicInGame.Instance.TeamNumber = int.Parse(data[1]);
-					LogicInGame.Instance.TeamSlot = int.Parse(data[2]);
-					break;
-				}
+				LogicInGame.Instance.InstantiateMasterServer();
+				GameObject.Destroy(gameObject);
 			}
 		}
-		GameObject.Destroy(gameObject);
 	}
 }

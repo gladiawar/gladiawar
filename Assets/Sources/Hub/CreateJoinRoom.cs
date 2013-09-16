@@ -12,35 +12,26 @@ public class 				CreateJoinRoom : Photon.MonoBehaviour
 	public UILabel			_gameName;
 	public bool				_create;
 	public bool				_random;
-	
-	private	bool			_created = false;
+	public GameObject		_panelRoom;
 	
 	void 					OnClick()
 	{
 		if (_random)
 		{
-			//PhotonNetwork.JoinRandomRoom();
+			PhotonNetwork.JoinRandomRoom();
 		}
 		else
 		{
 			if (_create)
-			{
-				if (_created)
-					CreateChecker();
-				else
-				{
-					PhotonNetwork.CreateRoom(_gameName.text, true, true, 6);
-					_created = true;
-					PhotonNetwork.JoinRoom(_gameName.text);
-				}
-			}
-			else
-				PhotonNetwork.JoinRoom(_gameName.text);
+				PhotonNetwork.CreateRoom(_gameName.text, true, true, 6);
+			PhotonNetwork.JoinRoom(_gameName.text);
 		}
 	}
 	
-	void					CreateChecker()
+	void					OnJoinedRoom()
 	{
-		PhotonNetwork.Instantiate("ReadyChecker", Vector3.zero, Quaternion.Euler(Vector3.zero), 0);
+		_panelRoom.SetActive(true);
+		transform.parent.gameObject.SetActive(false);
+		//PhotonNetwork.Instantiate("ReadyChecker", Vector3.zero, Quaternion.Euler(Vector3.zero), 0);
 	}
 }

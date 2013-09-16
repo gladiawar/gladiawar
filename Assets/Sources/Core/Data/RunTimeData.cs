@@ -40,4 +40,18 @@ public static class 			RunTimeData
 			Screen.showCursor = _inIGMenu;
 		}
 	}
+	
+	private static int			_playerTeam;
+	public static int			PlayerTeam
+	{
+		get { return (_playerTeam); }
+		set { _playerTeam = value; }
+	}
+	
+	private static int			_playerSlot;
+	public static int			PlayerSlot
+	{
+		get { return (_playerSlot); }
+		set { _playerSlot = value; }
+	}
 }

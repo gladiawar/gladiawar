@@ -68,6 +68,8 @@ public class 				LogicInGame : Photon.MonoBehaviour
 	{
 		_instance = this;
 		_playerList = new List<GladiatorNetwork>();
+		_teamNumber = RunTimeData.PlayerTeam;
+		_teamSlot = RunTimeData.PlayerSlot;
 	}
 	
 	public void				InstantiateMasterServer()
@@ -77,7 +79,7 @@ public class 				LogicInGame : Photon.MonoBehaviour
 	
 	public void				SpawnPlayer ()
 	{
-		Spawn 				spawn = GetMySpawn ();
+		Spawn 				spawn = GetMySpawn();
 		Vector3				spawnPos = spawn.transform.position;
 		
 		switch (_teamSlot)
@@ -97,7 +99,7 @@ public class 				LogicInGame : Photon.MonoBehaviour
 		HUDInitializer.Instance.init (myPlayer.GetComponent<GladiatorNetwork> ());
 	}
 	
-	Spawn					GetMySpawn ()
+	Spawn					GetMySpawn()
 	{
 		List<Spawn> spawnList = SpawnManager.Instance.SpawnList;
 		
