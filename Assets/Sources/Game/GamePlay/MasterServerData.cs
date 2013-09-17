@@ -40,12 +40,17 @@ public class 				MasterServerData : Photon.MonoBehaviour
 	void					checkEndGame()
 	{
 		List<GladiatorNetwork> list = LogicInGame.Instance.PlayerList;
-		int					alive = 0;
+		int					alive1 = 0;
+		int					alive2 = 0;
 		
 		foreach (GladiatorNetwork glad in list)
-			if (glad.Life > 0)
-				++alive;
-		if (alive == 1)
+		{
+			if (glad.Life > 0 && glad.TeamNb == 0)
+				++alive1;
+			else if (glad.Life > 0 && glad.TeamNb == 1)
+				++alive2;
+		}
+		if (alive1 == 0 || alive2 == 0)
 		{
 			_gameEnded = true;
 			photonView.RPC("EndGame", PhotonTargets.All, null);

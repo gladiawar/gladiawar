@@ -54,4 +54,11 @@ public static class 			RunTimeData
 		get { return (_playerSlot); }
 		set { _playerSlot = value; }
 	}
+	
+	private static string		_mapName;
+	public static string		MapName
+	{
+		get { return (_mapName); }
+		set { _mapName = value; }
+	}
 }

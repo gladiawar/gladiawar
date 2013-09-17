@@ -9,10 +9,15 @@ using						System.Collections;
 
 public class 				LaunchGameButton : MonoBehaviour
 {
+	public GameObject		_mapPanel;
+	
 	void 					OnEnable()
 	{
 		if (!PhotonNetwork.isMasterClient)
-			GameObject.Destroy(gameObject);
+		{
+			transform.GetComponent<UIButton>().isEnabled = false;
+			_mapPanel.GetComponent<UIButton>().isEnabled = false;
+		}
 		else
 			PhotonNetwork.Instantiate("RoomLogic", Vector3.zero, Quaternion.Euler(Vector3.zero), 0);
 	}

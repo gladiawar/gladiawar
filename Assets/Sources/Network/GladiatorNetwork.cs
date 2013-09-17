@@ -19,6 +19,10 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 	AnimationStateManager	_animationManager;
 	
 	int						_teamNb;
+	public int				TeamNb
+	{
+		get { return (_teamNb); }
+	}
 	
 	int						_life = 100;
 	public int				Life

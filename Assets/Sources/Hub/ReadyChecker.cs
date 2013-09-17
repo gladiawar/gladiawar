@@ -21,7 +21,7 @@ public class 				ReadyChecker : Photon.MonoBehaviour
 		DontDestroyOnLoad(gameObject);
 		if (photonView.isMine)
 			_playerReady = new List<string>();
-		Application.LoadLevel("Map1");
+		Application.LoadLevel(RunTimeData.MapName);
 	}
 	
 	void					Update()

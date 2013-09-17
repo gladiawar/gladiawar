@@ -96,8 +96,13 @@ public class 				AttackEventManager : MonoBehaviour
 		{
 			if (rcData.collider.gameObject != this.gameObject)
 			{
-				_gladiatorNetwork.SendAttack(rcData.collider.gameObject.transform.GetComponent<GladiatorNetwork>());
-				_haveTouched = true;
+				GladiatorNetwork	opo = rcData.collider.gameObject.transform.GetComponent<GladiatorNetwork>();
+				
+				if (opo.TeamNb != RunTimeData.PlayerTeam)
+				{
+					_gladiatorNetwork.SendAttack(opo);
+					_haveTouched = true;
+				}
 			}	
 		}
 	}

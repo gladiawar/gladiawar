@@ -50,7 +50,7 @@ public class 				LogicInGame : Photon.MonoBehaviour
 		this.InvokeRepeating ("CountDownTimer", 0f, 1f);
 	}
 
-	private void CountDownTimer ()
+	private void CountDownTimer()
 	{
 		if (_countdownCounter <= 0)
 		{

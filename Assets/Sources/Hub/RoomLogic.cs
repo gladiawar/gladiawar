@@ -10,9 +10,10 @@ using						System.Collections.Generic;
 
 public class 				RoomLogic : Photon.MonoBehaviour
 {
-	const float				_pingTime = 0.75f;
+	const float				_pingTime = 0.5f;
 	float					_elapsedTime = 0;
 	
+	private string			_currentMap;
 	private bool			_didClientRequest = false;
 	private List<string>	_player1;
 	private List<string>	_player2;
@@ -43,11 +44,17 @@ public class 				RoomLogic : Photon.MonoBehaviour
 	{
 		if ((_elapsedTime += Time.deltaTime) > _pingTime)
 		{
-			if (photonView.isMine)
-				sendTeamInfo();
-			else if (!_didClientRequest)
+			if (!photonView.isMine && !_didClientRequest)
 				photonView.RPC("ClientTeamAsk", PhotonTargets.MasterClient, RunTimeData.PlayerBase.PlayerName);
 			_elapsedTime = 0;
+		}
+		if (photonView.isMine)
+		{
+			if (RunTimeData.MapName != _currentMap)
+			{
+				_currentMap = RunTimeData.MapName;
+				sendMapName();
+			}
 		}
 	}
 	
@@ -56,6 +63,11 @@ public class 				RoomLogic : Photon.MonoBehaviour
 		string				data = parsePlayerList(_player1, (0).ToString()) + "/" + parsePlayerList(_player2, (1).ToString());
 		
 		photonView.RPC("ReceiveTeamInfo", PhotonTargets.Others, data);
+	}
+	
+	void					sendMapName()
+	{
+		photonView.RPC("UpdateMapName", PhotonTargets.Others, _currentMap);
 	}
 	
 	string					parsePlayerList(List<string> playerList, string teamNumber)
@@ -103,7 +115,15 @@ public class 				RoomLogic : Photon.MonoBehaviour
 			else
 				_player1.Add(pname);
 			MajDisplay();
+			sendTeamInfo();
+			sendMapName();
 		}
+	}
+	
+	[RPC]
+	void					UpdateMapName(string mname)
+	{
+		RunTimeData.MapName = mname;
 	}
 	
 	bool					playerExist(string pname)
