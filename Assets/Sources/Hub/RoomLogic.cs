@@ -118,6 +118,8 @@ public class 				RoomLogic : Photon.MonoBehaviour
 			sendTeamInfo();
 			sendMapName();
 		}
+		if (PhotonNetwork.room.playerCount == 6)
+			PhotonNetwork.room.open = false;
 	}
 	
 	[RPC]

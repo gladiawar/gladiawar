@@ -21,6 +21,8 @@ public class 				ReadyChecker : Photon.MonoBehaviour
 		DontDestroyOnLoad(gameObject);
 		if (photonView.isMine)
 			_playerReady = new List<string>();
+		if (photonView.isMine)
+			PhotonNetwork.room.open = false;
 		Application.LoadLevel(RunTimeData.MapName);
 	}
 	
