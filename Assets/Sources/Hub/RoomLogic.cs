@@ -13,13 +13,16 @@ public class 				RoomLogic : Photon.MonoBehaviour
 	const float				_pingTime = 0.5f;
 	float					_elapsedTime = 0;
 	
+	private Transform		_InputBox;
+	private UILabel			_messageBox;
 	private string			_currentMap;
 	private bool			_didClientRequest = false;
 	private List<string>	_player1;
 	private List<string>	_player2;
 	private List<UILabel>	_labelPlayer1;
 	private List<UILabel>	_labelPlayer2;
-	
+	private List<string>	_messages;
+
 	void					Start()
 	{
 		_player1 = new List<string>();
@@ -37,6 +40,10 @@ public class 				RoomLogic : Photon.MonoBehaviour
 		
 		if (photonView.isMine)
 			_player1.Add(RunTimeData.PlayerBase.PlayerName);
+		_messageBox = GameObject.Find("Messages").GetComponent<UILabel>();
+		_messages = new List<string>();
+		_InputBox = GameObject.Find("playerInput").transform;
+		_InputBox.GetComponent<UIInput>().eventReceiver = gameObject;
 		MajDisplay();
 	}
 	
@@ -175,4 +182,34 @@ public class 				RoomLogic : Photon.MonoBehaviour
 		}
 		MajDisplay();
 	}
+	
+#region chat
+	void					OnSubmit(string message)
+	{
+		photonView.RPC("getMessage", PhotonTargets.All, "[" + RunTimeData.PlayerBase.PlayerName + "]: " + message);
+	}
+	
+	[RPC]
+	void					getMessage(string message)
+	{
+		_messages.Add(message);
+		while (_messages.Count > 13)
+			_messages.Remove(_messages[0]);
+		refreshChat();
+	}
+	
+	void					refreshChat()
+	{
+		int					count = 0;
+		string				finalText = "";
+		
+		foreach (string msg in _messages)
+		{
+			if (count++ > 0)
+				finalText += "\n";
+			finalText += msg;
+		}
+		_messageBox.text = finalText;
+	}
+#endregion
 }
