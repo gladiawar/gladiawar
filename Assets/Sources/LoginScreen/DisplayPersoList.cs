@@ -18,10 +18,11 @@ public class 			DisplayPersoList : MonoBehaviour
 	void 				Start()
 	{
 		_slotPerso = new Transform[3];
-		_slotPerso[0] = transform.FindChild("1");
-		_slotPerso[1] = transform.FindChild("2");
-		_slotPerso[2] = transform.FindChild("3");
-		
+		for (int i = 0; i < 3; ++i)
+		{
+			_slotPerso[i] = transform.FindChild((i + 1).ToString());
+			_slotPerso[i].GetComponent<UIButton>().isEnabled = false;
+		}
 	}
 	
 	public void			loadCharacters()
@@ -64,7 +65,10 @@ public class 			DisplayPersoList : MonoBehaviour
 	{
 		for(int i = 0; i < _players.Length; ++i)
 			if (_players[i].PlayerName.Length > 2)
+			{
 				_slotPerso[i].FindChild("Label").GetComponent<UILabel>().text = _players[i].PlayerName;
+				_slotPerso[i].GetComponent<UIButton>().isEnabled = true;
+			}
 	}
 	
 	public void			OnClickSelectCharacterOne()
