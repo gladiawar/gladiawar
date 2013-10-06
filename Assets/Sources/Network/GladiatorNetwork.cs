@@ -17,6 +17,7 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 	Quaternion				_playerRot;
 	CharacterController		_charCtrl;
 	AnimationStateManager	_animationManager;
+	SelectClass.eClass		_class;
 	
 	int						_teamNb;
 	public int				TeamNb
@@ -179,11 +180,18 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 			object[]		objs = photonView.instantiationData;
 			string[]		idata = (string[])objs[0];
 			
+			Debug.Log("is not mine");
 			_teamNb = int.Parse(idata[0]);
+			_class = (SelectClass.eClass)uint.Parse(idata[2]);
 			HUDText.GetComponent<UIFollowTarget>().target = transform.FindChild("TextPosition");
 			HUDText.GetComponent<UIFollowTarget>().uiCamera = LogicInGame.Instance._UICamera;
 			HUDText.transform.GetChild(0).GetComponent<UILabel>().text = idata[1];
 			HUDText.transform.GetChild(0).GetComponent<UILabel>().color = (_teamNb == 0 ? Color.blue : Color.red);
+		}
+		else
+		{
+			Debug.Log("is mine");
+			_class = RunTimeData.PlayerBase.PlayerClass;
 		}
 	}
 	

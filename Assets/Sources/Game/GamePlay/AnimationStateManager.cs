@@ -33,6 +33,7 @@ public class 				AnimationStateManager : MonoBehaviour
 	private CharacterController _charCtrl;
 	
 	public GameObject[]		_particle;
+	public string[]			_animationNames;
 	
 	private eState			_state;
 	public eState			State

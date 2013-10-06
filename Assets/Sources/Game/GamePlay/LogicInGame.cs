@@ -77,7 +77,7 @@ public class 				LogicInGame : Photon.MonoBehaviour
 		PhotonNetwork.Instantiate("MasterServer", transform.position, transform.rotation, 0);
 	}
 	
-	public void				SpawnPlayer ()
+	public void				SpawnPlayer()
 	{
 		Spawn 				spawn = GetMySpawn();
 		Vector3				spawnPos = spawn.transform.position;
@@ -89,21 +89,33 @@ public class 				LogicInGame : Photon.MonoBehaviour
 		case 2:
 			spawnPos += new Vector3(-6, 0, 0); break;
 		}
-		
-		string[]			instantiateData = new string[2];
-		instantiateData[0] = _teamNumber.ToString();
-		instantiateData[1] = RunTimeData.PlayerBase.PlayerName;
-		
-		object[] objs = new object[1];
-		objs[0] = instantiateData;
-		
-		GameObject myPlayer = PhotonNetwork.Instantiate ("NormalPlayer", spawn.transform.position, spawn.transform.rotation, 0, objs);
+
+		GameObject myPlayer = InstantiateMyPlayer(spawn);
 		PhotonView pv;
 		
 		myPlayer.name = RunTimeData.PlayerBase.PlayerName;
 		pv = myPlayer.GetComponent<PhotonView> ();
 		pv.ownerId = PhotonNetwork.player.ID;
 		HUDInitializer.Instance.init(myPlayer.GetComponent<GladiatorNetwork>());
+	}
+	
+	GameObject				InstantiateMyPlayer(Spawn spawn)
+	{
+		string[]			instantiateData = new string[3];
+		instantiateData[0] = _teamNumber.ToString();
+		instantiateData[1] = RunTimeData.PlayerBase.PlayerName;
+		instantiateData[2] = ((uint)RunTimeData.PlayerBase.PlayerClass).ToString();
+		
+		object[] objs = new object[1];
+		objs[0] = instantiateData;
+		
+		switch (RunTimeData.PlayerBase.PlayerClass)
+		{
+		case SelectClass.eClass.LIGHT:
+			return (PhotonNetwork.Instantiate("LightPlayer", spawn.transform.position, spawn.transform.rotation, 0, objs));
+		default:
+			return (PhotonNetwork.Instantiate("NormalPlayer", spawn.transform.position, spawn.transform.rotation, 0, objs));
+		}
 	}
 	
 	Spawn					GetMySpawn()
