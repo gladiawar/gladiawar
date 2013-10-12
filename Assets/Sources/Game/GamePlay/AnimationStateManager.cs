@@ -76,7 +76,7 @@ public class 				AnimationStateManager : MonoBehaviour
 	private void			WaitForAnimationPlaying(string animationName)
 	{
 		if (!_animation.IsPlaying(animationName))
-			_state = eState.IDLE;
+			State = eState.IDLE;
 	}
 	
 	private void			IdleUpdateCycle()
@@ -124,7 +124,7 @@ public class 				AnimationStateManager : MonoBehaviour
 			_animation.CrossFade("fight idle"); break;
 		case eState.RECEIVEATTACK:
 			bloodGiclure();
-			_animation.CrossFade("hit"); break; 
+			_animation.Play("hit"); break; 
 		case eState.DIE:
 			bloodDie();
 			_animation.CrossFade("die1"); break;

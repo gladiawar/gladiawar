@@ -413,7 +413,7 @@ ModelImporter:
       takeName: 
       firstFrame: 385
       lastFrame: 415
-      wrapMode: 0
+      wrapMode: 2
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -517,7 +517,7 @@ ModelImporter:
     - name: hit
       takeName: 
       firstFrame: 554
-      lastFrame: 564
+      lastFrame: 568
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -644,7 +644,7 @@ ModelImporter:
       takeName: 
       firstFrame: 775
       lastFrame: 820
-      wrapMode: 0
+      wrapMode: 2
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
