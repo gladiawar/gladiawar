@@ -17,7 +17,10 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 	Quaternion				_playerRot;
 	CharacterController		_charCtrl;
 	AnimationStateManager	_animationManager;
+	
 	SelectClass.eClass		_class;
+	public SelectClass.eClass Class
+	{ get { return (_class); } }
 	
 	int						_teamNb;
 	public int				TeamNb
@@ -139,21 +142,21 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 		}
 	}
 	
-	public void				SendAttack(GladiatorNetwork other)
+	public void				SendAttack(GladiatorNetwork other, int damage)
 	{
-		other.photonView.RPC("ReceiveAttack", PhotonTargets.All, null);
+		other.photonView.RPC("ReceiveAttack", PhotonTargets.All, damage);
 	}
 	
 	[RPC]
-	public void				ReceiveAttack()
+	public void				ReceiveAttack(int damage)
 	{
-		if (_animationManager.State == AnimationStateManager.eState.DEFENSE)
+		if (_class == SelectClass.eClass.MEDIUM && _animationManager.State == AnimationStateManager.eState.DEFENSE)
 		{
-			Life -= 2;
+			Life -= damage / 5;
 			Energy -= 20;
 		}
 		else
-			Life -= 10;
+			Life -= damage;
 	}
 	
 	public bool				isRunning(float energyRequire)

@@ -59,7 +59,8 @@ public class 				GladiatorController : MonoBehaviour
 			if (back)
 				_ASM.State = AnimationStateManager.eState.BACK;
 		}
-		else if (Input.GetKey(Keyboard.Action_Left) ^ Input.GetKey(Keyboard.Action_Right))
+		else if (Input.GetKey(Keyboard.Action_Left) ^ Input.GetKey(Keyboard.Action_Right) &&
+				_ASM.State != AnimationStateManager.eState.DEFENSE && _ASM.State != AnimationStateManager.eState.ATTACK)
 		{
 			_vForward = (Input.GetKey(Keyboard.Action_Left) ? Vector3.left : Vector3.right);
 			moveForward(ref targetSpeed);
@@ -97,5 +98,17 @@ public class 				GladiatorController : MonoBehaviour
 		{
 			targetSpeed *= _factorRun;
 		}
+	}
+	
+	public void				lightDodge()
+	{
+		float				targetSpeed = 0;
+		
+		moveForward(ref targetSpeed, true, Input.GetKey(Keyboard.Action_Run));
+		targetSpeed *= _factorRun;
+		//_vForward = Vector3.back;
+		_moveSpeed = Mathf.Lerp(_moveSpeed, targetSpeed, _acceleration * 2);
+		applyMovement();
+		_moveSpeed = 0;
 	}
 }

@@ -18,6 +18,9 @@ public class 				AttackEventManager : MonoBehaviour
 	private float[]			_animationPhaseTime;
 	private bool			_haveTouched;
 	private int				_layerGladiator;
+	private GladiatorController	_gldCtrl;
+	private int				_damage;
+	private float			_rcDistance;
 	
 	const int 				_attackCost = 15;
 	const int				_defenseCost = 15;
@@ -33,6 +36,16 @@ public class 				AttackEventManager : MonoBehaviour
 		_animationPhaseTime[2] = 0.505f;
 		_animationPhaseTime[3] = 0.833f;
 		_layerGladiator = 1 << 9;
+		_gldCtrl = transform.GetComponent<GladiatorController>();
+		switch (GladiatorNetwork._myGladiator.Class)
+		{
+		case SelectClass.eClass.LIGHT:
+			_damage = 8;
+			_rcDistance = 1.3f; break;
+		default:
+			_damage = 10;
+			_rcDistance = 0.9f; break;
+		}
 	}
 	
 	void 					Update()
@@ -92,7 +105,7 @@ public class 				AttackEventManager : MonoBehaviour
 		default:
 			direction = transform.TransformDirection(new Vector3(-0.35f, 0, 0.65f)); break;
 		}
-		if (Physics.Raycast(transform.position, direction, out rcData, 0.9f, _layerGladiator))
+		if (Physics.Raycast(transform.position, direction, out rcData, _rcDistance, _layerGladiator))
 		{
 			if (rcData.collider.gameObject != this.gameObject)
 			{
@@ -100,7 +113,7 @@ public class 				AttackEventManager : MonoBehaviour
 				
 				if (opo.TeamNb != RunTimeData.PlayerTeam)
 				{
-					_gladiatorNetwork.SendAttack(opo);
+					_gladiatorNetwork.SendAttack(opo, _damage);
 					_haveTouched = true;
 				}
 			}	
@@ -126,8 +139,15 @@ public class 				AttackEventManager : MonoBehaviour
 		else
 		{
 			int				intEnergySpend;
+			int				multiplier = 1;
 			
-			_defenseEnergySpend += Time.deltaTime * _defenseCost;
+			if (GladiatorNetwork._myGladiator.Class == SelectClass.eClass.LIGHT)
+			{
+				multiplier = 4;
+				_gldCtrl.lightDodge();
+			}
+			
+			_defenseEnergySpend += Time.deltaTime * _defenseCost * multiplier;
 			intEnergySpend = (int)_defenseEnergySpend;
 			_gladiatorNetwork.Energy -= intEnergySpend;
 			_defenseEnergySpend -= intEnergySpend;
