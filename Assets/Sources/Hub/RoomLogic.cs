@@ -97,7 +97,7 @@ public class 				RoomLogic : Photon.MonoBehaviour
 	
 	void					OnDisable()
 	{
-		GameObject.Destroy(this);
+		PhotonNetwork.Destroy(gameObject);
 	}
 	
 	void					MajDisplay()
