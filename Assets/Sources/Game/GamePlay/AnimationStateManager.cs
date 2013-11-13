@@ -98,7 +98,7 @@ public class 				AnimationStateManager : MonoBehaviour
 			State = eState.IDLE;
 		else if (_state == eState.BACK)
 			State = eState.BACK;
-		else if (Keyboard.Action_Run || Keyboard.Action_Run)
+		else if (Input.GetKey(Keyboard.Action_Run))
 			State = eState.RUN;
 		else
 			State = eState.WALK;
