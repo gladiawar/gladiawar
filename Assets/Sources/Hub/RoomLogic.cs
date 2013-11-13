@@ -39,7 +39,10 @@ public class 				RoomLogic : Photon.MonoBehaviour
 		_labelPlayer2.Add(GameObject.Find("LabelPlayer23").GetComponent<UILabel>());
 		
 		if (photonView.isMine)
+		{
 			_player1.Add(RunTimeData.PlayerBase.PlayerName);
+			RunTimeData.PlayerTeam = 0;
+		}
 		_messageBox = GameObject.Find("Messages").GetComponent<UILabel>();
 		_messages = new List<string>();
 		_InputBox = GameObject.Find("playerInput").transform;

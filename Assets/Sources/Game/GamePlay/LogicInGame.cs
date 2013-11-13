@@ -28,6 +28,7 @@ public class 				LogicInGame : Photon.MonoBehaviour
 	public GameObject		_FollowerPrefab;
 	public UILabel    		_igMessage;
 	public int      		_countdownValue = 5;
+	public GameObject[]		_particleText;
 	private int      		_countdownCounter = 0;
 	
 	private int				_teamNumber;
@@ -52,16 +53,11 @@ public class 				LogicInGame : Photon.MonoBehaviour
 
 	private void CountDownTimer()
 	{
+		_countdownCounter--;
 		if (_countdownCounter <= 0)
-		{
-			_igMessage.text = "";
 			this.CancelInvoke ("CountDownTimer");
-		}
-		else
-		{
-			_countdownCounter--;
-			_igMessage.text = _countdownCounter.ToString();
-		}
+		else if (_countdownCounter < 4)
+			CFX_SpawnSystem.GetNextObject(_particleText[_countdownCounter - 1], true).transform.position = _igMessage.transform.position;
 	}
 	
 	void					Start ()
@@ -141,13 +137,14 @@ public class 				LogicInGame : Photon.MonoBehaviour
 	
 	public void				EndGame()
 	{
-		_igMessage.text = "Game terminated";
+		CFX_SpawnSystem.GetNextObject(_particleText[3], true).transform.position = _igMessage.transform.position;
 		Invoke("finishingGame", 3f);
 	}
 	
 	private void			finishingGame()
 	{
-		Screen.showCursor = true; 
+		Screen.showCursor = true;
+		PhotonNetwork.LeaveRoom();
 		Application.LoadLevel("Hub");
 	}
 }

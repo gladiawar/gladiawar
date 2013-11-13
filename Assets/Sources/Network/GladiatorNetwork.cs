@@ -183,7 +183,6 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 			object[]		objs = photonView.instantiationData;
 			string[]		idata = (string[])objs[0];
 			
-			Debug.Log("is not mine");
 			_teamNb = int.Parse(idata[0]);
 			_class = (SelectClass.eClass)uint.Parse(idata[2]);
 			HUDText.GetComponent<UIFollowTarget>().target = transform.FindChild("TextPosition");
@@ -193,7 +192,6 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 		}
 		else
 		{
-			Debug.Log("is mine");
 			_class = RunTimeData.PlayerBase.PlayerClass;
 		}
 	}

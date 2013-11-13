@@ -52,8 +52,8 @@ public class 				ReadyChecker : Photon.MonoBehaviour
 			if (_playerReady.Count == _playerNumber - 1)
 			{
 				LogicInGame.Instance.InstantiateMasterServer();
-				GameObject.Destroy(gameObject);
+				PhotonNetwork.Destroy(gameObject);
 			}
 		}
-	}
+	}			
 }
