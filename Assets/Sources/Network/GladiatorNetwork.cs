@@ -83,14 +83,14 @@ public class 				GladiatorNetwork : Photon.MonoBehaviour
 		_attackEventManager = transform.GetComponent<AttackEventManager>();
 		_charCtrl = transform.GetComponent<CharacterController>();
 		_animationManager = transform.GetComponent<AnimationStateManager>();
+		if (photonView.isMine)
+			_myGladiator = this;
 	}
 	
 	void 					Start()
 	{
 		LogicInGame.Instance.PlayerList.Add(this);
-		if (photonView.isMine)
-			_myGladiator = this;
-		else
+		if (!photonView.isMine)
 		{
 			((MonoBehaviour)_cam).enabled = false;
 			((MonoBehaviour)_ctrler).enabled = false;
